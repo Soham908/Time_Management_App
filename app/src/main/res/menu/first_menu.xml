@@ -12,6 +12,7 @@
         android:id="@+id/stopwatch"
         android:title="StopWatch"
         android:icon="@drawable/baseline_stopwatch_24"
+        android:checked="true"
         />
     <item
         android:id="@+id/report"

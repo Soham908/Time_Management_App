@@ -4,31 +4,22 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#191818"
+    android:background="#373535"
     >
-
 
 
     <androidx.drawerlayout.widget.DrawerLayout
         android:id="@+id/drawer_layout"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_width="413dp"
+        android:layout_height="616dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0"
+        app:layout_constraintVertical_bias="0.86"
         tools:ignore="SpeakableTextPresentCheck">
 
         <!-- NavigationView for the drawer menu -->
-        <androidx.fragment.app.FragmentContainerView
-            android:id="@+id/fragmentContainerView"
-            android:name="com.example.fristtrial.FirstTfrag"
-            android:layout_width="411dp"
-            android:layout_height="677dp"
-
-            tools:layout="@layout/fragment_first_tfrag" />
 
         <com.google.android.material.navigation.NavigationView
             android:id="@+id/nav_view"
@@ -42,6 +33,14 @@
             >
 
         </com.google.android.material.navigation.NavigationView>
+
+        <androidx.fragment.app.FragmentContainerView
+            android:id="@+id/fragmentContainerView"
+            android:name="com.example.fristtrial.FirstTfrag"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+
+            tools:layout="@layout/fragment_stop_watch_fragment" />
 
         <!-- Main content view -->
 
@@ -60,7 +59,7 @@
         android:layout_height="wrap_content"
 
         app:layout_constraintBottom_toBottomOf="parent"
-
+        android:defaultFocusHighlightEnabled="true"
         app:itemIconTint="@color/bottom_nav_color"
         app:itemTextColor="@color/bottom_nav_color"
 

@@ -48,6 +48,7 @@ public class BottmonNav extends AppCompatActivity implements NavigationView.OnNa
         binding = ActivityBottmonNavBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
+        NavigationView drawer_nav_view = findViewById(R.id.nav_view);
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         MaterialToolbar mtoolbar = findViewById(R.id.materialToolbar);
         setSupportActionBar(mtoolbar);
@@ -59,12 +60,7 @@ public class BottmonNav extends AppCompatActivity implements NavigationView.OnNa
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
 
-//        AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
-//                R.id.navigation_home, R.id.navigation_dashboard, R.id.navigation_notifications)
-//                .build();
-//        NavController navController = Navigation.findNavController(this, R.id.bottomNavigationView);
-//        NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
-//        NavigationUI.setupWithNavController(binding.navView, navController);
+
 
         // for opening drawer side bar when button is clicked in the toolbar
         mtoolbar.setNavigationOnClickListener(new View.OnClickListener() {
@@ -76,44 +72,45 @@ public class BottmonNav extends AppCompatActivity implements NavigationView.OnNa
         });
 
 
-//        navView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
-//            // this is used for handling all the bottom nav elements
-//            // all the fragments are replaced in the container view according to the button click
-//            @Override
-//            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-//                switch (item.getItemId()) {
-//                    case R.id.HomePage:
-//                        fragChanger(new DashboardFragment());
-//                        break;
-//                    case R.id.stopwatch:
-//                        Intent i = new Intent(getApplicationContext(), MainActivity.class);
-//                        startActivity(i);
-//                        break;
-//                    case R.id.report:
-//                        fragChanger(new HomeFragmentBottomNav());
-//                        break;
-//
-//
-//                }
-//                item.setChecked(true);
-//
-//                return false;
-//            }
-//
-//        });
+        drawer_nav_view.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.Exercise:
+                        Intent i = new Intent(getApplicationContext(), Exercise_Main.class);
+                        drawer.closeDrawer(GravityCompat.START);
+                        return true;
+                    case R.id.HomePage:
+                        // Handle the profile action
+                        i = new Intent(getApplicationContext(), BottmonNav.class);
+                        drawer.closeDrawer(GravityCompat.START);
+                        return true;
+                    case R.id.Notes:
+                        // Handle the settings action
+                        i = new Intent(getApplicationContext(), Notes_Main.class);
+                        drawer.closeDrawer(GravityCompat.START);
+                        return true;
+
+                }
+                return false;
+            }
+
+    });
     }
 
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        // this is used for handling all the bottom nav elements
+        // all the fragments are replaced in the container view according to the button click
+
         // resource id can change during runtime, so it would be better not to use switch, use if-else,  in the future fix this issue
         switch (item.getItemId()) {
             case R.id.HomePage:
                 fragChanger(new DashboardFragment());
                 break;
             case R.id.stopwatch:
-                Intent i = new Intent(getApplicationContext(), MainActivity.class);
-                startActivity(i);
+                fragChanger(new StopWatch_fragment());
                 break;
             case R.id.report:
                 fragChanger(new HomeFragmentBottomNav());
@@ -121,6 +118,7 @@ public class BottmonNav extends AppCompatActivity implements NavigationView.OnNa
 
         }
         item.setChecked(true);
+
 
         return false;
     }
