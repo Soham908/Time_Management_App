@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" >
+<!--removed original theme and set a new one-->
+    <application
+        android:allowBackup="true"
+        android:dataExtractionRules="@xml/data_extraction_rules"
+        android:fullBackupContent="@xml/backup_rules"
+        android:theme="@style/Theme.AppCompat.Light.NoActionBar"
+        android:label="@string/app_name"
+        android:supportsRtl="true"
+
+        tools:targetApi="31"
+        android:icon="@mipmap/ic_launcher">
+        <activity
+            android:name=".BottmonNav"
+            android:exported="true"
+            android:label="@string/title_activity_bottmon_nav" />
+        <activity
+            android:name=".MainActivity"
+            android:exported="true" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+    </application>
+
+</manifest>

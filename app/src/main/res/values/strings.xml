@@ -1,0 +1,21 @@
+<resources>
+    <string name="app_name">Frist Trial</string>
+    <string name="title_activity_bottmon_nav">BottmonNav</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="start">Start</string>
+    <string name="stop">Stop</string>
+    <string name="lap">Lap</string>
+    <string name="reset">Reset</string>
+    <string name="clear_lap">Clear Lap</string>
+    <string name="exercise">Exercise</string>
+    <string name="notes">Notes</string>
+    <string name="achivements">Achivements</string>
+    <string name="timetable">Timetable</string>
+    <string name="goals">Goals</string>
+    <string name="todolist">ToDoList</string>
+
+</resources>

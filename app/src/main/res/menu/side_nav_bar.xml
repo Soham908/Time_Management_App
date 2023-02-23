@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/TimeSegmentation"
+        android:title="Home Page"
+        android:icon="@drawable/ic_home_black_24dp"
+
+        />
+    <item
+        android:id="@+id/LifeStyle"
+        android:title="StopWatch"
+        android:icon="@drawable/baseline_stopwatch_24"
+        />
+    <item
+        android:id="@+id/Exercise"
+        android:title="@string/exercise"
+        android:icon="@drawable/exercise_menu_item"
+        />
+    <item
+        android:id="@+id/Notes"
+        android:title="@string/notes"
+        android:icon="@drawable/baseline_newspaper_24"
+        />
+    <item
+        android:id="@+id/Achivements"
+        android:title="@string/achivements"
+        android:icon="@drawable/baseline_newspaper_24"
+        />
+    <item
+        android:id="@+id/Timetable"
+        android:title="@string/timetable"
+        android:icon="@drawable/baseline_view_timeline_24"
+        />
+    <item
+        android:id="@+id/Goals"
+        android:title="@string/goals"
+        android:icon="@drawable/baseline_newspaper_24"
+        />
+    <item
+        android:id="@+id/ToDoList"
+        android:title="@string/todolist"
+        android:icon="@drawable/baseline_newspaper_24"
+        />
+
+
+</menu>
