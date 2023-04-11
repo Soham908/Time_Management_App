@@ -10,7 +10,7 @@ class Time (
     val id: Int,
     val record_time: String,
     val label: String,
-    @ColumnInfo(name = "work", defaultValue = "College")
+    @ColumnInfo(name = "work", defaultValue = "Time Pass")
     val work: String
 
 )

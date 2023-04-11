@@ -12,26 +12,16 @@ import kotlinx.coroutines.withContext
 class TimeViewModel(private val timeDAO: TimeDAO): ViewModel() {
 
 
+    val allData: LiveData<List<Time>> = timeDAO.getTimeInfo()
 
-    lateinit var listNow: List<Time>
-    val timeList: LiveData<List<Time>> = timeDAO.getTimeInfo()
     fun insertTime(time: Time)
     {
         viewModelScope.launch(Dispatchers.IO) {
             timeDAO.insertTimeDetails(time)
-
         }
-
     }
 
-//    suspend fun getthisVar(lis: List<Time>): List<Time>
-//    {
-//        return withContext(Dispatchers.IO){
-//            timeDAO.getTimeInfo()
-//        }
-//
-////        return listNow
-//    }
+
 
 
 }

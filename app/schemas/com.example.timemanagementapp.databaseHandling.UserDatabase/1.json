@@ -2,11 +2,11 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "95349aa261c56bb69e33666a2450622b",
+    "identityHash": "c2bf6a83b32b9cebdb6b7669e79a81e1",
     "entities": [
       {
         "tableName": "User_Time",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `record_time` TEXT NOT NULL, `label` TEXT NOT NULL, `work` TEXT NOT NULL DEFAULT 'College')",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `record_time` TEXT NOT NULL, `label` TEXT NOT NULL, `work` TEXT NOT NULL DEFAULT 'Time Pass')",
         "fields": [
           {
             "fieldPath": "id",
@@ -31,7 +31,7 @@
             "columnName": "work",
             "affinity": "TEXT",
             "notNull": true,
-            "defaultValue": "'College'"
+            "defaultValue": "'Time Pass'"
           }
         ],
         "primaryKey": {
@@ -47,7 +47,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '95349aa261c56bb69e33666a2450622b')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'c2bf6a83b32b9cebdb6b7669e79a81e1')"
     ]
   }
 }
