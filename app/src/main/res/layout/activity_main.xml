@@ -6,17 +6,20 @@
     android:id="@+id/drawerLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/black"
+    android:background="@color/white"
     tools:context=".MainActivity">
 
     <com.google.android.material.navigation.NavigationView
+        android:id="@+id/sideNavigationBar"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="start"
-        android:background="@color/black"
-        app:menu="@menu/bottom_menu" />
+        android:background="@color/white"
+        app:menu="@menu/side_navbar"
+        />
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -39,7 +42,7 @@
 
         <androidx.fragment.app.FragmentContainerView
             android:id="@+id/fragmentContainerView"
-            android:name="com.example.timemanagementapp.StopWatchFragment"
+            android:name="com.example.timemanagementapp.UI.StopWatchFragment"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             app:layout_constraintBottom_toTopOf="@+id/bottomNavBar"

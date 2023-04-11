@@ -11,9 +11,10 @@ import kotlinx.coroutines.withContext
 
 class TimeViewModel(private val timeDAO: TimeDAO): ViewModel() {
 
-
+    // to show livedata in activity
     val allData: LiveData<List<Time>> = timeDAO.getTimeInfo()
 
+    // to insert user data
     fun insertTime(time: Time)
     {
         viewModelScope.launch(Dispatchers.IO) {

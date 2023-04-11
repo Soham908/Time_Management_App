@@ -1,16 +1,12 @@
 package com.example.timemanagementapp
 
 import android.annotation.SuppressLint
-import android.graphics.Color
 import android.os.Bundle
-import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
+import com.example.timemanagementapp.UI.*
 
 import com.example.timemanagementapp.databaseHandling.UserDatabase
 import com.example.timemanagementapp.databaseHandling.UserDatabase.Companion.getInstance
@@ -18,7 +14,8 @@ import com.example.timemanagementapp.databaseHandling.timeDB.Time
 import com.example.timemanagementapp.databaseHandling.timeDB.TimeDAO
 import com.example.timemanagementapp.databaseHandling.timeDB.TimeViewModel
 import com.example.timemanagementapp.databinding.ActivityMainBinding
-import org.w3c.dom.Text
+import com.google.android.material.navigation.NavigationBarMenu
+import com.google.android.material.navigation.NavigationView
 
 class MainActivity : AppCompatActivity() {
 
@@ -34,10 +31,9 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         // will automatically bind all the views to its ids during runtime
-        binding = ActivityMainBinding.inflate(
-            layoutInflater
-        )
+        binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding!!.root)
+
         val drawerLayout = binding!!.drawerLayout
         val toolbar = binding!!.materialToolbar
         setSupportActionBar(toolbar)
@@ -45,19 +41,21 @@ class MainActivity : AppCompatActivity() {
 
         // add navigation icon in xml file to use this
         toolbar.setNavigationOnClickListener { drawerLayout.openDrawer(GravityCompat.START) }
+
         val bottomNavigationView = binding!!.bottomNavBar
         bottomNavigationView.setOnItemSelectedListener { item ->
+            val fragment: Fragment
             when (item.itemId) {
                 R.id.stopwatch -> {
+                    fragment = StopWatchFragment()
+                    fragmentTransaction(fragment)
                     Toast.makeText(this@MainActivity, "stopwatch", Toast.LENGTH_SHORT).show()
-                    val frag: Fragment = StopWatchFragment()
-                    val ft = supportFragmentManager.beginTransaction()
-                        .replace(R.id.fragmentContainerView, frag)
-                    ft.commit()
                 }
                 R.id.home -> {
+                    fragment = HomePageFragment()
+                    fragmentTransaction(fragment)
                     Toast.makeText(this@MainActivity, "inserted", Toast.LENGTH_SHORT).show()
-                    insertTime()
+//                    insertTime()
                 }
                 R.id.report -> {
                     Toast.makeText(this@MainActivity, "selected", Toast.LENGTH_SHORT).show()
@@ -70,10 +68,27 @@ class MainActivity : AppCompatActivity() {
         timeDAO = userDatabase!!.timeDao()
 
 
+        val sideNavigation = binding!!.sideNavigationBar
+        sideNavigation.setNavigationItemSelectedListener { item ->
+            var fragment: Fragment = TodoListFragment()
+            // setting this as a default fragment, the value will change inside of the when statement
+            when(item.itemId)
+            {
+                R.id.todoTab ->             { fragment = TodoListFragment() }
+                R.id.habitTrackerTab ->     { fragment = HabitFragment() }
+                R.id.exerciseTab ->         { fragment = ExerciseFragment() }
+            }
+
+            fragmentTransaction(fragment)
+
+
+            true
+        }
+
 
     }
 
-
+    @SuppressLint("SetTextI18n")
     fun insertTime(){
         timeViewModel = TimeViewModel(timeDAO!!)
         var count = 30
@@ -94,6 +109,10 @@ class MainActivity : AppCompatActivity() {
                 tvchange.append(element.record_time + " ")
 
         }
+    }
+
+    fun fragmentTransaction(fragment: Fragment){
+        supportFragmentManager.beginTransaction().replace(R.id.fragmentContainerView, fragment).commit()
     }
 
 

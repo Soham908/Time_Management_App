@@ -8,4 +8,10 @@
     <string name="start">Start</string>
     <string name="stop">Stop</string>
     <string name="reset">Reset</string>
+    <string name="homepageWelcome">Welcome to Time Management App</string>
+    <string name="enterName">Your Name</string>
+    <string name="enterPassword">Your Password</string>
+    <string name="to_do">To Do</string>
+    <string name="habit_tracker">Habit Tracker</string>
+    <string name="exercise">Exercise</string>
 </resources>

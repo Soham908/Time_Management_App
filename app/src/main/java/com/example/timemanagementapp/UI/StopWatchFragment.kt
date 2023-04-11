@@ -1,4 +1,4 @@
-package com.example.timemanagementapp
+package com.example.timemanagementapp.UI
 
 import android.annotation.SuppressLint
 import android.os.Bundle
@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
 import androidx.fragment.app.Fragment
+import com.example.timemanagementapp.R
 import com.example.timemanagementapp.databinding.FragmentStopWatchBinding
 
 class StopWatchFragment : Fragment() {
