@@ -35,8 +35,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="#8AACE6"
-                app:menu="@menu/bottom_menu"
-                app:navigationIcon="@drawable/bottom_nav_homepage" />
+                app:menu="@menu/actionbar_options"
+                app:navigationIcon="@drawable/bottom_nav_homepage"
+                />
 
         </com.google.android.material.appbar.AppBarLayout>
 
@@ -79,6 +80,18 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.736" />
+
+        <Button
+            android:id="@+id/change"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Change"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.826"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.168" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

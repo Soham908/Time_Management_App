@@ -14,4 +14,11 @@
     <string name="to_do">To Do</string>
     <string name="habit_tracker">Habit Tracker</string>
     <string name="exercise">Exercise</string>
+    <string name="get_started">Get Started</string>
+    <string name="welcomeTextStartingPage">Hi Welcome to our Mobile App, We will help you in managing all your day to day activities</string>
+    <string name="username">Username</string>
+    <string name="password">Password</string>
+    <string name="login">Login</string>
+    <string name="logout">Logout</string>
+    <string name="search">Search</string>
 </resources>
