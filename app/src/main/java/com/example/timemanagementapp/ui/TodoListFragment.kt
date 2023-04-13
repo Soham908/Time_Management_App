@@ -1,4 +1,4 @@
-package com.example.timemanagementapp.UI
+package com.example.timemanagementapp.ui
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -23,6 +23,6 @@ class TodoListFragment : Fragment() {
 
 
 
-        return super.onCreateView(inflater, container, savedInstanceState)
+        return view
     }
 }

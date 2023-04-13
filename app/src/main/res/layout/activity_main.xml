@@ -9,14 +9,7 @@
     android:background="@color/white"
     tools:context=".MainActivity">
 
-    <com.google.android.material.navigation.NavigationView
-        android:id="@+id/sideNavigationBar"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layout_gravity="start"
-        android:background="@color/white"
-        app:menu="@menu/side_navbar"
-        />
+
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout"
@@ -43,7 +36,7 @@
 
         <androidx.fragment.app.FragmentContainerView
             android:id="@+id/fragmentContainerView"
-            android:name="com.example.timemanagementapp.UI.StopWatchFragment"
+            android:name="com.example.timemanagementapp.ui.StopWatchFragment"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             app:layout_constraintBottom_toTopOf="@+id/bottomNavBar"
@@ -53,7 +46,7 @@
             app:layout_constraintVertical_bias="1.0"
 
 
-            tools:layout="@layout/fragment_stop_watch" />
+            tools:layout="@layout/fragment_report" />
 
         <com.google.android.material.bottomnavigation.BottomNavigationView
             android:id="@+id/bottomNavBar"
@@ -68,32 +61,43 @@
             app:layout_constraintStart_toStartOf="parent"
             app:menu="@menu/bottom_menu" />
 
-        <TextView
-            android:id="@+id/textView"
-            android:layout_width="366dp"
-            android:layout_height="132dp"
-            android:text="TextView"
-            android:textSize="20dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.3"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.736" />
+<!--        <TextView-->
+<!--            android:id="@+id/textView"-->
+<!--            android:layout_width="366dp"-->
+<!--            android:layout_height="132dp"-->
+<!--            android:text="TextView"-->
+<!--            android:textSize="20dp"-->
+<!--            app:layout_constraintBottom_toBottomOf="parent"-->
+<!--            app:layout_constraintEnd_toEndOf="parent"-->
+<!--            app:layout_constraintHorizontal_bias="0.3"-->
+<!--            app:layout_constraintStart_toStartOf="parent"-->
+<!--            app:layout_constraintTop_toTopOf="parent"-->
+<!--            app:layout_constraintVertical_bias="0.736" />-->
 
-        <Button
-            android:id="@+id/change"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Change"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.826"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.168" />
+<!--        <Button-->
+<!--            android:id="@+id/change"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:text="Change"-->
+<!--            android:textColor="@color/white"-->
+<!--            android:background="@drawable/btn_primary"-->
+<!--            app:layout_constraintBottom_toBottomOf="parent"-->
+<!--            app:layout_constraintEnd_toEndOf="parent"-->
+<!--            app:layout_constraintHorizontal_bias="0.826"-->
+<!--            app:layout_constraintStart_toStartOf="parent"-->
+<!--            app:layout_constraintTop_toTopOf="parent"-->
+<!--            app:layout_constraintVertical_bias="0.168" />-->
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <com.google.android.material.navigation.NavigationView
+        android:id="@+id/sideNavigationBar"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        android:background="@color/white"
+        app:menu="@menu/side_navbar"
+        />
 
 </androidx.drawerlayout.widget.DrawerLayout>

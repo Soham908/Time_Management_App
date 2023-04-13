@@ -1,4 +1,4 @@
-package com.example.timemanagementapp.UI
+package com.example.timemanagementapp.ui
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -17,11 +17,11 @@ class HabitFragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         val view: View = layoutInflater.inflate(R.layout.fragment_habit, container, false)
         binding = FragmentHabitBinding.bind(view)
 
 
-        return super.onCreateView(inflater, container, savedInstanceState)
+        return view
     }
 }
