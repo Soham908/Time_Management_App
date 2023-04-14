@@ -2,28 +2,26 @@ package com.example.timemanagementapp.ui
 
 import android.annotation.SuppressLint
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.timemanagementapp.R
-import com.example.timemanagementapp.databaseHandling.UserDatabase
-import com.example.timemanagementapp.databaseHandling.timeDB.Time
-import com.example.timemanagementapp.databaseHandling.timeDB.TimeDAO
+import com.example.timemanagementapp.databaseHandling.TimeFirebase
 import com.example.timemanagementapp.databinding.FragmentReportBinding
-import com.example.timemanagementapp.recyclerviewAdapter.TimeAdapter
+import com.example.timemanagementapp.recyclerviewAdapter.TaskAdapter
 import com.example.timemanagementapp.recyclerviewAdapter.TimeRecord
+import com.google.firebase.firestore.FirebaseFirestore
 
 
 class ReportFragment : Fragment() {
 
     private lateinit var binding: FragmentReportBinding
-    lateinit var adapter: TimeAdapter
+    lateinit var adapter: TaskAdapter
     private var timeList = mutableListOf<TimeRecord>()
-    private lateinit var userDatabase: UserDatabase
-    private lateinit var timeDAO: TimeDAO
+    lateinit var firestore: FirebaseFirestore
 
 
     override fun onCreateView(
@@ -43,29 +41,34 @@ class ReportFragment : Fragment() {
 
     private fun recyclerView()
     {
-        val recylerView = binding.timeRecyclerView
+        val recyclerView = binding.timeRecyclerView
         getTimeList()
-        adapter = TimeAdapter(requireContext(),timeList)
+        adapter = TaskAdapter(requireContext(),timeList)
         timeList.add(TimeRecord(54, "this be"))
-        recylerView.adapter = adapter
-        recylerView.layoutManager = LinearLayoutManager(context)
+        recyclerView.adapter = adapter
+        recyclerView.layoutManager = LinearLayoutManager(context)
     }
 
 
     @SuppressLint("NotifyDataSetChanged")
     private fun getTimeList(){
-        userDatabase = UserDatabase.getInstance(requireContext())
-        timeDAO = userDatabase.timeDao()
+        firestore = FirebaseFirestore.getInstance()
+        val collection = firestore.collection("User Details")
+        collection.document("Time_Record").get()
+            .addOnSuccessListener {
 
-        // you can add the select query in the view model but it requires a lot of unnecessary code
-        // so just implement it here it is more easier
-        userDatabase.timeDao().getTimeInfo().observe(viewLifecycleOwner){ timeList2 ->
-            for (element in timeList2)
-            {
-                timeList.add(TimeRecord(element.id, element.record_time))
+                val data = it.toObject(TimeFirebase::class.java)
+                val tasks = data?.Tasks!!.values
+                for(task in tasks){
+                    timeList.add(TimeRecord(data.id, task.toString()))
+                }
+                adapter.notifyDataSetChanged()
             }
-            adapter.notifyDataSetChanged()
+            .addOnFailureListener{
+                Log.d("dataFirebase1", "Query failed")
+            }
+
 
         }
-    }
+
 }

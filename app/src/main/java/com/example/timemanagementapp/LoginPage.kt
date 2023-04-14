@@ -23,6 +23,10 @@ class LoginPage : AppCompatActivity() {
         binding.loginLogin.setOnClickListener{
             verifyUser()
         }
+        binding.gotoSignup.setOnClickListener{
+            val intent = Intent(this, SignUpPage::class.java)
+            startActivity(intent)
+        }
 
     }
 

@@ -17,7 +17,7 @@ class TodoListFragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         val view: View = layoutInflater.inflate(R.layout.fragment_todo_list, container, false)
         binding = FragmentTodoListBinding.bind(view)
 

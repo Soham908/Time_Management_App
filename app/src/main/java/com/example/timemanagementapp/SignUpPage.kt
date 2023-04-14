@@ -1,5 +1,6 @@
 package com.example.timemanagementapp
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
@@ -20,6 +21,10 @@ class SignUpPage : AppCompatActivity() {
 
         binding.signupSignup.setOnClickListener{
             signUpUser()
+        }
+        binding.gotoLogin.setOnClickListener{
+            val intent = Intent(this, LoginPage::class.java)
+            startActivity(intent)
         }
 
     }
