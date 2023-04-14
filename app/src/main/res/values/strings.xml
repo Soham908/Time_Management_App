@@ -22,4 +22,5 @@
     <string name="logout">Logout</string>
     <string name="search">Search</string>
     <string name="startTime">00:00:00</string>
+    <string name="signup">Signup</string>
 </resources>

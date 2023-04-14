@@ -38,7 +38,7 @@
         android:id="@+id/loginLogin"
         android:layout_width="123dp"
         android:layout_height="52dp"
-        android:background="#B40099FF"
+        android:background="@drawable/btn_primary"
         android:text="@string/login"
         app:layout_constraintBottom_toTopOf="@+id/imageView2"
         app:layout_constraintEnd_toEndOf="parent"
@@ -92,6 +92,15 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.398" />
+
+    <Button
+        android:id="@+id/gotoSignup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="212dp"
+        android:text="Go to Signup"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
