@@ -12,6 +12,7 @@ import com.example.timemanagementapp.R
 import com.example.timemanagementapp.databaseHandling.TimeFirebase
 import com.example.timemanagementapp.databinding.FragmentReportBinding
 import com.example.timemanagementapp.recyclerviewAdapter.TaskAdapter
+import com.example.timemanagementapp.recyclerviewAdapter.TimeAdapter
 import com.example.timemanagementapp.recyclerviewAdapter.TimeRecord
 import com.google.firebase.firestore.FirebaseFirestore
 
@@ -19,7 +20,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 class ReportFragment : Fragment() {
 
     private lateinit var binding: FragmentReportBinding
-    lateinit var adapter: TaskAdapter
+    lateinit var adapter: TimeAdapter
     private var timeList = mutableListOf<TimeRecord>()
     lateinit var firestore: FirebaseFirestore
 
@@ -43,7 +44,7 @@ class ReportFragment : Fragment() {
     {
         val recyclerView = binding.timeRecyclerView
         getTimeList()
-        adapter = TaskAdapter(requireContext(),timeList)
+        adapter = TimeAdapter(requireContext(),timeList)
         timeList.add(TimeRecord(54, "this be"))
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(context)

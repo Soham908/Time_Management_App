@@ -10,16 +10,26 @@ import androidx.core.view.GravityCompat
 import androidx.fragment.app.Fragment
 import com.example.timemanagementapp.ui.*
 import com.example.timemanagementapp.databinding.ActivityMainBinding
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.FirebaseFirestoreSettings
+import com.google.firebase.firestore.ktx.firestoreSettings
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
+    lateinit var firestore: FirebaseFirestore
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         // will automatically bind all the views to its ids during runtime
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        firestore = FirebaseFirestore.getInstance()
+//        firestore.setPer
+//        firestore = FirebaseFirestoreSettings.Builder().setPersistenceEnabled()
+        val settings = firestoreSettings { isPersistenceEnabled = true }
+        firestore.firestoreSettings = settings
 
         materialToolBarFunctions()
         bottomNavBarFunctions()
