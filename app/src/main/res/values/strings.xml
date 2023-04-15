@@ -29,4 +29,5 @@
     <string name="enter_time">Enter Time</string>
     <string name="task_priority">Task Priority</string>
     <string name="add_task">Add Task</string>
+    <string name="save">Save</string>
 </resources>

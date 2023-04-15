@@ -23,6 +23,7 @@ class TodoListFragment : Fragment() {
     private var list = mutableListOf<TaskFirebase>()
     private lateinit var firestore: FirebaseFirestore
 
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -34,11 +35,13 @@ class TodoListFragment : Fragment() {
         firestore = FirebaseFirestore.getInstance()
         setRecyclerView()
         binding.taskAddTask.setOnClickListener{
-            addTasks()
+//            addTasks()
+            BottomSheetToDo().show(childFragmentManager, "this is bottom sheet frag")
         }
         binding.showData.setOnClickListener{
             selectData()
         }
+
 
         return view
     }
@@ -93,4 +96,6 @@ class TodoListFragment : Fragment() {
         list.add(TaskFirebase(taskSubject, taskDescription, taskTime, taskPriority))
         adapter.notifyDataSetChanged()
     }
+
+
 }

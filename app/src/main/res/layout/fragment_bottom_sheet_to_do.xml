@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    tools:context=".ui.BottomSheetToDo">
+
+    <!-- TODO: Update blank fragment layout -->
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Add a New Task"
+        android:textSize="28sp"
+        android:textAlignment="center"
+        />
+
+    <EditText
+        android:id="@+id/todoBottomSub"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:hint="@string/task_subject"
+        android:padding="15dp"
+        />
+
+    <EditText
+        android:id="@+id/todoBottomDesc"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:hint="@string/task_description"
+        android:padding="15dp"
+        />
+
+    <Button
+        android:id="@+id/todoBottomSave"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/add_task"
+        android:layout_gravity="center"
+        android:padding="15dp"
+        />
+
+</LinearLayout>
