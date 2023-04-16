@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+
+    <PreferenceCategory
+        android:title="Theme">
+
+        <SwitchPreference
+            android:defaultValue="false"
+            android:key="dark_theme"
+            android:title="Switch to Dark Theme" />
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="Notifications">
+        <SwitchPreference
+            android:defaultValue="false"
+            android:key="setNotifications"
+            android:title="Set Notifications" />
+        <SwitchPreference
+            android:defaultValue="false"
+            android:key="alarmFacility"
+            android:title="Switch Alarm Facility" />
+
+
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="Reminders">
+
+    </PreferenceCategory>
+    <MultiSelectListPreference
+        android:key="multi_select_list_preference_1"
+        android:title="Multi select list preference"
+        android:entries="@array/settingsMultiListTime"
+        android:entryValues="@array/settingsMultiListTime"
+         />
+
+    <CheckBoxPreference
+        android:defaultValue="false"
+        android:key="check_box_preference_1"
+        android:title="Check box preference" />
+<!--    <ListPreference-->
+<!--        android:defaultValue="1"-->
+<!--        android:entries="@array/snoozed"-->
+<!--        android:entryValues="@array/snoozed"-->
+<!--        android:key="list_preference_1"-->
+<!--        android:title="Select Snooze Time"-->
+<!--        android:negativeButtonText="cancel"-->
+<!--        android:positiveButtonText="okay"-->
+<!--        />-->
+
+
+</PreferenceScreen>

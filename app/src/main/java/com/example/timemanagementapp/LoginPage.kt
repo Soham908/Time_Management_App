@@ -1,6 +1,7 @@
 package com.example.timemanagementapp
 
 import android.content.Intent
+import android.content.res.Configuration
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
@@ -43,6 +44,11 @@ class LoginPage : AppCompatActivity() {
             Toast.makeText(this, "Login Failed", Toast.LENGTH_SHORT).show()
         }
 
+    }
+
+    override fun onConfigurationChanged(newConfig: Configuration) {
+        super.onConfigurationChanged(newConfig)
+        recreate()
     }
 
 }

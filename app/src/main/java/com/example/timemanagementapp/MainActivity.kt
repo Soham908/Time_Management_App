@@ -1,6 +1,7 @@
 package com.example.timemanagementapp
 
 import android.content.Intent
+import android.content.res.Configuration
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
@@ -26,8 +27,6 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         firestore = FirebaseFirestore.getInstance()
-//        firestore.setPer
-//        firestore = FirebaseFirestoreSettings.Builder().setPersistenceEnabled()
         val settings = firestoreSettings { isPersistenceEnabled = true }
         firestore.firestoreSettings = settings
 
@@ -109,10 +108,17 @@ class MainActivity : AppCompatActivity() {
                 val intent = Intent(this, LoginPage::class.java)
                 startActivity(intent)
             }
-            R.id.search -> Toast.makeText(this, "Search Selected", Toast.LENGTH_SHORT).show()
+            R.id.search -> {
+                val fragment = SettingsFragment()
+                fragmentTransaction(fragment)
+            }
         }
         return super.onOptionsItemSelected(item)
     }
 
+    override fun onConfigurationChanged(newConfig: Configuration) {
+        super.onConfigurationChanged(newConfig)
+        recreate()
+    }
 
 }

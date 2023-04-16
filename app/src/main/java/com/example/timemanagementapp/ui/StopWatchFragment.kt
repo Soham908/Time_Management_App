@@ -2,10 +2,12 @@ package com.example.timemanagementapp.ui
 
 import android.os.Bundle
 import android.os.Handler
+import android.view.ContextThemeWrapper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.preference.PreferenceManager
 import com.example.timemanagementapp.R
 import com.example.timemanagementapp.databinding.FragmentStopWatchBinding
 
@@ -16,12 +18,17 @@ class StopWatchFragment : Fragment() {
     private lateinit var handler: Handler
     private lateinit var runnable: Runnable
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        val view = inflater.inflate(R.layout.fragment_stop_watch, container, false)
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        val currentTheme = if (isDarkThemeEnabled()) R.style.AppTheme_Dark else R.style.AppTheme_Dark
+        val themedInflater = inflater.cloneInContext(ContextThemeWrapper(activity, currentTheme))
+        return themedInflater.inflate(R.layout.fragment_stop_watch, container, false)
+    }
+
+
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+//        val view = inflater.inflate(R.layout.fragment_stop_watch, container, false)
         binding = FragmentStopWatchBinding.bind(view)
 
         val timer = binding.timerTextView
@@ -57,7 +64,7 @@ class StopWatchFragment : Fragment() {
             timeInSeconds = 0
             timer.text = getString(R.string.startTime)
         }
-        return view
+
     }
 
     override fun onResume() {
@@ -68,5 +75,10 @@ class StopWatchFragment : Fragment() {
     override fun onPause() {
         super.onPause()
         handler.removeCallbacks(runnable)
+    }
+
+    private fun isDarkThemeEnabled(): Boolean {
+        val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(requireContext())
+        return sharedPreferences.getBoolean("dark_theme_enabled", false)
     }
 }
