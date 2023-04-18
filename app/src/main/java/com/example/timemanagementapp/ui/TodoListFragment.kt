@@ -13,6 +13,7 @@ import com.example.timemanagementapp.R
 import com.example.timemanagementapp.databaseHandling.TaskFirebase
 import com.example.timemanagementapp.databinding.FragmentTodoListBinding
 import com.example.timemanagementapp.recyclerviewAdapter.TaskAdapter
+import com.example.timemanagementapp.ui.services.StopWatchService
 import com.google.firebase.firestore.FirebaseFirestore
 
 
@@ -64,6 +65,7 @@ class TodoListFragment : Fragment() {
         val documentRef = firestore.collection("User Details").document("Tasks")
         documentRef.update(taskSubject, task)
         Toast.makeText(requireContext(), "Task Done", Toast.LENGTH_SHORT).show()
+
 
     }
 

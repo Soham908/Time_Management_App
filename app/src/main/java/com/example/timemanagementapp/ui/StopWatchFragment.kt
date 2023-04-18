@@ -1,5 +1,6 @@
 package com.example.timemanagementapp.ui
 
+import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.view.ContextThemeWrapper
@@ -10,6 +11,7 @@ import androidx.fragment.app.Fragment
 import androidx.preference.PreferenceManager
 import com.example.timemanagementapp.R
 import com.example.timemanagementapp.databinding.FragmentStopWatchBinding
+import com.example.timemanagementapp.ui.services.StopWatchService
 
 class StopWatchFragment : Fragment() {
     private lateinit var binding: FragmentStopWatchBinding
@@ -57,8 +59,14 @@ class StopWatchFragment : Fragment() {
             }
         }
         // when it starts it takes a little time to start counting
-        start.setOnClickListener { running = true }
-        stop.setOnClickListener { running = false }
+        start.setOnClickListener {
+            running = true
+            requireActivity().startService(Intent(context, StopWatchService::class.java))
+        }
+        stop.setOnClickListener {
+            running = false
+            requireActivity().stopService(Intent(context, StopWatchService::class.java))
+        }
         reset.setOnClickListener {
             running = false
             timeInSeconds = 0
