@@ -1,4 +1,4 @@
-package com.example.timemanagementapp.ui
+package com.example.timemanagementapp.ui.habit
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -6,20 +6,20 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.example.timemanagementapp.R
-import com.example.timemanagementapp.databinding.FragmentExerciseBinding
+import com.example.timemanagementapp.databinding.FragmentHabitBinding
 
 
-class ExerciseFragment : Fragment() {
+class HabitFragment : Fragment() {
 
-    private lateinit var binding: FragmentExerciseBinding
+    private lateinit var binding: FragmentHabitBinding
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val view: View = layoutInflater.inflate(R.layout.fragment_exercise, container, false)
-        binding = FragmentExerciseBinding.bind(view)
+        val view: View = layoutInflater.inflate(R.layout.fragment_habit, container, false)
+        binding = FragmentHabitBinding.bind(view)
 
 
         return view

@@ -8,6 +8,7 @@ import androidx.core.app.NotificationCompat
 import androidx.lifecycle.MutableLiveData
 import com.example.timemanagementapp.MainActivity
 import com.example.timemanagementapp.R
+import com.example.timemanagementapp.recyclerviewAdapter.stopwatch.StructureStopWatch
 import kotlinx.coroutines.*
 
 
@@ -26,6 +27,7 @@ class StopWatchService : Service() {
         var isPause = false
         var runningSavedState = false
         var isPauseSavedState = isPause
+        var listSavedState = mutableListOf<StructureStopWatch>()
     }
 
 

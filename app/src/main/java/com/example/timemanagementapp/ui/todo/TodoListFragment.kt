@@ -1,4 +1,4 @@
-package com.example.timemanagementapp.ui
+package com.example.timemanagementapp.ui.todo
 
 import android.annotation.SuppressLint
 import android.os.Bundle
@@ -13,7 +13,7 @@ import com.example.timemanagementapp.R
 import com.example.timemanagementapp.databaseHandling.TaskFirebase
 import com.example.timemanagementapp.databinding.FragmentTodoListBinding
 import com.example.timemanagementapp.recyclerviewAdapter.TaskAdapter
-import com.example.timemanagementapp.ui.services.StopWatchService
+import com.example.timemanagementapp.ui.BottomSheetToDo
 import com.google.firebase.firestore.FirebaseFirestore
 
 

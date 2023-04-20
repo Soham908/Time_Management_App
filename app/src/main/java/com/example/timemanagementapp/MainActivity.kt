@@ -11,8 +11,11 @@ import androidx.core.view.GravityCompat
 import androidx.fragment.app.Fragment
 import com.example.timemanagementapp.ui.*
 import com.example.timemanagementapp.databinding.ActivityMainBinding
+import com.example.timemanagementapp.ui.exercise.ExerciseFragment
+import com.example.timemanagementapp.ui.habit.HabitFragment
+import com.example.timemanagementapp.ui.stopwatch.StopWatchFragment
+import com.example.timemanagementapp.ui.todo.TodoListFragment
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.FirebaseFirestoreSettings
 import com.google.firebase.firestore.ktx.firestoreSettings
 
 class MainActivity : AppCompatActivity() {

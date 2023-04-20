@@ -36,7 +36,7 @@
 
         <androidx.fragment.app.FragmentContainerView
             android:id="@+id/fragmentContainerView"
-            android:name="com.example.timemanagementapp.ui.StopWatchFragment"
+            android:name="com.example.timemanagementapp.ui.stopwatch.StopWatchFragment"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             app:layout_constraintBottom_toTopOf="@+id/bottomNavBar"

@@ -1,0 +1,58 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="16dp"
+    android:orientation="vertical">
+
+    <EditText
+        android:id="@+id/editText1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Work done in that lap"
+        android:minHeight="48dp" />
+
+    <EditText
+        android:id="@+id/editText2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Short description of work done"
+        android:minHeight="48dp" />
+
+<!--    <EditText-->
+<!--        android:id="@+id/editText3"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:hint="Input 3"-->
+<!--        android:minHeight="48dp" />-->
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        >
+        <Button
+            android:id="@+id/dialogCancel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:textSize="15sp"
+            android:layout_gravity="center"
+            android:text="@string/cancel"
+            android:layout_marginStart="65dp"
+            android:background="@drawable/btn_primary"
+
+            />
+
+        <Button
+            android:id="@+id/dialogOkay"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="@string/update"
+            android:textSize="15sp"
+            android:layout_marginStart="40dp"
+            android:background="@drawable/btn_primary"
+            />
+    </LinearLayout>
+
+
+</LinearLayout>

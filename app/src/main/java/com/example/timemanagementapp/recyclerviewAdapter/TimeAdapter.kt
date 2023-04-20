@@ -13,7 +13,7 @@ class TimeAdapter(val context: Context, private val listTime: List<TimeRecord>):
 
     inner class TimeViewHolder(itemView: View): RecyclerView.ViewHolder(itemView)
     {
-        var textTitle: TextView = itemView.findViewById(R.id.recyclerItem1)
+        var textTitle: TextView = itemView.findViewById(R.id.timeRecyclerTime)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TimeViewHolder {
