@@ -50,6 +50,7 @@
     <string name="cancel">Cancel</string>
     <string name="ok">Ok</string>
     <string name="update">Update</string>
+    <string name="lap">Lap</string>
 
     <string-array name="settingsMultiListTime">
         <item>1</item>

@@ -1,4 +1,4 @@
-package com.example.timemanagementapp.recyclerviewAdapter
+package com.example.timemanagementapp.recyclerviewAdapter.todo
 
 
 import android.content.Context
@@ -9,7 +9,6 @@ import android.widget.CheckedTextView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.timemanagementapp.R
-import com.example.timemanagementapp.databaseHandling.TaskFirebase
 
 class TaskAdapter(val context: Context, private val list: List<TaskFirebase>): RecyclerView.Adapter<TaskAdapter.TaskViewHolder>(){
 

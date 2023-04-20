@@ -40,7 +40,7 @@
             </intent-filter>
         </activity>
 
-        <service android:name=".ui.services.StopWatchService"/>
+        <service android:name=".ui.stopwatch.services.StopWatchService"/>
     </application>
 
 </manifest>

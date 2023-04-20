@@ -10,9 +10,9 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.timemanagementapp.R
-import com.example.timemanagementapp.databaseHandling.TaskFirebase
+import com.example.timemanagementapp.recyclerviewAdapter.todo.TaskFirebase
 import com.example.timemanagementapp.databinding.FragmentTodoListBinding
-import com.example.timemanagementapp.recyclerviewAdapter.TaskAdapter
+import com.example.timemanagementapp.recyclerviewAdapter.todo.TaskAdapter
 import com.example.timemanagementapp.ui.BottomSheetToDo
 import com.google.firebase.firestore.FirebaseFirestore
 

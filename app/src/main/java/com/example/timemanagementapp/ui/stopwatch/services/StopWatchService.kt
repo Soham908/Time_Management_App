@@ -1,4 +1,4 @@
-package com.example.timemanagementapp.ui.services
+package com.example.timemanagementapp.ui.stopwatch.services
 
 import android.app.*
 import android.content.Context

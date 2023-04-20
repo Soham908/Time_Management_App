@@ -1,13 +1,12 @@
 package com.example.timemanagementapp.ui
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import com.example.timemanagementapp.R
-import com.example.timemanagementapp.databaseHandling.TaskFirebase
+import com.example.timemanagementapp.recyclerviewAdapter.todo.TaskFirebase
 import com.example.timemanagementapp.databinding.FragmentBottomSheetToDoBinding
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.firebase.firestore.FirebaseFirestore

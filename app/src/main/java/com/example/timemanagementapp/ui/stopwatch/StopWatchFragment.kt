@@ -9,21 +9,20 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.timemanagementapp.R
-import com.example.timemanagementapp.databaseHandling.interfaces.CustomDialogListener
 import com.example.timemanagementapp.databinding.FragmentStopWatchBinding
 import com.example.timemanagementapp.databaseHandling.interfaces.OnItemClickListenerCustom
 import com.example.timemanagementapp.recyclerviewAdapter.stopwatch.RecyclerViewStopWatch
 import com.example.timemanagementapp.recyclerviewAdapter.stopwatch.StructureStopWatch
-import com.example.timemanagementapp.ui.services.DialogFragmentStopWatch
-import com.example.timemanagementapp.ui.services.StopWatchService
+import com.example.timemanagementapp.ui.stopwatch.services.DialogFragmentStopWatch
+import com.example.timemanagementapp.ui.stopwatch.services.StopWatchService
 import com.google.firebase.firestore.FirebaseFirestore
 import java.io.*
 
-// currently does not save the list of lap and their description
 class StopWatchFragment : Fragment(), OnItemClickListenerCustom {
     private lateinit var binding: FragmentStopWatchBinding
     private lateinit var service: StopWatchService
@@ -56,11 +55,10 @@ class StopWatchFragment : Fragment(), OnItemClickListenerCustom {
 
         val timer = binding.timerTextView
         val start_stop = binding.startButton
-        val reset_lap = binding.stopButton
+        val reset_lap = binding.lapButton
         val reset = binding.resetButton
         val startString = getString(R.string.start)
         val stopString = getString(R.string.stop)
-        reset_lap.text = "Lap"
         setUpRecyclerView()
 
         // need to switch the start text when the app is closed and opened again but the service is on
@@ -69,15 +67,20 @@ class StopWatchFragment : Fragment(), OnItemClickListenerCustom {
             if(start_stop.text == "Start") {
                 if (!running && !isPause) {
                     requireActivity().startService(Intent(context, StopWatchService::class.java))
+                    service.resumeStopWatch()
+                    reset_lap.isVisible = true
                 } else if (!running && isPause) {
                     service.resumeStopWatch()
+                    reset_lap.isVisible = true
                 }
                 running = true
+
                 start_stop.text = stopString
             }
             else{
                 start_stop.text = startString
                 if (running){ service.pauseStopWatch() }
+                reset_lap.isVisible = false
                 isPause = true
                 running = false
             }
@@ -90,8 +93,11 @@ class StopWatchFragment : Fragment(), OnItemClickListenerCustom {
         }
         reset.setOnClickListener {
             running = false
+            isPause = false
             requireActivity().stopService(Intent(context, StopWatchService::class.java))
             timer.text = getString(R.string.startTime)
+            start_stop.text = startString
+            reset_lap.isVisible = false
         }
 
         StopWatchService.num.observe(viewLifecycleOwner) { elapsedTime ->
@@ -103,7 +109,6 @@ class StopWatchFragment : Fragment(), OnItemClickListenerCustom {
         }
 
         DialogFragmentStopWatch.descriptionList.observe(viewLifecycleOwner){
-            val list32 = list
             adapter.notifyDataSetChanged()
             Toast.makeText(context, it, Toast.LENGTH_SHORT).show()
         }
@@ -137,10 +142,7 @@ class StopWatchFragment : Fragment(), OnItemClickListenerCustom {
             StopWatchService.isPauseSavedState = true
             StopWatchService.runningSavedState = true
         }
-        StopWatchService.listSavedState = list
-
         writeDatabaseTest()
-
 
     }
 
@@ -148,12 +150,17 @@ class StopWatchFragment : Fragment(), OnItemClickListenerCustom {
         super.onResume()
         running = StopWatchService.runningSavedState
         isPause = StopWatchService.isPauseSavedState
+        snapshotListener()
 
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    private fun snapshotListener(){
         val docRef = firestore.collection("User Details").document("Time Testing")
-        docRef.addSnapshotListener{value, error ->
+        docRef.addSnapshotListener { value, _ ->
             Log.d("dataFirebase", value?.data.toString())
             val lapList = value?.get("lap time") as List<Map<*, *>>
-            val thisbe = lapList.map { map ->
+            val lapObject = lapList.map { map ->
                 StructureStopWatch(
                     id = map["id"].toString().toInt(),
                     work = map["work"] as String,
@@ -161,14 +168,13 @@ class StopWatchFragment : Fragment(), OnItemClickListenerCustom {
                     time = map["time"] as String
                 )
             }
+            list.clear()
 
-            for(lap in thisbe)
-            { Log.d("dataFirebase", lap.time); list.add(lap) }
+            for (lap in lapObject) {
+                Log.d("dataFirebase", lap.time); list.add(lap)
+            }
             adapter.notifyDataSetChanged()
-
-
         }
-
     }
 
     private fun writeDatabaseTest() {
@@ -176,12 +182,6 @@ class StopWatchFragment : Fragment(), OnItemClickListenerCustom {
         docRef.update("lap time", list)
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-//        StopWatchService.isPauseSavedState = true
-//        StopWatchService.runningSavedState = true
-
-    }
 
 
 }

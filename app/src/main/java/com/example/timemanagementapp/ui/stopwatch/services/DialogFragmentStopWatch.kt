@@ -1,21 +1,15 @@
-package com.example.timemanagementapp.ui.services
+package com.example.timemanagementapp.ui.stopwatch.services
 
 import android.app.AlertDialog
 import android.app.Dialog
 import android.os.Bundle
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.MutableLiveData
 import com.example.timemanagementapp.R
-import com.example.timemanagementapp.databaseHandling.interfaces.CustomDialogListener
 import com.example.timemanagementapp.recyclerviewAdapter.stopwatch.StructureStopWatch
-import com.example.timemanagementapp.ui.stopwatch.StopWatchFragment
 import com.google.firebase.firestore.FirebaseFirestore
 
 
@@ -28,7 +22,7 @@ class DialogFragmentStopWatch(val item: StructureStopWatch) : DialogFragment() {
     private lateinit var okButton: Button
     private lateinit var cancelButton: Button
     // custom dialog listener for transferring data to other fragment
-    lateinit var dialogListener: CustomDialogListener
+//    lateinit var dialogListener: CustomDialogListener
     // now im adding the value directly to the firestore db but it is not recommended, change it afterwards
     lateinit var firestore: FirebaseFirestore
     private lateinit var input1: String
