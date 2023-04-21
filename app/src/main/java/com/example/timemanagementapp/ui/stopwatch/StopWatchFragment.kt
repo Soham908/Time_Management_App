@@ -22,6 +22,8 @@ import com.example.timemanagementapp.ui.stopwatch.services.DialogFragmentStopWat
 import com.example.timemanagementapp.ui.stopwatch.services.StopWatchService
 import com.google.firebase.firestore.FirebaseFirestore
 import java.io.*
+import java.text.SimpleDateFormat
+import java.util.*
 
 class StopWatchFragment : Fragment(), OnItemClickListenerCustom {
     private lateinit var binding: FragmentStopWatchBinding
@@ -43,6 +45,12 @@ class StopWatchFragment : Fragment(), OnItemClickListenerCustom {
         val themedInflater = inflater.cloneInContext(ContextThemeWrapper(activity, currentTheme))
         service = StopWatchService()
         firestore = FirebaseFirestore.getInstance()
+        val date = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+        val datebe = Calendar.DATE
+        val formattedDate = date.format(Date())
+//        date = Locale.getDefault()
+        Log.d("elapsedTime", formattedDate)
+        Toast.makeText(context, "$formattedDate", Toast.LENGTH_SHORT).show()
         return themedInflater.inflate(R.layout.fragment_stop_watch, container, false)
     }
 
@@ -65,6 +73,7 @@ class StopWatchFragment : Fragment(), OnItemClickListenerCustom {
         // when it starts it takes a little time to start counting
         start_stop.setOnClickListener {
             if(start_stop.text == "Start") {
+                val thisbe = running
                 if (!running && !isPause) {
                     requireActivity().startService(Intent(context, StopWatchService::class.java))
                     service.resumeStopWatch()
@@ -141,6 +150,10 @@ class StopWatchFragment : Fragment(), OnItemClickListenerCustom {
         if (running && isPause){
             StopWatchService.isPauseSavedState = true
             StopWatchService.runningSavedState = true
+        }
+        else if (!running && isPause){
+            StopWatchService.isPauseSavedState = true
+            StopWatchService.runningSavedState = false
         }
         writeDatabaseTest()
 
