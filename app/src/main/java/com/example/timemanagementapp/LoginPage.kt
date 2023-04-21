@@ -31,19 +31,24 @@ class LoginPage : AppCompatActivity() {
 
     }
 
-    private fun verifyUser(){
+    private fun verifyUser() {
         val username = binding.loginUserName.text.toString()
         val password = binding.loginPassword.text.toString()
+        if (username.isNotEmpty() && password.isNotEmpty()) {
 
-        firebaseAuth.signInWithEmailAndPassword("$username@myapp.com", password).
-        addOnSuccessListener {
-            Toast.makeText(this, "Login Done", Toast.LENGTH_SHORT).show()
-            val intent = Intent(this, MainActivity::class.java)
-            startActivity(intent)
-        }.addOnFailureListener{
-            Toast.makeText(this, "Login Failed", Toast.LENGTH_SHORT).show()
+            firebaseAuth.signInWithEmailAndPassword("$username@myapp.com", password)
+                .addOnSuccessListener {
+                    Toast.makeText(this, "Login Done", Toast.LENGTH_SHORT).show()
+                    val intent = Intent(this, MainActivity::class.java)
+                    startActivity(intent)
+                }.addOnFailureListener {
+                Toast.makeText(this, "Login Failed", Toast.LENGTH_SHORT).show()
+            }
+
         }
-
+        else{
+            Toast.makeText(this, "Fill in credentials", Toast.LENGTH_SHORT).show()
+        }
     }
 
     override fun onConfigurationChanged(newConfig: Configuration) {

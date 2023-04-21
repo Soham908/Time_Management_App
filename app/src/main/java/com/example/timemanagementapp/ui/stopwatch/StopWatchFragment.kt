@@ -11,6 +11,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.timemanagementapp.R
@@ -21,6 +22,9 @@ import com.example.timemanagementapp.recyclerviewAdapter.stopwatch.StructureStop
 import com.example.timemanagementapp.ui.stopwatch.services.DialogFragmentStopWatch
 import com.example.timemanagementapp.ui.stopwatch.services.StopWatchService
 import com.google.firebase.firestore.FirebaseFirestore
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import java.io.*
 import java.text.SimpleDateFormat
 import java.util.*
@@ -33,6 +37,7 @@ class StopWatchFragment : Fragment(), OnItemClickListenerCustom {
     lateinit var adapter: RecyclerViewStopWatch
     var list = mutableListOf<StructureStopWatch>()
     lateinit var firestore: FirebaseFirestore
+    private lateinit var date: String
     var hours = 0L
     var minutes = 0L
     var secs = 0L
@@ -45,12 +50,6 @@ class StopWatchFragment : Fragment(), OnItemClickListenerCustom {
         val themedInflater = inflater.cloneInContext(ContextThemeWrapper(activity, currentTheme))
         service = StopWatchService()
         firestore = FirebaseFirestore.getInstance()
-        val date = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
-        val datebe = Calendar.DATE
-        val formattedDate = date.format(Date())
-//        date = Locale.getDefault()
-        Log.d("elapsedTime", formattedDate)
-        Toast.makeText(context, "$formattedDate", Toast.LENGTH_SHORT).show()
         return themedInflater.inflate(R.layout.fragment_stop_watch, container, false)
     }
 
@@ -71,6 +70,7 @@ class StopWatchFragment : Fragment(), OnItemClickListenerCustom {
 
         // need to switch the start text when the app is closed and opened again but the service is on
         // when it starts it takes a little time to start counting
+        if(running && !isPause){ start_stop.text = stopString; reset_lap.isVisible = true }
         start_stop.setOnClickListener {
             if(start_stop.text == "Start") {
                 val thisbe = running
@@ -97,7 +97,7 @@ class StopWatchFragment : Fragment(), OnItemClickListenerCustom {
         reset_lap.setOnClickListener {
             Toast.makeText(context, "$hours $minutes $secs", Toast.LENGTH_SHORT).show()
             val time =  String.format("%02d:%02d:%02d", hours, minutes, secs)
-            list.add(StructureStopWatch(null, time, "personal project", null))
+            list.add(StructureStopWatch(null, time, "personal project", "default"))
             adapter.notifyDataSetChanged()
         }
         reset.setOnClickListener {
@@ -147,8 +147,8 @@ class StopWatchFragment : Fragment(), OnItemClickListenerCustom {
 
     override fun onPause() {
         super.onPause()
-        if (running && isPause){
-            StopWatchService.isPauseSavedState = true
+        if (running && !isPause){
+            StopWatchService.isPauseSavedState = false
             StopWatchService.runningSavedState = true
         }
         else if (!running && isPause){
@@ -163,36 +163,50 @@ class StopWatchFragment : Fragment(), OnItemClickListenerCustom {
         super.onResume()
         running = StopWatchService.runningSavedState
         isPause = StopWatchService.isPauseSavedState
-        snapshotListener()
+        lifecycleScope.launch(Dispatchers.IO){
+            delay(5)
+            snapshotListener()
+        }
 
     }
 
     @SuppressLint("NotifyDataSetChanged")
     private fun snapshotListener(){
+        date = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(Date())
         val docRef = firestore.collection("User Details").document("Time Testing")
-        docRef.addSnapshotListener { value, _ ->
-            Log.d("dataFirebase", value?.data.toString())
-            val lapList = value?.get("lap time") as List<Map<*, *>>
-            val lapObject = lapList.map { map ->
-                StructureStopWatch(
-                    id = map["id"].toString().toInt(),
-                    work = map["work"] as String,
-                    description = map["description"] as String?,
-                    time = map["time"] as String
-                )
+        docRef.addSnapshotListener { value, error ->
+            if(error != null){
+                Log.e("dataError", "error be :: ${error.message}")
             }
-            list.clear()
 
-            for (lap in lapObject) {
-                Log.d("dataFirebase", lap.time); list.add(lap)
+            val check = value?.get(date) ?: return@addSnapshotListener
+            Log.d("dataFirebase", check.toString())
+            if (value.data!!.isNotEmpty()){
+                Log.d("dataFirebase", value.data!!.toString())
+                val lapList = value.get(date) as List<Map<*, *>>
+                val lapObject = lapList.map { map ->
+                    StructureStopWatch(
+                        id = map["id"].toString().toInt(),
+                        work = map["work"] as String,
+                        description = map["description"] as String?,
+                        time = map["time"] as String
+                    )
+                }
+                list.clear()
+
+                for (lap in lapObject) {
+                    Log.d("dataFirebase", lap.time); list.add(lap)
+                }
+                adapter.notifyDataSetChanged()
             }
-            adapter.notifyDataSetChanged()
         }
     }
 
     private fun writeDatabaseTest() {
+        date = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(Date())
+        Toast.makeText(context, date, Toast.LENGTH_SHORT).show()
         val docRef = firestore.collection("User Details").document("Time Testing")
-        docRef.update("lap time", list)
+        docRef.update(date, list)
     }
 
 

@@ -34,7 +34,7 @@ class RecyclerViewStopWatch(val onItemClickListenerCustom: OnItemClickListenerCu
 
     override fun onBindViewHolder(holder: StopWatchViewHolder, position: Int) {
         val item = list[position]
-        item.id = position
+        item.id = position + 10
         // to set position too
         holder.setTime.text = list[position].time
         holder.setWork.text = list[position].work
