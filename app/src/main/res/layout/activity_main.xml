@@ -74,6 +74,7 @@
         android:layout_gravity="start"
         android:background="@color/white"
         app:menu="@menu/side_navbar"
+        app:headerLayout="@layout/sidenav_header"
         />
 
 </androidx.drawerlayout.widget.DrawerLayout>

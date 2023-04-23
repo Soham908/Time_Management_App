@@ -5,6 +5,7 @@ import android.content.res.Configuration
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
@@ -15,6 +16,7 @@ import com.example.timemanagementapp.ui.exercise.ExerciseFragment
 import com.example.timemanagementapp.ui.habit.HabitFragment
 import com.example.timemanagementapp.ui.stopwatch.StopWatchFragment
 import com.example.timemanagementapp.ui.todo.TodoListFragment
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestoreSettings
 
@@ -22,8 +24,12 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
     lateinit var firestore: FirebaseFirestore
-
+    lateinit var firebaseAuth: FirebaseAuth
+    companion object {
+        var username: String = ""
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
+        authUser()
         super.onCreate(savedInstanceState)
         // will automatically bind all the views to its ids during runtime
         binding = ActivityMainBinding.inflate(layoutInflater)
@@ -37,6 +43,29 @@ class MainActivity : AppCompatActivity() {
         bottomNavBarFunctions()
         sideNavBarFunctions()
 
+    }
+
+    private fun authUser() {
+        // made to check if the user is valid else send back to log in page
+        val sharedPreferences = getSharedPreferences("UserNameLogin", MODE_PRIVATE)
+        username = sharedPreferences.getString("username", "").toString()
+        val password = sharedPreferences.getString("password", "")
+        if (username.isBlank() && password.isNullOrBlank()){
+            val intent = Intent(this, LoginPage::class.java)
+            startActivity(intent)
+        }
+        // for now i have removed the firebase auth because if the user logs in the app then it must be that the username and pass is correct
+        // will add option if user wants to check everytime if the id and pass is correct
+        // removed because then everytime when the app opens, internet needs to be conn to check validity
+//        firebaseAuth = FirebaseAuth.getInstance()
+//        firebaseAuth.signInWithEmailAndPassword("$username@myapp.com", "$password")
+//            .addOnSuccessListener {
+//                Toast.makeText(this, "Login Remember $username $password", Toast.LENGTH_SHORT).show()
+//            }
+//            .addOnFailureListener{
+//                val intent = Intent(this, LoginPage::class.java)
+//                startActivity(intent)
+//            }
     }
 
     private fun materialToolBarFunctions(){
@@ -78,6 +107,10 @@ class MainActivity : AppCompatActivity() {
 
     private fun sideNavBarFunctions(){
         val sideNavigation = binding.sideNavigationBar
+        val tvUsername = sideNavigation.getHeaderView(0).findViewById<TextView>(R.id.sideNavUsername)
+        if(username.isNotBlank() && username.isNotEmpty()) {
+            tvUsername.text = username
+        }
         sideNavigation.setNavigationItemSelectedListener { item ->
             lateinit var fragment: Fragment
             // setting this as a default fragment, the value will change inside of the when statement

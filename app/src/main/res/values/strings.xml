@@ -51,6 +51,7 @@
     <string name="ok">Ok</string>
     <string name="update">Update</string>
     <string name="lap">Lap</string>
+    <string name="welcome_back">Welcome Back !!</string>
 
     <string-array name="settingsMultiListTime">
         <item>1</item>

@@ -22,7 +22,7 @@ class SignUpPage : AppCompatActivity() {
         binding.signupSignup.setOnClickListener{
             signUpUser()
         }
-        binding.gotoLogin.setOnClickListener{
+        binding.signupRedirectLogin.setOnClickListener{
             val intent = Intent(this, LoginPage::class.java)
             startActivity(intent)
         }

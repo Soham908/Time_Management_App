@@ -4,11 +4,9 @@ import android.content.Intent
 import android.content.res.Configuration
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.Button
 import android.widget.Toast
 import com.example.timemanagementapp.databinding.ActivityLoginPageBinding
 import com.google.firebase.auth.FirebaseAuth
-import kotlin.math.log
 
 class LoginPage : AppCompatActivity() {
 
@@ -24,7 +22,7 @@ class LoginPage : AppCompatActivity() {
         binding.loginLogin.setOnClickListener{
             verifyUser()
         }
-        binding.gotoSignup.setOnClickListener{
+        binding.loginRedirectSignUp.setOnClickListener{
             val intent = Intent(this, SignUpPage::class.java)
             startActivity(intent)
         }
@@ -41,6 +39,7 @@ class LoginPage : AppCompatActivity() {
                     Toast.makeText(this, "Login Done", Toast.LENGTH_SHORT).show()
                     val intent = Intent(this, MainActivity::class.java)
                     startActivity(intent)
+                    saveUsernamePassword(username, password)
                 }.addOnFailureListener {
                 Toast.makeText(this, "Login Failed", Toast.LENGTH_SHORT).show()
             }
@@ -49,6 +48,15 @@ class LoginPage : AppCompatActivity() {
         else{
             Toast.makeText(this, "Fill in credentials", Toast.LENGTH_SHORT).show()
         }
+    }
+
+    private fun saveUsernamePassword(username: String, password: String) {
+        val sharedPreferences = getSharedPreferences("UserNameLogin", MODE_PRIVATE)
+        val editor = sharedPreferences.edit()
+        editor.putString("username", username)
+        editor.putString("password", password)
+        editor.apply()
+
     }
 
     override fun onConfigurationChanged(newConfig: Configuration) {

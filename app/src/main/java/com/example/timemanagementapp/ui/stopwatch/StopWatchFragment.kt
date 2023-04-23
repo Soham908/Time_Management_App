@@ -210,5 +210,4 @@ class StopWatchFragment : Fragment(), OnItemClickListenerCustom {
     }
 
 
-
 }

@@ -66,17 +66,34 @@
         app:layout_constraintTop_toBottomOf="@+id/signupPassword"
         app:layout_constraintVertical_bias="0.117" />
 
-    <Button
-        android:id="@+id/gotoLogin"
+    <TextView
+        android:id="@+id/signupRedirectLogin"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Goto Login"
+        android:text="Login"
+        android:gravity="center"
+        android:textColor="#4242BC"
+        android:textSize="19sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/signupTextView2"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.757" />
+
+    <TextView
+        android:id="@+id/signupTextView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Have an Account?  "
+        android:gravity="center"
+        android:textSize="19sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.294"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.682" />
+        app:layout_constraintVertical_bias="0.756" />
 
     <ImageView
         android:id="@+id/imageView3"
