@@ -28,6 +28,7 @@ import kotlinx.coroutines.launch
 import java.io.*
 import java.text.SimpleDateFormat
 import java.util.*
+import java.util.concurrent.TimeUnit
 
 class StopWatchFragment : Fragment(), OnItemClickListenerCustom {
     private lateinit var binding: FragmentStopWatchBinding
@@ -111,9 +112,10 @@ class StopWatchFragment : Fragment(), OnItemClickListenerCustom {
 
         StopWatchService.num.observe(viewLifecycleOwner) { elapsedTime ->
             Log.d("dataFirebase", elapsedTime.toString())
-            hours = elapsedTime / 3600
-            minutes = (elapsedTime % 3600) / 60
-            secs = elapsedTime % 60
+            hours = TimeUnit.MILLISECONDS.toHours(elapsedTime)
+            minutes = TimeUnit.MILLISECONDS.toMinutes(elapsedTime) % 60
+            secs = TimeUnit.MILLISECONDS.toSeconds(elapsedTime) % 60
+
             timer.text = String.format("%02d:%02d:%02d", hours, minutes, secs)
         }
 
