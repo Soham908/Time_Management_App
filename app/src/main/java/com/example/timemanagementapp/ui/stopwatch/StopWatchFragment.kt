@@ -8,29 +8,28 @@ import android.view.ContextThemeWrapper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.lifecycleScope
 import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.timemanagementapp.MainActivity
 import com.example.timemanagementapp.R
 import com.example.timemanagementapp.databinding.FragmentStopWatchBinding
-import com.example.timemanagementapp.databaseHandling.interfaces.OnItemClickListenerCustom
+import com.example.timemanagementapp.databaseHandling.interfaces.OnTimeItemClickListenerCustom
 import com.example.timemanagementapp.recyclerviewAdapter.stopwatch.RecyclerViewStopWatch
 import com.example.timemanagementapp.recyclerviewAdapter.stopwatch.StructureStopWatch
 import com.example.timemanagementapp.ui.stopwatch.services.DialogFragmentStopWatch
 import com.example.timemanagementapp.ui.stopwatch.services.StopWatchService
+import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 import java.io.*
 import java.text.SimpleDateFormat
 import java.util.*
 import java.util.concurrent.TimeUnit
 
-class StopWatchFragment : Fragment(), OnItemClickListenerCustom {
+class StopWatchFragment : Fragment(), OnTimeItemClickListenerCustom {
     private lateinit var binding: FragmentStopWatchBinding
     private lateinit var service: StopWatchService
     private var running = StopWatchService.runningSavedState
@@ -42,9 +41,14 @@ class StopWatchFragment : Fragment(), OnItemClickListenerCustom {
     var hours = 0L
     var minutes = 0L
     var secs = 0L
+    var lastLapTime = 0L
+    var elapsedTime2 = 0L
+    var username = MainActivity.username
+    lateinit var start_stop: Button
     // takes the foreground variable because when the app is closed and opened again at that time the apps var are destroyed
     // and it will start another service because values are reset
     // so when app destroys pass the state of the var in from fragment to service so that state is saved in the service
+
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val currentTheme = if (isDarkThemeEnabled()) R.style.AppTheme_Dark else R.style.AppTheme_Dark
@@ -62,19 +66,19 @@ class StopWatchFragment : Fragment(), OnItemClickListenerCustom {
         binding = FragmentStopWatchBinding.bind(view)
 
         val timer = binding.timerTextView
-        val start_stop = binding.startButton
+        start_stop = binding.startButton
         val reset_lap = binding.lapButton
         val reset = binding.resetButton
         val startString = getString(R.string.start)
         val stopString = getString(R.string.stop)
         setUpRecyclerView()
+//        snapshotListener()
 
         // need to switch the start text when the app is closed and opened again but the service is on
         // when it starts it takes a little time to start counting
         if(running && !isPause){ start_stop.text = stopString; reset_lap.isVisible = true }
         start_stop.setOnClickListener {
             if(start_stop.text == "Start") {
-                val thisbe = running
                 if (!running && !isPause) {
                     requireActivity().startService(Intent(context, StopWatchService::class.java))
                     service.resumeStopWatch()
@@ -97,10 +101,16 @@ class StopWatchFragment : Fragment(), OnItemClickListenerCustom {
         }
         reset_lap.setOnClickListener {
             Toast.makeText(context, "$hours $minutes $secs", Toast.LENGTH_SHORT).show()
-            val time =  String.format("%02d:%02d:%02d", hours, minutes, secs)
+            val elapsedTime = elapsedTime2 - lastLapTime
+            val hours2 = TimeUnit.MILLISECONDS.toHours(elapsedTime)
+            val minutes2 = TimeUnit.MILLISECONDS.toMinutes(elapsedTime) % 60
+            val secs2 = TimeUnit.MILLISECONDS.toSeconds(elapsedTime) % 60
+            val time =  String.format("CL: %02d:%02d:%02d           TT: %02d:%02d:%02d", hours2, minutes2, secs2, hours, minutes, secs,)
+            lastLapTime = elapsedTime2
             list.add(StructureStopWatch(null, time, "personal project", "default"))
             adapter.notifyDataSetChanged()
         }
+
         reset.setOnClickListener {
             running = false
             isPause = false
@@ -111,6 +121,7 @@ class StopWatchFragment : Fragment(), OnItemClickListenerCustom {
         }
 
         StopWatchService.num.observe(viewLifecycleOwner) { elapsedTime ->
+            elapsedTime2 = elapsedTime
             Log.d("dataFirebase", elapsedTime.toString())
             hours = TimeUnit.MILLISECONDS.toHours(elapsedTime)
             minutes = TimeUnit.MILLISECONDS.toMinutes(elapsedTime) % 60
@@ -123,13 +134,6 @@ class StopWatchFragment : Fragment(), OnItemClickListenerCustom {
             adapter.notifyDataSetChanged()
             Toast.makeText(context, it, Toast.LENGTH_SHORT).show()
         }
-
-    }
-
-    override fun onItemClickFunc(item: StructureStopWatch) {
-        Toast.makeText(requireContext(), "$item ", Toast.LENGTH_SHORT).show()
-        val customDialog = DialogFragmentStopWatch(item)
-        customDialog.show(parentFragmentManager, "Dialog Fragment Timer")
 
     }
 
@@ -165,22 +169,28 @@ class StopWatchFragment : Fragment(), OnItemClickListenerCustom {
         super.onResume()
         running = StopWatchService.runningSavedState
         isPause = StopWatchService.isPauseSavedState
-        lifecycleScope.launch(Dispatchers.IO){
-            delay(5)
-            snapshotListener()
+        if (running && !isPause) {
+            start_stop.text = getString(R.string.stop)
         }
-
+//        lifecycleScope.launch(Dispatchers.IO){
+//            delay(5)
+//        }
+        snapshotListener()
     }
 
     @SuppressLint("NotifyDataSetChanged")
     private fun snapshotListener(){
         date = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(Date())
-        val docRef = firestore.collection("User Details").document("Time Testing")
-        docRef.addSnapshotListener { value, error ->
+        if (username.isEmpty()){
+            username = "tester"
+            val thisbe = 10
+        }
+        val documentRef = firestore.collection("Users_Collection").document(username).collection("More_Details").document("TimeRecord")
+        documentRef.addSnapshotListener { value, error ->
             if(error != null){
                 Log.e("dataError", "error be :: ${error.message}")
             }
-
+            Log.d("dataFirebase", value?.data.toString() + " " + username)
             val check = value?.get(date) ?: return@addSnapshotListener
             Log.d("dataFirebase", check.toString())
             if (value.data!!.isNotEmpty()){
@@ -206,9 +216,31 @@ class StopWatchFragment : Fragment(), OnItemClickListenerCustom {
 
     private fun writeDatabaseTest() {
         date = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(Date())
+        val context = context
         Toast.makeText(context, date, Toast.LENGTH_SHORT).show()
-        val docRef = firestore.collection("User Details").document("Time Testing")
-        docRef.update(date, list)
+        val documentRef = firestore.collection("Users_Collection").document(username).collection("More_Details").document("TimeRecord")
+        documentRef.update(date, list)
+            .addOnSuccessListener {
+                Toast.makeText(context, "success time added", Toast.LENGTH_SHORT).show()
+            }
+    }
+
+    override fun onItemClickFunc(item: StructureStopWatch) {
+        Toast.makeText(requireContext(), "$item ", Toast.LENGTH_SHORT).show()
+        val customDialog = DialogFragmentStopWatch(item)
+        customDialog.show(parentFragmentManager, "Dialog Fragment Timer")
+
+    }
+
+    override fun onTimeItemDelete(item: StructureStopWatch) {
+        val context = context
+        list.remove(item)
+        firestore.collection("Users_Collection").document(username).collection("More_Details").document("TimeRecord")
+            .update(date, FieldValue.arrayRemove(item))
+            .addOnSuccessListener {
+                Toast.makeText(context, "Time deleted", Toast.LENGTH_SHORT).show()
+            }
+        adapter.notifyDataSetChanged()
     }
 
 

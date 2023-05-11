@@ -1,29 +1,38 @@
 package com.example.timemanagementapp.ui.todo
 
 import android.annotation.SuppressLint
+import android.app.TimePickerDialog
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.CalendarView
 import android.widget.Toast
+import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.timemanagementapp.MainActivity
 import com.example.timemanagementapp.R
-import com.example.timemanagementapp.recyclerviewAdapter.todo.TaskFirebase
+import com.example.timemanagementapp.databaseHandling.interfaces.OnTaskItemClick
+import com.example.timemanagementapp.recyclerviewAdapter.todo.StructureTask
 import com.example.timemanagementapp.databinding.FragmentTodoListBinding
 import com.example.timemanagementapp.recyclerviewAdapter.todo.TaskAdapter
 import com.example.timemanagementapp.ui.BottomSheetToDo
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
+import java.util.Calendar
 
 
-class TodoListFragment : Fragment() {
+class TodoListFragment : Fragment(), OnTaskItemClick {
 
     private lateinit var binding: FragmentTodoListBinding
     private lateinit var adapter: TaskAdapter
-    private var list = mutableListOf<TaskFirebase>()
+    private var list = mutableListOf<StructureTask>()
     private lateinit var firestore: FirebaseFirestore
-
+    private lateinit var parentFragment: FragmentManager
+    private lateinit var username: String
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -32,72 +41,95 @@ class TodoListFragment : Fragment() {
     ): View {
         val view: View = layoutInflater.inflate(R.layout.fragment_todo_list, container, false)
         binding = FragmentTodoListBinding.bind(view)
-
+        parentFragment = parentFragmentManager
         firestore = FirebaseFirestore.getInstance()
         setRecyclerView()
+        username = MainActivity.username
         binding.taskAddTask.setOnClickListener{
-//            addTasks()
+
             BottomSheetToDo().show(childFragmentManager, "this is bottom sheet frag")
         }
-        binding.showData.setOnClickListener{
-            selectData()
-        }
 
+        val firebaseAuth = FirebaseAuth.getInstance().currentUser?.uid
+        Log.d("dataFirebase1", firebaseAuth.toString() + " todo on create")
 
+        selectData()
         return view
     }
 
     private fun setRecyclerView(){
-        adapter = TaskAdapter(requireContext(), list)
+        adapter = TaskAdapter(this, requireContext(), list)
         val recyclerview = binding.taskRecyclerView
         recyclerview.adapter = adapter
         recyclerview.layoutManager = LinearLayoutManager(requireContext())
     }
 
-    @SuppressLint("NotifyDataSetChanged")
-    private fun addTasks(){
-        val taskSubject = binding.taskSubject.text.toString()
-        val taskDescription = binding.taskDescription.text.toString()
-        val taskTime = binding.taskTime.text.toString()
-        val taskPriority = binding.taskPriority.text.toString()
-
-        val task = TaskFirebase(taskSubject, taskDescription, taskTime, taskPriority)
-        val documentRef = firestore.collection("User Details").document("Tasks")
-        documentRef.update(taskSubject, task)
-        Toast.makeText(requireContext(), "Task Done", Toast.LENGTH_SHORT).show()
-
-
-    }
 
     @SuppressLint("NotifyDataSetChanged")
     fun selectData(){
-        val documentRef = firestore.collection("User Details").document("Tasks")
-        documentRef.get().addOnSuccessListener {
-            val data = it.data!! as Map<*, *>
-            list.clear()
-            val keys = it.data!!.keys
-            for(key in keys){
-                getData(data, key)
-            }
+    // /Users_Collection/Soham/More Details/Tasks
+        val documentRef = firestore.collection("Users_Collection").document(username).collection("More_Details").document("Tasks")
 
-        }.addOnFailureListener { exception ->
-            Toast.makeText(requireContext(), "Error: ${exception.message}", Toast.LENGTH_SHORT).show()
+        documentRef.addSnapshotListener{ value, error ->
+            if(error != null){
+                Toast.makeText(requireContext(), "$error", Toast.LENGTH_SHORT).show()
+            }
+            val data = value?.data?.values ?: return@addSnapshotListener
+            Log.d("dataFirebase", data.toString())
+            val thisbe = value.get("new_task")
+
+            if(thisbe != null) {
+                val taskList = thisbe as List<Map<*, *>>
+
+                val taskObject = taskList.map { map ->
+                    StructureTask(
+                        taskSubject = map["taskSubject"].toString(),
+                        taskDescription = map["taskDescription"].toString(),
+                        taskTime = map["taskTime"].toString(),
+                        taskPriority = map["taskPriority"].toString()
+                    )
+                }
+                Log.d("dataFirebase1", taskObject.toString())
+                list.clear()
+                for (task in taskObject) {
+                    list.add(task)
+                }
+                adapter.notifyDataSetChanged()
+            }
         }
 
     }
 
-    @SuppressLint("NotifyDataSetChanged")
-    private fun getData(data: Map<*, *>, key: String)
-    {
-        val datafunc = data[key] as Map<*, *>
-        val taskSubject = datafunc["taskSubject"].toString()
-        val taskDescription = datafunc["taskDescription"].toString()
-        val taskTime = datafunc["taskTime"].toString()
-        val taskPriority = datafunc["taskPriority"].toString()
-        Log.d("dataFirebase1", taskPriority)
-        list.add(TaskFirebase(taskSubject, taskDescription, taskTime, taskPriority))
-        adapter.notifyDataSetChanged()
+
+    override fun onTaskItemClickFunc(item: StructureTask) {
+        val bun = Bundle()
+        bun.putString("subject", item.taskSubject)
+        bun.putString("description", item.taskDescription)
+        val bottomSheet = BottomSheetToDo()
+        bottomSheet.arguments = bun
+        bottomSheet.show(parentFragmentManager, "ths be")
     }
+
+    override fun onTaskItemDeleted(item: StructureTask) {
+        val documentRef = firestore.collection("Users_Collection").document(username).collection("More_Details").document("Tasks")
+        documentRef.update("new_task", FieldValue.arrayRemove(item))
+    }
+
+    override fun onTaskItemClickAlarm(item: StructureTask) {
+
+        val calender = Calendar.getInstance()
+        val hour = calender.get(Calendar.HOUR_OF_DAY)
+        val minutes = calender.get(Calendar.MINUTE)
+
+        val timePickerDialog = TimePickerDialog(context, TimePickerDialog.OnTimeSetListener{_, minute2, hour2 ->
+            Log.d("dataTime", "todo  $minute2  $hour2")
+
+        }, hour, minutes, false)
+
+        timePickerDialog.show()
+    }
+
+
 
 
 }

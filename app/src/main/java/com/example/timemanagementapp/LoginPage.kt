@@ -40,7 +40,8 @@ class LoginPage : AppCompatActivity() {
                     val intent = Intent(this, MainActivity::class.java)
                     startActivity(intent)
                     saveUsernamePassword(username, password)
-                }.addOnFailureListener {
+                }
+                .addOnFailureListener {
                 Toast.makeText(this, "Login Failed", Toast.LENGTH_SHORT).show()
             }
 

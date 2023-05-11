@@ -1,29 +1,134 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
-    <CheckedTextView
-        android:id="@+id/taskRecyclerItem"
+<!--    <androidx.constraintlayout.widget.ConstraintLayout-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="match_parent"-->
+<!--    >-->
+<!--    <CheckedTextView-->
+<!--        android:id="@+id/taskRecyclerItem"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_weight="1"-->
+<!--        android:checkMark="?android:attr/listChoiceIndicatorSingle"-->
+<!--        android:layout_marginBottom="5dp"-->
+<!--        />-->
+
+<!--    <CheckedTextView-->
+<!--        android:id="@+id/taskRecyclerItem2"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_weight="1"-->
+<!--        android:drawableEnd="@drawable/edit_icon"-->
+<!--        android:layout_marginBottom="5dp"-->
+<!--        />-->
+<!--    <CheckedTextView-->
+<!--        android:id="@+id/taskRecyclerItem3"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:drawableEnd="@drawable/delete_icon"-->
+<!--        android:layout_marginBottom="5dp"-->
+<!--         />-->
+
+    <TextView
+        android:id="@+id/taskRecyclerItemSub"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:checkMark="?android:attr/listChoiceIndicatorSingle"
-        />
+        android:text="TextView"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-    <CheckedTextView
-        android:id="@+id/taskRecyclerItem2"
+    <TextView
+        android:id="@+id/taskRecyclerItemDes"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
+        android:text="TextView"
+        android:textSize="15sp"
+        android:maxLines="1"
+        android:ellipsize="end"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/taskRecyclerItemSub" />
 
-        />
-    <CheckedTextView
-        android:id="@+id/taskRecyclerItem3"
-        android:layout_width="match_parent"
+    <TextView
+        android:id="@+id/taskRecyclerAlarmTime"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:drawableEnd="@drawable/bottom_nav_homepage"
-         />
+        android:layout_marginTop="4dp"
+        android:text="Task Alarm"
+        android:textSize="15sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/taskRecyclerItemDes" />
 
-</LinearLayout>
+    <TextView
+        android:id="@+id/taskRecyclerPriority"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:text="Task Priority"
+        android:textSize="15sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/taskRecyclerAlarmTime" />
+
+    <ImageView
+        android:id="@+id/taskRecyclerEdit"
+        android:layout_width="53dp"
+        android:layout_height="39dp"
+        android:layout_marginTop="4dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.782"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/taskRecyclerItemDes"
+        app:srcCompat="@drawable/edit_icon" />
+
+    <ImageView
+        android:id="@+id/taskRecyclerDelete"
+        android:layout_width="53dp"
+        android:layout_height="39dp"
+        android:layout_marginTop="4dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/taskRecyclerItemDes"
+        app:srcCompat="@drawable/delete_icon" />
+
+    <ImageView
+        android:id="@+id/taskRecyclerSetAlarm"
+        android:layout_width="53dp"
+        android:layout_height="39dp"
+        android:layout_marginTop="4dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.561"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/taskRecyclerItemDes"
+        app:srcCompat="@drawable/alarm_icon" />
+
+    <!--    <Button-->
+<!--        android:id="@+id/button2"-->
+<!--        android:layout_width="44dp"-->
+<!--        android:layout_height="29dp"-->
+<!--        android:layout_marginTop="60dp"-->
+<!--        android:text="Button"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintHorizontal_bias="0.498"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toTopOf="@+id/textView6" />-->
+
+
+<!--    </androidx.constraintlayout.widget.ConstraintLayout>-->
+</androidx.constraintlayout.widget.ConstraintLayout>
+

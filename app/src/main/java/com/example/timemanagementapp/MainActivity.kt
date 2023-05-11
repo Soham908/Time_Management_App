@@ -18,7 +18,9 @@ import com.example.timemanagementapp.ui.stopwatch.StopWatchFragment
 import com.example.timemanagementapp.ui.todo.TodoListFragment
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.FirebaseFirestoreSettings
 import com.google.firebase.firestore.ktx.firestoreSettings
+import com.google.firebase.firestore.ktx.persistentCacheSettings
 
 class MainActivity : AppCompatActivity() {
 
@@ -28,6 +30,8 @@ class MainActivity : AppCompatActivity() {
     companion object {
         var username: String = ""
     }
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         authUser()
         super.onCreate(savedInstanceState)
@@ -37,6 +41,8 @@ class MainActivity : AppCompatActivity() {
 
         firestore = FirebaseFirestore.getInstance()
         val settings = firestoreSettings { isPersistenceEnabled = true }
+        // isPersistenceEnabled is deprecated and needs to be changed
+
         firestore.firestoreSettings = settings
 
         materialToolBarFunctions()

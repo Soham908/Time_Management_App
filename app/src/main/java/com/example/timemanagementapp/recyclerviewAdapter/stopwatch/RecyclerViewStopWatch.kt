@@ -4,13 +4,14 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.timemanagementapp.R
-import com.example.timemanagementapp.databaseHandling.interfaces.OnItemClickListenerCustom
+import com.example.timemanagementapp.databaseHandling.interfaces.OnTimeItemClickListenerCustom
 
 
-class RecyclerViewStopWatch(val onItemClickListenerCustom: OnItemClickListenerCustom,
+class RecyclerViewStopWatch(val onTimeItemClickListenerCustom: OnTimeItemClickListenerCustom,
                             val context: Context, private val list: List<StructureStopWatch>)
     : RecyclerView.Adapter<RecyclerViewStopWatch.StopWatchViewHolder>() {
 
@@ -19,7 +20,10 @@ class RecyclerViewStopWatch(val onItemClickListenerCustom: OnItemClickListenerCu
         val setWork: TextView = itemView.findViewById(R.id.timeRecyclerLabel)
 
         fun bind(item: StructureStopWatch) {
-            itemView.setOnClickListener{ onItemClickListenerCustom.onItemClickFunc(item) }
+            itemView.setOnClickListener{ onTimeItemClickListenerCustom.onItemClickFunc(item) }
+            itemView.findViewById<ImageView>(R.id.timeRecyclerDelete).setOnClickListener {
+                onTimeItemClickListenerCustom.onTimeItemDelete(item)
+            }
         }
     }
 
