@@ -59,7 +59,7 @@ class DialogFragmentStopWatch(val item: StructureStopWatch) : DialogFragment() {
                 input1 = editText1.text.toString()
                 input2 = editText2.text.toString()
 //                val input3 = editText3.text.toString()
-                Toast.makeText(requireContext(), "$input1 : $input2 ", Toast.LENGTH_SHORT).show()
+//                Toast.makeText(requireContext(), "$input1 : $input2 ", Toast.LENGTH_SHORT).show()
 
                 // Do something with the inputs
 //                dialogListener.onDialogPositiveClickListenerCustom(input1, input2, input3)

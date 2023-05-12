@@ -100,7 +100,7 @@ class StopWatchFragment : Fragment(), OnTimeItemClickListenerCustom {
             }
         }
         reset_lap.setOnClickListener {
-            Toast.makeText(context, "$hours $minutes $secs", Toast.LENGTH_SHORT).show()
+
             val elapsedTime = elapsedTime2 - lastLapTime
             val hours2 = TimeUnit.MILLISECONDS.toHours(elapsedTime)
             val minutes2 = TimeUnit.MILLISECONDS.toMinutes(elapsedTime) % 60
@@ -132,7 +132,6 @@ class StopWatchFragment : Fragment(), OnTimeItemClickListenerCustom {
 
         DialogFragmentStopWatch.descriptionList.observe(viewLifecycleOwner){
             adapter.notifyDataSetChanged()
-            Toast.makeText(context, it, Toast.LENGTH_SHORT).show()
         }
 
     }
@@ -217,16 +216,16 @@ class StopWatchFragment : Fragment(), OnTimeItemClickListenerCustom {
     private fun writeDatabaseTest() {
         date = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(Date())
         val context = context
-        Toast.makeText(context, date, Toast.LENGTH_SHORT).show()
+//        Toast.makeText(context, date, Toast.LENGTH_SHORT).show()
         val documentRef = firestore.collection("Users_Collection").document(username).collection("More_Details").document("TimeRecord")
         documentRef.update(date, list)
             .addOnSuccessListener {
-                Toast.makeText(context, "success time added", Toast.LENGTH_SHORT).show()
+//                Toast.makeText(context, "success time added", Toast.LENGTH_SHORT).show()
             }
     }
 
     override fun onItemClickFunc(item: StructureStopWatch) {
-        Toast.makeText(requireContext(), "$item ", Toast.LENGTH_SHORT).show()
+//        Toast.makeText(requireContext(), "$item ", Toast.LENGTH_SHORT).show()
         val customDialog = DialogFragmentStopWatch(item)
         customDialog.show(parentFragmentManager, "Dialog Fragment Timer")
 

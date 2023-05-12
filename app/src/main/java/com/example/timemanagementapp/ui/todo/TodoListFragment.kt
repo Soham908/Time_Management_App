@@ -19,6 +19,7 @@ import com.example.timemanagementapp.recyclerviewAdapter.todo.StructureTask
 import com.example.timemanagementapp.databinding.FragmentTodoListBinding
 import com.example.timemanagementapp.recyclerviewAdapter.todo.TaskAdapter
 import com.example.timemanagementapp.ui.BottomSheetToDo
+import com.example.timemanagementapp.ui.todo.services.TaskAlarmScheduler
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
@@ -121,15 +122,21 @@ class TodoListFragment : Fragment(), OnTaskItemClick {
         val hour = calender.get(Calendar.HOUR_OF_DAY)
         val minutes = calender.get(Calendar.MINUTE)
 
-        val timePickerDialog = TimePickerDialog(context, TimePickerDialog.OnTimeSetListener{_, minute2, hour2 ->
-            Log.d("dataTime", "todo  $minute2  $hour2")
+        val timePickerDialog = TimePickerDialog(context, TimePickerDialog.OnTimeSetListener{_, hour2, minute2 ->
+            val calendar = Calendar.getInstance()
+            calendar.set(Calendar.HOUR_OF_DAY, hour2)
+            calendar.set(Calendar.MINUTE, minute2)
+            calendar.set(Calendar.SECOND, 0)
+            calendar.set(Calendar.MILLISECOND, 0)
 
+            val alarmTime = calendar.timeInMillis
+
+            Log.d("dataTime", "todo  $minute2  $hour2  ${item.taskSubject}  $item")
+            TaskAlarmScheduler(requireContext()).scheduleAlarm(alarmTime, item.taskSubject)
         }, hour, minutes, false)
 
         timePickerDialog.show()
     }
-
-
 
 
 }

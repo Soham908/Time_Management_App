@@ -4,21 +4,33 @@
 
 
     <item
-        android:id="@+id/stopwatch"
+        android:id="@+id/bottomNavBarMenuStopwatch"
         android:title="@string/stopwatch"
         android:icon="@drawable/bottom_nav_stopwatch"
         />
     <item
-        android:id="@+id/home"
-        android:title="@string/home"
-        android:icon="@drawable/bottom_nav_homepage"
+        android:id="@+id/bottomNavBarMenuTask"
+        android:title="@string/task"
+        android:icon="@drawable/add_task_btn"
 
         />
     <item
-        android:id="@+id/report"
+        android:id="@+id/bottomNavBarMenuHabit"
+        android:title="@string/habit"
+        android:icon="@drawable/habitcurrent"
+
+        />
+    <item
+        android:id="@+id/bottomNavBarMenuHome"
+        android:title="@string/home"
+        android:icon="@drawable/bottom_nav_homepage"
+        android:visible="false"
+        />
+    <item
+        android:id="@+id/bottomNavBarMenuReport"
         android:title="@string/report"
         android:icon="@drawable/bottom_nav_report"
-
+        android:visible="false"
         />
 
 </menu>

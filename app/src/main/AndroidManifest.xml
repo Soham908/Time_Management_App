@@ -4,6 +4,7 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
+    <uses-permission android:name="android.permission.USE_EXACT_ALARM"  />
 
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
 <!--    for now the application name is removed   -->
@@ -39,6 +40,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <receiver android:name=".ui.todo.services.TaskAlarmBrodcastReciever"
+            />
 
         <service android:name=".ui.stopwatch.services.StopWatchService"/>
     </application>

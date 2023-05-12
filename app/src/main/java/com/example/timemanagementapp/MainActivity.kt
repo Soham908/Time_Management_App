@@ -86,29 +86,21 @@ class MainActivity : AppCompatActivity() {
 
     private fun bottomNavBarFunctions(){
         val bottomNavigationView = binding.bottomNavBar
+        lateinit var fragment: Fragment
+
         bottomNavigationView.setOnItemSelectedListener { item ->
-            val fragment: Fragment
+            item.isChecked = true
             when (item.itemId) {
-                R.id.stopwatch -> {
-                    fragment = StopWatchFragment()
-                    fragmentTransaction(fragment)
-                    Toast.makeText(this, "stopwatch", Toast.LENGTH_SHORT).show()
-                }
-                R.id.home -> {
-                    fragment = HomePageFragment()
-                    fragmentTransaction(fragment)
-                    Toast.makeText(this, "homepage", Toast.LENGTH_SHORT).show()
-//                    insertTime()
-                }
-                R.id.report -> {
-                    Toast.makeText(this, "report", Toast.LENGTH_SHORT).show()
-                    fragment = ReportFragment()
-                    fragmentTransaction(fragment)
-                }
+                R.id.bottomNavBarMenuStopwatch  ->      {   fragment = StopWatchFragment()    }
+                R.id.bottomNavBarMenuTask       ->      {   fragment = TodoListFragment()     }
+                R.id.bottomNavBarMenuHabit      ->      {   fragment = HabitFragment()        }
+                R.id.bottomNavBarMenuHome       ->      {   fragment = HomePageFragment()     }
+                R.id.bottomNavBarMenuReport     ->      {   fragment = ReportFragment()       }
             }
+
+            fragmentTransaction(fragment)
             false
         }
-
     }
 
     private fun sideNavBarFunctions(){
