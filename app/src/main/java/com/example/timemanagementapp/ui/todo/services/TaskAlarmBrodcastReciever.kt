@@ -36,7 +36,9 @@ class TaskAlarmBrodcastReciever: BroadcastReceiver() {
         val channel = NotificationChannel(CHANNEL_ID, "Task Alarm Scheduled", NotificationManager.IMPORTANCE_HIGH)
         notificationManagerCompat.createNotificationChannel(channel)
 
-        val intent = Intent(context, MainActivity::class.java)
+        val intent = Intent(context, MainActivity::class.java).apply {
+            putExtra("Fragment", "taskFragmentIntent")
+        }
         val pendingIntent = PendingIntent.getActivity(context, taskSubject.hashCode(), intent, PendingIntent.FLAG_IMMUTABLE)
 
         return NotificationCompat.Builder(context, CHANNEL_ID)

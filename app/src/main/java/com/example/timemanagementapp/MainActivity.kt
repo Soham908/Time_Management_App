@@ -40,6 +40,11 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        val intent = intent.getStringExtra("Fragment")
+        if (intent != null) {
+            openFragment(intent)
+        }
+
         firestore = FirebaseFirestore.getInstance()
         val settings = firestoreSettings { isPersistenceEnabled = true }
         // isPersistenceEnabled is deprecated and needs to be changed
@@ -158,6 +163,16 @@ class MainActivity : AppCompatActivity() {
     override fun onConfigurationChanged(newConfig: Configuration) {
         super.onConfigurationChanged(newConfig)
         recreate()
+    }
+
+    private fun openFragment(fragmentName: String){
+        lateinit var fragment: Fragment
+        when(fragmentName){
+            "taskFragmentIntent"      ->      { fragment = TodoListFragment()     }
+            "stopwatchFragmentIntent" ->      { fragment = StopWatchFragment()    }
+
+        }
+        fragmentTransaction(fragment)
     }
 
 }
