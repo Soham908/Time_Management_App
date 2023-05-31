@@ -51,25 +51,16 @@ class SignUpPage : AppCompatActivity() {
     private fun createUserSchema() {
         val mainRef = firestore.collection("Users_Collection").document(username).collection("More_Details")
         val batch = firestore.batch()
+
         val nameSave = firestore.collection("Users_Collection").document(username)
         batch.set(nameSave, mapOf("name" to username))
-        val tasks = mainRef.document("Tasks")
-        batch.set(tasks, {})
-        val habits = mainRef.document("Habits")
-        batch.set(habits, {})
-        val timeRecord = mainRef.document("TimeRecord")
-        batch.set(timeRecord, {})
-        val exercises = mainRef.document("Exercises")
-        batch.set(exercises, {})
-        // reports, achievements, goals, notes
-        val reports = mainRef.document("Reports")
-        batch.set(reports, {})
-        val goals = mainRef.document("Goals")
-        batch.set(goals, {})
-        val achievements = mainRef.document("Achievements")
-        batch.set(achievements, {})
-        val notes = mainRef.document("Notes")
-        batch.set(notes, {})
+
+        val documentNames = listOf("Tasks", "Habits", "TimeRecord", "Exercises", "Reports", "Goals", "Achievements", "Notes")
+
+        for (documentName in documentNames) {
+            val documentRef = mainRef.document(documentName)
+            batch.set(documentRef, {})
+        }
 
         batch.commit()
 
