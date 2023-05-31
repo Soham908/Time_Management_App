@@ -1,27 +1,20 @@
 package com.example.timemanagementapp
 
 import android.content.Intent
-import android.content.SharedPreferences
 import android.content.res.Configuration
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.TextView
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
 import androidx.fragment.app.Fragment
-import com.example.timemanagementapp.ui.*
 import com.example.timemanagementapp.databinding.ActivityMainBinding
-import com.example.timemanagementapp.ui.exercise.ExerciseFragment
-import com.example.timemanagementapp.ui.habit.HabitFragment
-import com.example.timemanagementapp.ui.stopwatch.StopWatchFragment
-import com.example.timemanagementapp.ui.todo.TodoListFragment
+import com.example.timemanagementapp.activities.LoginPage
+import com.example.timemanagementapp.fragments.*
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.FirebaseFirestoreSettings
 import com.google.firebase.firestore.ktx.firestoreSettings
-import com.google.firebase.firestore.ktx.persistentCacheSettings
 
 class MainActivity : AppCompatActivity() {
 

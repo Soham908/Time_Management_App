@@ -1,4 +1,4 @@
-package com.example.timemanagementapp.recyclerviewAdapter.stopwatch
+package com.example.timemanagementapp.recyclerviewAdapter
 
 import android.content.Context
 import android.view.LayoutInflater
@@ -8,12 +8,13 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.timemanagementapp.R
-import com.example.timemanagementapp.databaseHandling.interfaces.OnTimeItemClickListenerCustom
+import com.example.timemanagementapp.interfaces.OnTimeItemClickListenerCustom
+import com.example.timemanagementapp.structure_data_class.StructureStopWatch
 
 
-class RecyclerViewStopWatch(val onTimeItemClickListenerCustom: OnTimeItemClickListenerCustom,
-                            val context: Context, private val list: List<StructureStopWatch>)
-    : RecyclerView.Adapter<RecyclerViewStopWatch.StopWatchViewHolder>() {
+class StopwatchAdapter(val onTimeItemClickListenerCustom: OnTimeItemClickListenerCustom,
+                       val context: Context, private val list: List<StructureStopWatch>)
+    : RecyclerView.Adapter<StopwatchAdapter.StopWatchViewHolder>() {
 
     inner class StopWatchViewHolder(itemView: View): RecyclerView.ViewHolder(itemView){
         val setTime: TextView = itemView.findViewById(R.id.timeRecyclerTime)

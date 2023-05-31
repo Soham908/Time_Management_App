@@ -1,4 +1,4 @@
-package com.example.timemanagementapp.recyclerviewAdapter.todo
+package com.example.timemanagementapp.structure_data_class
 
 
 data class StructureTask(

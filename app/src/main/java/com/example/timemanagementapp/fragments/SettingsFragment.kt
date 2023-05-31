@@ -1,14 +1,12 @@
-package com.example.timemanagementapp
+package com.example.timemanagementapp.fragments
 
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatDelegate
 
 import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.PreferenceManager
 import androidx.preference.SwitchPreference
+import com.example.timemanagementapp.R
 
 class SettingsFragment : PreferenceFragmentCompat() {
 

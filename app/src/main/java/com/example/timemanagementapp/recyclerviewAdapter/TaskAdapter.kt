@@ -1,4 +1,4 @@
-package com.example.timemanagementapp.recyclerviewAdapter.todo
+package com.example.timemanagementapp.recyclerviewAdapter
 
 
 import android.content.Context
@@ -9,9 +9,10 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.timemanagementapp.R
-import com.example.timemanagementapp.databaseHandling.interfaces.OnTaskItemClick
+import com.example.timemanagementapp.interfaces.OnTaskItemClick
+import com.example.timemanagementapp.structure_data_class.StructureTask
 
-class TaskAdapter( val onTaskItemClick: OnTaskItemClick,val context: Context, private val list: List<StructureTask>): RecyclerView.Adapter<TaskAdapter.TaskViewHolder>(){
+class TaskAdapter(val onTaskItemClick: OnTaskItemClick, val context: Context, private val list: List<StructureTask>): RecyclerView.Adapter<TaskAdapter.TaskViewHolder>(){
 
 
     inner class TaskViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {

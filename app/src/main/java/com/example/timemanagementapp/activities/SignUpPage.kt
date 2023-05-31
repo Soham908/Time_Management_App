@@ -1,4 +1,4 @@
-package com.example.timemanagementapp
+package com.example.timemanagementapp.activities
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.widget.Toast
 import com.example.timemanagementapp.databinding.ActivitySignUpPageBinding
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseAuthException
 import com.google.firebase.firestore.FirebaseFirestore
 
 class SignUpPage : AppCompatActivity() {

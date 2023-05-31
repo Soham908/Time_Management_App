@@ -1,16 +1,14 @@
-package com.example.timemanagementapp.ui.stopwatch.services
+package com.example.timemanagementapp.dialogCustom
 
 import android.app.AlertDialog
 import android.app.Dialog
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
-import android.widget.Toast
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.MutableLiveData
 import com.example.timemanagementapp.R
-import com.example.timemanagementapp.recyclerviewAdapter.stopwatch.StructureStopWatch
-import com.example.timemanagementapp.ui.stopwatch.StopWatchFragment
+import com.example.timemanagementapp.structure_data_class.StructureStopWatch
 import com.google.firebase.firestore.FirebaseFirestore
 
 

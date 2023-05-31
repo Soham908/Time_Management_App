@@ -1,4 +1,4 @@
-package com.example.timemanagementapp.ui
+package com.example.timemanagementapp.dialogCustom
 
 import android.os.Bundle
 import android.util.Log
@@ -8,7 +8,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import com.example.timemanagementapp.MainActivity
 import com.example.timemanagementapp.R
-import com.example.timemanagementapp.recyclerviewAdapter.todo.StructureTask
+import com.example.timemanagementapp.structure_data_class.StructureTask
 import com.example.timemanagementapp.databinding.FragmentBottomSheetToDoBinding
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.firebase.firestore.FieldValue

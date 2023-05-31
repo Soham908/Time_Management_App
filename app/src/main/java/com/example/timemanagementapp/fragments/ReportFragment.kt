@@ -1,4 +1,4 @@
-package com.example.timemanagementapp.ui
+package com.example.timemanagementapp.fragments
 
 import android.annotation.SuppressLint
 import android.os.Bundle

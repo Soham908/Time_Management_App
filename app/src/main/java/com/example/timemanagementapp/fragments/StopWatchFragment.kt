@@ -1,4 +1,4 @@
-package com.example.timemanagementapp.ui.stopwatch
+package com.example.timemanagementapp.fragments
 
 import android.annotation.SuppressLint
 import android.content.Intent
@@ -17,11 +17,11 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.timemanagementapp.MainActivity
 import com.example.timemanagementapp.R
 import com.example.timemanagementapp.databinding.FragmentStopWatchBinding
-import com.example.timemanagementapp.databaseHandling.interfaces.OnTimeItemClickListenerCustom
-import com.example.timemanagementapp.recyclerviewAdapter.stopwatch.RecyclerViewStopWatch
-import com.example.timemanagementapp.recyclerviewAdapter.stopwatch.StructureStopWatch
-import com.example.timemanagementapp.ui.stopwatch.services.DialogFragmentStopWatch
-import com.example.timemanagementapp.ui.stopwatch.services.StopWatchService
+import com.example.timemanagementapp.interfaces.OnTimeItemClickListenerCustom
+import com.example.timemanagementapp.recyclerviewAdapter.StopwatchAdapter
+import com.example.timemanagementapp.structure_data_class.StructureStopWatch
+import com.example.timemanagementapp.dialogCustom.DialogFragmentStopWatch
+import com.example.timemanagementapp.services.StopWatchService
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import java.io.*
@@ -34,7 +34,7 @@ class StopWatchFragment : Fragment(), OnTimeItemClickListenerCustom {
     private lateinit var service: StopWatchService
     private var running = StopWatchService.runningSavedState
     private var isPause = StopWatchService.isPauseSavedState
-    lateinit var adapter: RecyclerViewStopWatch
+    lateinit var adapter: StopwatchAdapter
     var list = mutableListOf<StructureStopWatch>()
     lateinit var firestore: FirebaseFirestore
     private lateinit var date: String
@@ -140,7 +140,7 @@ class StopWatchFragment : Fragment(), OnTimeItemClickListenerCustom {
 
     private fun setUpRecyclerView() {
         val recycler = binding.stopwatchRecyclerContainer
-        adapter = RecyclerViewStopWatch(this, requireContext(), list)
+        adapter = StopwatchAdapter(this, requireContext(), list)
         recycler.adapter = adapter
         recycler.layoutManager = LinearLayoutManager(requireContext())
     }

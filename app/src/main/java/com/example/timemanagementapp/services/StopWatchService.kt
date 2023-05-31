@@ -1,4 +1,4 @@
-package com.example.timemanagementapp.ui.stopwatch.services
+package com.example.timemanagementapp.services
 
 import android.app.*
 import android.content.Context
@@ -9,7 +9,6 @@ import androidx.core.app.NotificationCompat
 import androidx.lifecycle.MutableLiveData
 import com.example.timemanagementapp.MainActivity
 import com.example.timemanagementapp.R
-import com.example.timemanagementapp.recyclerviewAdapter.stopwatch.StructureStopWatch
 import kotlinx.coroutines.*
 import java.util.concurrent.TimeUnit
 

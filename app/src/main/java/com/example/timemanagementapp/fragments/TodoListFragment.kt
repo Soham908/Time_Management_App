@@ -1,4 +1,4 @@
-package com.example.timemanagementapp.ui.todo
+package com.example.timemanagementapp.fragments
 
 import android.annotation.SuppressLint
 import android.app.TimePickerDialog
@@ -8,18 +8,17 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.CalendarView
 import android.widget.Toast
 import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.timemanagementapp.MainActivity
 import com.example.timemanagementapp.R
-import com.example.timemanagementapp.databaseHandling.interfaces.OnTaskItemClick
-import com.example.timemanagementapp.recyclerviewAdapter.todo.StructureTask
+import com.example.timemanagementapp.interfaces.OnTaskItemClick
+import com.example.timemanagementapp.structure_data_class.StructureTask
 import com.example.timemanagementapp.databinding.FragmentTodoListBinding
-import com.example.timemanagementapp.recyclerviewAdapter.todo.TaskAdapter
-import com.example.timemanagementapp.ui.BottomSheetToDo
-import com.example.timemanagementapp.ui.todo.services.TaskAlarmScheduler
+import com.example.timemanagementapp.recyclerviewAdapter.TaskAdapter
+import com.example.timemanagementapp.dialogCustom.BottomSheetToDo
+import com.example.timemanagementapp.services.TaskAlarmScheduler
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore

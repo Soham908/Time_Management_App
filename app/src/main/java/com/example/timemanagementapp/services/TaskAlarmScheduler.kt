@@ -1,4 +1,4 @@
-package com.example.timemanagementapp.ui.todo.services
+package com.example.timemanagementapp.services
 
 import android.annotation.SuppressLint
 import android.app.AlarmManager
@@ -6,6 +6,7 @@ import android.app.PendingIntent
 
 import android.content.Context
 import android.content.Intent
+import com.example.timemanagementapp.broadcastReceiver.TaskAlarmBrodcastReciever
 
 class TaskAlarmScheduler(val context: Context) {
 

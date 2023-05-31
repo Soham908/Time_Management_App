@@ -1,10 +1,11 @@
-package com.example.timemanagementapp
+package com.example.timemanagementapp.activities
 
 import android.content.Intent
 import android.content.res.Configuration
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
+import com.example.timemanagementapp.MainActivity
 import com.example.timemanagementapp.databinding.ActivityLoginPageBinding
 import com.google.firebase.auth.FirebaseAuth
 

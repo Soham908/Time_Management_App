@@ -1,6 +1,6 @@
-package com.example.timemanagementapp.databaseHandling.interfaces
+package com.example.timemanagementapp.interfaces
 
-import com.example.timemanagementapp.recyclerviewAdapter.todo.StructureTask
+import com.example.timemanagementapp.structure_data_class.StructureTask
 
 interface OnTaskItemClick {
     fun onTaskItemClickFunc(item: StructureTask)
