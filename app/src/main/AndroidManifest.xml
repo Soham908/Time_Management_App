@@ -5,8 +5,11 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
     <uses-permission android:name="android.permission.USE_EXACT_ALARM"  />
-
+<!--    <uses-permission android:name="com.android.alarm.permission.SET_ALARM" />-->
+<!--    <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />-->
+<!--    <uses-permission android:name="android.permission.WAKE_LOCK" />-->
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+
 <!--    for now the application name is removed   -->
     <application
 
@@ -42,7 +45,11 @@
         </activity>
 
         <receiver android:name=".ui.todo.services.TaskAlarmBrodcastReciever"
-            />
+            android:exported="false"
+            android:enabled="true"
+            >
+
+        </receiver>
 
         <service android:name=".ui.stopwatch.services.StopWatchService"/>
     </application>

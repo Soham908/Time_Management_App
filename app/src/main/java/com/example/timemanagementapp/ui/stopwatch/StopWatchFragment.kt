@@ -116,6 +116,7 @@ class StopWatchFragment : Fragment(), OnTimeItemClickListenerCustom {
             isPause = false
             requireActivity().stopService(Intent(context, StopWatchService::class.java))
             timer.text = getString(R.string.startTime)
+            StopWatchService.num.postValue(0L)
             start_stop.text = startString
             reset_lap.isVisible = false
         }
@@ -231,6 +232,7 @@ class StopWatchFragment : Fragment(), OnTimeItemClickListenerCustom {
 
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     override fun onTimeItemDelete(item: StructureStopWatch) {
         val context = context
         list.remove(item)

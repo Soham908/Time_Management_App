@@ -1,6 +1,7 @@
 package com.example.timemanagementapp
 
 import android.content.Intent
+import android.content.SharedPreferences
 import android.content.res.Configuration
 import android.os.Bundle
 import android.view.Menu
@@ -59,6 +60,7 @@ class MainActivity : AppCompatActivity() {
         if (username.isBlank() && password.isNullOrBlank()){
             val intent = Intent(this, LoginPage::class.java)
             startActivity(intent)
+            finish()
         }
         // for now i have removed the firebase auth because if the user logs in the app then it must be that the username and pass is correct
         // will add option if user wants to check everytime if the id and pass is correct
@@ -141,6 +143,9 @@ class MainActivity : AppCompatActivity() {
             R.id.logout -> {
                 val intent = Intent(this, LoginPage::class.java)
                 startActivity(intent)
+                val sharedPreferences = getSharedPreferences("UserNameLogin", MODE_PRIVATE)
+                sharedPreferences.edit().clear().apply()
+                finish()
             }
             R.id.search -> {
                 val fragment = SettingsFragment()
