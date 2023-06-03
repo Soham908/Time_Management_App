@@ -19,7 +19,7 @@ import com.google.firebase.firestore.ktx.firestoreSettings
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
-    lateinit var firestore: FirebaseFirestore
+    private lateinit var firestore: FirebaseFirestore
     lateinit var firebaseAuth: FirebaseAuth
     companion object {
         var username: String = ""
@@ -44,7 +44,7 @@ class MainActivity : AppCompatActivity() {
 
         firestore.firestoreSettings = settings
 
-        materialToolBarFunctions()
+//        materialToolBarFunctions()
         bottomNavBarFunctions()
         sideNavBarFunctions()
 
@@ -74,15 +74,15 @@ class MainActivity : AppCompatActivity() {
 //            }
     }
 
-    private fun materialToolBarFunctions(){
-        val drawerLayout = binding.drawerLayout
-        val toolbar = binding.materialToolbar
-        setSupportActionBar(toolbar)
-        // to make this work, change in manifest.xml file the android:theme to no actionbar
-
-        // add navigation icon in xml file to use this
-        toolbar.setNavigationOnClickListener { drawerLayout.openDrawer(GravityCompat.START) }
-    }
+//    private fun materialToolBarFunctions(){
+//        val drawerLayout = binding.drawerLayout
+//        val toolbar = binding.materialToolbar
+//        setSupportActionBar(toolbar)
+//        // to make this work, change in manifest.xml file the android:theme to no actionbar
+//
+//        // add navigation icon in xml file to use this
+//        toolbar.setNavigationOnClickListener { drawerLayout.openDrawer(GravityCompat.START) }
+//    }
 
     private fun bottomNavBarFunctions(){
         val bottomNavigationView = binding.bottomNavBar
@@ -132,26 +132,26 @@ class MainActivity : AppCompatActivity() {
     }
 
     // handling tool bar options menu
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.actionbar_options, menu)
-        return super.onCreateOptionsMenu(menu)
-    }
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when(item.itemId){
-            R.id.logout -> {
-                val intent = Intent(this, LoginPage::class.java)
-                startActivity(intent)
-                val sharedPreferences = getSharedPreferences("UserNameLogin", MODE_PRIVATE)
-                sharedPreferences.edit().clear().apply()
-                finish()
-            }
-            R.id.search -> {
-                val fragment = SettingsFragment()
-                fragmentTransaction(fragment)
-            }
-        }
-        return super.onOptionsItemSelected(item)
-    }
+//    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+//        menuInflater.inflate(R.menu.actionbar_options, menu)
+//        return super.onCreateOptionsMenu(menu)
+//    }
+//    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+//        when(item.itemId){
+//            R.id.logout -> {
+//                val intent = Intent(this, LoginPage::class.java)
+//                startActivity(intent)
+//                val sharedPreferences = getSharedPreferences("UserNameLogin", MODE_PRIVATE)
+//                sharedPreferences.edit().clear().apply()
+//                finish()
+//            }
+//            R.id.search -> {
+//                val fragment = SettingsFragment()
+//                fragmentTransaction(fragment)
+//            }
+//        }
+//        return super.onOptionsItemSelected(item)
+//    }
 
     override fun onConfigurationChanged(newConfig: Configuration) {
         super.onConfigurationChanged(newConfig)

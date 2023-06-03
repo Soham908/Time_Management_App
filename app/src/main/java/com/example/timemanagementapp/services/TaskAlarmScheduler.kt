@@ -14,11 +14,10 @@ class TaskAlarmScheduler(val context: Context) {
     
     @SuppressLint("MissingPermission")
     fun scheduleAlarm(time: Long, taskSubject: String){
-        // time should be in milliseconds
         val intent = Intent(context, TaskAlarmBrodcastReciever::class.java).apply {
             putExtra("extra_message", taskSubject)
         }
-        val pendingIntent = PendingIntent.getBroadcast(context, taskSubject.hashCode(), intent, PendingIntent.FLAG_IMMUTABLE)
+        val pendingIntent = PendingIntent.getBroadcast(context, taskSubject.hashCode(), intent, PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT)
 
         // added a use exact alarm permission, so that we can set an alarm, without that we cannot set an alarm
         // other wise we need to give another permission in which we have to ask the user, by using this it will automatically grant the permission
