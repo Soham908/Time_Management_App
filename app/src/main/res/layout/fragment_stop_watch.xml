@@ -6,7 +6,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".fragments.StopWatchFragment"
-    android:background="@color/white"
     >
 
 
@@ -15,6 +14,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/start"
+        android:theme="@style/buttonCurved"
+        android:background="@drawable/btn_primary"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.108"
@@ -27,6 +28,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/lap"
+        android:theme="@style/buttonCurved"
+        android:background="@drawable/btn_primary"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.458"
@@ -42,7 +45,6 @@
         android:layout_height="61dp"
         android:gravity="center"
         android:text="@string/startTime"
-        android:textColor="@color/black"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.431"
@@ -55,6 +57,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/reset"
+        android:theme="@style/buttonCurved"
+        android:background="@drawable/btn_primary"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.826"
@@ -65,7 +69,8 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/stopwatchRecyclerContainer"
         android:layout_width="match_parent"
-        android:layout_height="500dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="50dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

@@ -116,10 +116,13 @@ class MainActivity : AppCompatActivity() {
             {
                 R.id.todoTab ->             { fragment = TodoListFragment() }
                 R.id.habitTrackerTab ->     { fragment = HabitFragment() }
-                R.id.exerciseTab ->         { fragment = ExerciseFragment() }
+                R.id.exerciseTab ->         {
+//                    fragment = ExerciseFragment()
+                startActivity(Intent(applicationContext, LoginPage::class.java))
+                }
             }
 
-            fragmentTransaction(fragment)
+//            fragmentTransaction(fragment)
 
             binding.drawerLayout.closeDrawer(GravityCompat.START)
             false

@@ -38,6 +38,7 @@
         android:id="@+id/loginLogin"
         android:layout_width="123dp"
         android:layout_height="52dp"
+        android:theme="@style/buttonCurved"
         android:background="@drawable/btn_primary"
         android:text="@string/login"
         app:layout_constraintBottom_toTopOf="@+id/imageView2"
