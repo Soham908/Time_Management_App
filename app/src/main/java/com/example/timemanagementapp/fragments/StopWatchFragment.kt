@@ -4,7 +4,6 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-import android.view.ContextThemeWrapper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,7 +11,6 @@ import android.widget.Button
 import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
-import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.timemanagementapp.MainActivity
 import com.example.timemanagementapp.R
@@ -38,7 +36,7 @@ class StopWatchFragment : Fragment(), OnTimeItemClickListenerCustom {
     lateinit var adapter: StopwatchAdapter
     var list = mutableListOf<StructureStopWatch>()
     lateinit var firestore: FirebaseFirestore
-    lateinit var listenerRegistration: ListenerRegistration
+    var listenerRegistration: ListenerRegistration? = null
     private lateinit var date: String
     var hours = 0L
     var minutes = 0L
@@ -65,24 +63,24 @@ class StopWatchFragment : Fragment(), OnTimeItemClickListenerCustom {
 
         val timer = binding.timerTextView
         start_stop = binding.startButton
-        val reset_lap = binding.lapButton
+        val lap = binding.lapButton
         val reset = binding.resetButton
         val startString = getString(R.string.start)
         val stopString = getString(R.string.stop)
         setUpRecyclerView()
         snapshotListener()
 
-        if(running && !isPause){ start_stop.text = stopString; reset_lap.isVisible = true }
+        if(running && !isPause){ start_stop.text = stopString; lap.isVisible = true }
 
         start_stop.setOnClickListener {
             if(start_stop.text == "Start") {
                 if (!running && !isPause) {
                     requireActivity().startService(Intent(context, StopWatchService::class.java))
                     service.resumeStopWatch()
-                    reset_lap.isVisible = true
+                    lap.isVisible = true
                 } else if (!running && isPause) {
                     service.resumeStopWatch()
-                    reset_lap.isVisible = true
+                    lap.isVisible = true
                 }
                 running = true
 
@@ -91,12 +89,12 @@ class StopWatchFragment : Fragment(), OnTimeItemClickListenerCustom {
             else{
                 start_stop.text = startString
                 if (running){ service.pauseStopWatch() }
-                reset_lap.isVisible = false
+                lap.isVisible = false
                 isPause = true
                 running = false
             }
         }
-        reset_lap.setOnClickListener {
+        lap.setOnClickListener {
 
             val elapsedTime = elapsedTime2 - lastLapTime
             val hours2 = TimeUnit.MILLISECONDS.toHours(elapsedTime)
@@ -115,7 +113,7 @@ class StopWatchFragment : Fragment(), OnTimeItemClickListenerCustom {
             timer.text = getString(R.string.startTime)
             StopWatchService.num.postValue(0L)
             start_stop.text = startString
-            reset_lap.isVisible = false
+            lap.isVisible = false
         }
 
         StopWatchService.num.observe(viewLifecycleOwner) { elapsedTime ->
@@ -143,13 +141,8 @@ class StopWatchFragment : Fragment(), OnTimeItemClickListenerCustom {
     }
 
 
-    private fun isDarkThemeEnabled(): Boolean {
-        val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(requireContext())
-        return sharedPreferences.getBoolean("dark_theme_enabled", false)
-    }
 
-
-
+    @Suppress("UNCHECKED_CAST")
     @SuppressLint("NotifyDataSetChanged")
     private fun snapshotListener(){
         date = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(Date())
@@ -177,9 +170,10 @@ class StopWatchFragment : Fragment(), OnTimeItemClickListenerCustom {
                 }
                 list.clear()
 
-//                for (lap in lapObject) {
-//                    Log.d("dataFirebase", lap.time); list.add(lap)
-//                }
+                for (lap in lapObject) {
+                    list.add(lap)
+                    Log.d("dataFirebase", "lap example $lap")
+                }
                 adapter.notifyDataSetChanged()
             }
         }
@@ -223,6 +217,10 @@ class StopWatchFragment : Fragment(), OnTimeItemClickListenerCustom {
             StopWatchService.isPauseSavedState = true
             StopWatchService.runningSavedState = false
         }
+        else{
+            StopWatchService.isPauseSavedState = false
+            StopWatchService.runningSavedState = false
+        }
         writeDatabaseTest()
 
     }
@@ -239,9 +237,7 @@ class StopWatchFragment : Fragment(), OnTimeItemClickListenerCustom {
     @Suppress("SENSELESS_COMPARISON")
     override fun onDestroy() {
         super.onDestroy()
-        if (listenerRegistration != null) {
-            listenerRegistration.remove()
-        }
+        listenerRegistration?.remove()
     }
 
 }
