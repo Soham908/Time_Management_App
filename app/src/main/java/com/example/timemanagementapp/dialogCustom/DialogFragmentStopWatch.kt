@@ -9,29 +9,21 @@ import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.MutableLiveData
 import com.example.timemanagementapp.R
 import com.example.timemanagementapp.structure_data_class.StructureStopWatch
-import com.google.firebase.firestore.FirebaseFirestore
 
 
 class DialogFragmentStopWatch(val item: StructureStopWatch) : DialogFragment() {
 
-    // Initialize the views
     private lateinit var editText1: EditText
     private lateinit var editText2: EditText
-    private lateinit var editText3: EditText
     private lateinit var okButton: Button
     private lateinit var cancelButton: Button
-    // custom dialog listener for transferring data to other fragment
-//    lateinit var dialogListener: CustomDialogListener
-    // now im adding the value directly to the firestore db but it is not recommended, change it afterwards
-    lateinit var firestore: FirebaseFirestore
     private lateinit var input1: String
     private lateinit var input2: String
+
     companion object
     {
         var descriptionList = MutableLiveData<String>()
     }
-
-
 
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
@@ -40,34 +32,23 @@ class DialogFragmentStopWatch(val item: StructureStopWatch) : DialogFragment() {
             val inflater = requireActivity().layoutInflater
             val view = inflater.inflate(R.layout.fragment_dialog_stop_watch, null)
 
-//            dialogListener = context as CustomDialogListener
-            firestore = FirebaseFirestore.getInstance()
+            val work = arguments?.getString("subject")
 
-
-            // Set up the views
             editText1 = view.findViewById(R.id.editText1)
+            editText1.setText(work)
             editText2 = view.findViewById(R.id.editText2)
-//            editText3 = view.findViewById(R.id.editText3)
             okButton = view.findViewById(R.id.dialogOkay)
             cancelButton = view.findViewById(R.id.dialogCancel)
 
-            // Set up the buttons
             okButton.setOnClickListener {
-                // Handle the OK button click
                 input1 = editText1.text.toString()
                 input2 = editText2.text.toString()
-//                val input3 = editText3.text.toString()
-//                Toast.makeText(requireContext(), "$input1 : $input2 ", Toast.LENGTH_SHORT).show()
 
-                // Do something with the inputs
-//                dialogListener.onDialogPositiveClickListenerCustom(input1, input2, input3)
-                // for now add to list afterwards handle to database
                 addToList()
                 dismiss()
             }
 
             cancelButton.setOnClickListener {
-                // Handle the Cancel button click
                 dismiss()
             }
 

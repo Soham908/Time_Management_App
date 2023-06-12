@@ -228,6 +228,10 @@ class StopWatchFragment : Fragment(), OnTimeItemClickListenerCustom {
     override fun onItemClickFunc(item: StructureStopWatch) {
 //        Toast.makeText(requireContext(), "$item ", Toast.LENGTH_SHORT).show()
         val customDialog = DialogFragmentStopWatch(item)
+        val bundle = Bundle().apply {
+            putString("subject", item.work)
+        }
+        customDialog.arguments = bundle
         customDialog.show(parentFragmentManager, "Dialog Fragment Timer")
 
     }
