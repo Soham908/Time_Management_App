@@ -221,6 +221,7 @@ class StopWatchFragment : Fragment(), OnTimeItemClickListenerCustom {
             StopWatchService.isPauseSavedState = false
             StopWatchService.runningSavedState = false
         }
+        StopWatchService.lastLapTime = lastLapTime
         writeDatabaseTest()
 
     }

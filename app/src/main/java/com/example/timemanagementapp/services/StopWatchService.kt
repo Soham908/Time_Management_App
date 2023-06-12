@@ -32,6 +32,7 @@ class StopWatchService : Service() {
 
         var startTime = SystemClock.elapsedRealtime()
         var elapsedTime = 0L
+        var lastLapTime = 0L
     }
 
 
