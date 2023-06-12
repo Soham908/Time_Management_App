@@ -81,6 +81,7 @@ class StopWatchFragment : Fragment(), OnTimeItemClickListenerCustom {
                 } else if (!running && isPause) {
                     service.resumeStopWatch()
                     lap.isVisible = true
+                    isPause = false
                 }
                 running = true
 
@@ -156,7 +157,7 @@ class StopWatchFragment : Fragment(), OnTimeItemClickListenerCustom {
             }
             Log.d("dataFirebase", value?.data.toString() + " " + username)
             val check = value?.get(date) ?: return@addSnapshotListener
-            Log.d("dataFirebase", check.toString())
+            Log.d("dataFirebase", "check var $check")
             if (value.data!!.isNotEmpty()){
                 Log.d("dataFirebase", value.data!!.toString())
                 val lapList = value.get(date) as List<Map<*, *>>
@@ -230,6 +231,7 @@ class StopWatchFragment : Fragment(), OnTimeItemClickListenerCustom {
         super.onResume()
         running = StopWatchService.runningSavedState
         isPause = StopWatchService.isPauseSavedState
+        lastLapTime = StopWatchService.lastLapTime
         if (running && !isPause) {
             start_stop.text = getString(R.string.stop)
         }

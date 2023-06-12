@@ -38,11 +38,11 @@ class StopwatchAdapter(val onTimeItemClickListenerCustom: OnTimeItemClickListene
     }
 
     override fun onBindViewHolder(holder: StopWatchViewHolder, position: Int) {
-        val item = list[position]
-        item.id = position + 10
-        // to set position too
-        holder.setTime.text = list[position].time
-        holder.setWork.text = list[position].work
+        val item = list[list.size - position - 1]
+        item.id = position
+        // to set the position
+        holder.setTime.text = item.time
+        holder.setWork.text = item.work
 
         holder.bind(item)
     }
