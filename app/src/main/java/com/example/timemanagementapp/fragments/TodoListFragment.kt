@@ -102,11 +102,12 @@ class TodoListFragment : Fragment(), OnTaskItemClick {
 
 
     override fun onTaskItemClickFunc(item: StructureTask) {
-        val bun = Bundle()
-        bun.putString("subject", item.taskSubject)
-        bun.putString("description", item.taskDescription)
+        val bundle = Bundle().apply {
+            putString("subject", item.taskSubject)
+            putString("description", item.taskDescription)
+        }
         val bottomSheet = BottomSheetToDo()
-        bottomSheet.arguments = bun
+        bottomSheet.arguments = bundle
         bottomSheet.show(parentFragmentManager, "ths be")
     }
 

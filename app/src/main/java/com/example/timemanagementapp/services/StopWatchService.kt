@@ -45,13 +45,11 @@ class StopWatchService : Service() {
         startForeground(NOTIFICATION_ID, buildNotification().build())
 
         timerJob = CoroutineScope(Dispatchers.Main).launch {
-            var seconds = 0L
             while (true) {
                 delay(1000)
                 if (!isPause){
                     elapsedTime = SystemClock.elapsedRealtime() - startTime
-                    seconds++
-                    updateNotification(seconds, elapsedTime)
+                    updateNotification(elapsedTime)
                     num.postValue(elapsedTime)
                 }
             }
@@ -81,19 +79,15 @@ class StopWatchService : Service() {
             .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
     }
 
-    private fun updateNotification(seconds: Long, elapsedTime: Long) {
-        val hours = seconds / 3600
-        val minutes = (seconds % 3600) / 60
-        val secs = seconds % 60
+    private fun updateNotification(elapsedTime: Long) {
 
-        //new content
         val hours2 = TimeUnit.MILLISECONDS.toHours(elapsedTime)
         val minutes2 = TimeUnit.MILLISECONDS.toMinutes(elapsedTime) % 60
         val secs2 = TimeUnit.MILLISECONDS.toSeconds(elapsedTime) % 60
 
         // using a notification builder is better because it does not update all the
         // before the time in the notification kept changing every minute, it did not cause any trouble but still this is much better
-        notificationBuilder.setContentTitle("Timer Updated").setContentText(String.format("%02d:%02d:%02d  %02d:%02d:%02d ", hours, minutes, secs, hours2, minutes2, secs2))
+        notificationBuilder.setContentTitle("Timer Updated").setContentText(String.format(" %02d:%02d:%02d ", hours2, minutes2, secs2))
         notificationManager.notify(NOTIFICATION_ID, notificationBuilder.build())
     }
 

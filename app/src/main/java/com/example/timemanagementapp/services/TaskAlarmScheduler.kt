@@ -6,7 +6,9 @@ import android.app.PendingIntent
 
 import android.content.Context
 import android.content.Intent
+import android.widget.Toast
 import com.example.timemanagementapp.broadcastReceiver.TaskAlarmBrodcastReciever
+import java.util.concurrent.TimeUnit
 
 class TaskAlarmScheduler(val context: Context) {
 
@@ -19,13 +21,18 @@ class TaskAlarmScheduler(val context: Context) {
         }
         val pendingIntent = PendingIntent.getBroadcast(context, taskSubject.hashCode(), intent, PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT)
 
-        // added a use exact alarm permission, so that we can set an alarm, without that we cannot set an alarm
-        // other wise we need to give another permission in which we have to ask the user, by using this it will automatically grant the permission
+        // added a use exact alarm permission
         alarmManager.setExactAndAllowWhileIdle(
             AlarmManager.RTC_WAKEUP,
             time,
             pendingIntent
         )
+        val timeDifference = time - System.currentTimeMillis()
+        val hours = TimeUnit.MILLISECONDS.toHours(timeDifference)
+        val minutes = TimeUnit.MILLISECONDS.toMinutes(timeDifference) % 60
+        val seconds = TimeUnit.MILLISECONDS.toSeconds(timeDifference) % 60
+//        val timeRemaining = String.format("%02d:%02d:%02d", hours, minutes, seconds)
+        Toast.makeText(context, "Alarm set for $hours and $minutes minutes ", Toast.LENGTH_SHORT).show()
 
     }
 }

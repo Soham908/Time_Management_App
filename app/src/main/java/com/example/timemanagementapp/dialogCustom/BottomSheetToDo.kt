@@ -57,16 +57,11 @@ class BottomSheetToDo : BottomSheetDialogFragment() {
         val taskDescription = binding.todoBottomDesc.text.toString()
         val oldTask = StructureTask(oldSubject, oldDescription, "", "")
         val task = StructureTask(taskSubject, taskDescription, "", "")
-//        val documentRef = firestore.collection("User Details").document("Tasks")
         val documentRef = firestore.collection("Users_Collection").document(username).collection("More_Details").document("Tasks")
         documentRef.update("new_task", FieldValue.arrayRemove(oldTask), "new_task", FieldValue.arrayUnion(task))
 //        documentRef.update("new task", FieldValue.arrayUnion(task))
 
-
-        Log.d("dataFirebase1", documentRef.toString())
         Toast.makeText(requireContext(), "Updation done", Toast.LENGTH_SHORT).show()
-        val documentRef2 = firestore.collection("Users_Collection").document(username).collection("More_Details").document("Tasks")
-
     }
 
     private fun addTasksOther(){
@@ -80,10 +75,7 @@ class BottomSheetToDo : BottomSheetDialogFragment() {
         documentRef.update("new_task", FieldValue.arrayUnion(task))
             .addOnSuccessListener {
                 Toast.makeText(context, "task added", Toast.LENGTH_SHORT).show()
-                Log.d("dataFirebase1", username)
             }
-//        Toast.makeText(requireContext(), "Task Done", Toast.LENGTH_SHORT).show()
-
     }
 
 }

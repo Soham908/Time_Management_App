@@ -24,6 +24,7 @@ import com.example.timemanagementapp.dialogCustom.DialogFragmentStopWatch
 import com.example.timemanagementapp.services.StopWatchService
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.ListenerRegistration
 import java.io.*
 import java.text.SimpleDateFormat
 import java.util.*
@@ -37,6 +38,7 @@ class StopWatchFragment : Fragment(), OnTimeItemClickListenerCustom {
     lateinit var adapter: StopwatchAdapter
     var list = mutableListOf<StructureStopWatch>()
     lateinit var firestore: FirebaseFirestore
+    lateinit var listenerRegistration: ListenerRegistration
     private lateinit var date: String
     var hours = 0L
     var minutes = 0L
@@ -45,17 +47,13 @@ class StopWatchFragment : Fragment(), OnTimeItemClickListenerCustom {
     var elapsedTime2 = 0L
     var username = MainActivity.username
     lateinit var start_stop: Button
-    // takes the foreground variable because when the app is closed and opened again at that time the apps var are destroyed
-    // and it will start another service because values are reset
-    // so when app destroys pass the state of the var in from fragment to service so that state is saved in the service
 
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val currentTheme = if (isDarkThemeEnabled()) R.style.AppTheme_Dark else R.style.AppTheme_Dark
-        val themedInflater = inflater.cloneInContext(ContextThemeWrapper(activity, currentTheme))
+        val view = layoutInflater.inflate(R.layout.fragment_stop_watch, container, false)
         service = StopWatchService()
         firestore = FirebaseFirestore.getInstance()
-        return themedInflater.inflate(R.layout.fragment_stop_watch, container, false)
+        return view
     }
 
 
@@ -72,11 +70,10 @@ class StopWatchFragment : Fragment(), OnTimeItemClickListenerCustom {
         val startString = getString(R.string.start)
         val stopString = getString(R.string.stop)
         setUpRecyclerView()
-//        snapshotListener()
+        snapshotListener()
 
-        // need to switch the start text when the app is closed and opened again but the service is on
-        // when it starts it takes a little time to start counting
         if(running && !isPause){ start_stop.text = stopString; reset_lap.isVisible = true }
+
         start_stop.setOnClickListener {
             if(start_stop.text == "Start") {
                 if (!running && !isPause) {
@@ -151,42 +148,16 @@ class StopWatchFragment : Fragment(), OnTimeItemClickListenerCustom {
         return sharedPreferences.getBoolean("dark_theme_enabled", false)
     }
 
-    override fun onPause() {
-        super.onPause()
-        if (running && !isPause){
-            StopWatchService.isPauseSavedState = false
-            StopWatchService.runningSavedState = true
-        }
-        else if (!running && isPause){
-            StopWatchService.isPauseSavedState = true
-            StopWatchService.runningSavedState = false
-        }
-        writeDatabaseTest()
 
-    }
-
-    override fun onResume() {
-        super.onResume()
-        running = StopWatchService.runningSavedState
-        isPause = StopWatchService.isPauseSavedState
-        if (running && !isPause) {
-            start_stop.text = getString(R.string.stop)
-        }
-//        lifecycleScope.launch(Dispatchers.IO){
-//            delay(5)
-//        }
-        snapshotListener()
-    }
 
     @SuppressLint("NotifyDataSetChanged")
     private fun snapshotListener(){
         date = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(Date())
         if (username.isEmpty()){
             username = "tester"
-            val thisbe = 10
         }
         val documentRef = firestore.collection("Users_Collection").document(username).collection("More_Details").document("TimeRecord")
-        documentRef.addSnapshotListener { value, error ->
+        listenerRegistration = documentRef.addSnapshotListener { value, error ->
             if(error != null){
                 Log.e("dataError", "error be :: ${error.message}")
             }
@@ -206,9 +177,9 @@ class StopWatchFragment : Fragment(), OnTimeItemClickListenerCustom {
                 }
                 list.clear()
 
-                for (lap in lapObject) {
-                    Log.d("dataFirebase", lap.time); list.add(lap)
-                }
+//                for (lap in lapObject) {
+//                    Log.d("dataFirebase", lap.time); list.add(lap)
+//                }
                 adapter.notifyDataSetChanged()
             }
         }
@@ -216,17 +187,11 @@ class StopWatchFragment : Fragment(), OnTimeItemClickListenerCustom {
 
     private fun writeDatabaseTest() {
         date = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(Date())
-        val context = context
-//        Toast.makeText(context, date, Toast.LENGTH_SHORT).show()
         val documentRef = firestore.collection("Users_Collection").document(username).collection("More_Details").document("TimeRecord")
         documentRef.update(date, list)
-            .addOnSuccessListener {
-//                Toast.makeText(context, "success time added", Toast.LENGTH_SHORT).show()
-            }
     }
 
     override fun onItemClickFunc(item: StructureStopWatch) {
-//        Toast.makeText(requireContext(), "$item ", Toast.LENGTH_SHORT).show()
         val customDialog = DialogFragmentStopWatch(item)
         val bundle = Bundle().apply {
             putString("subject", item.work)
@@ -248,5 +213,35 @@ class StopWatchFragment : Fragment(), OnTimeItemClickListenerCustom {
         adapter.notifyDataSetChanged()
     }
 
+    override fun onPause() {
+        super.onPause()
+        if (running && !isPause){
+            StopWatchService.isPauseSavedState = false
+            StopWatchService.runningSavedState = true
+        }
+        else if (!running && isPause){
+            StopWatchService.isPauseSavedState = true
+            StopWatchService.runningSavedState = false
+        }
+        writeDatabaseTest()
+
+    }
+
+    override fun onResume() {
+        super.onResume()
+        running = StopWatchService.runningSavedState
+        isPause = StopWatchService.isPauseSavedState
+        if (running && !isPause) {
+            start_stop.text = getString(R.string.stop)
+        }
+    }
+
+    @Suppress("SENSELESS_COMPARISON")
+    override fun onDestroy() {
+        super.onDestroy()
+        if (listenerRegistration != null) {
+            listenerRegistration.remove()
+        }
+    }
 
 }
