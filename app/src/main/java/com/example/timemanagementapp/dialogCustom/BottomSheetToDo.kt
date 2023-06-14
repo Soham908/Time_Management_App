@@ -1,10 +1,14 @@
 package com.example.timemanagementapp.dialogCustom
 
+import android.content.Context
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import com.example.timemanagementapp.MainActivity
 import com.example.timemanagementapp.R
@@ -26,6 +30,7 @@ class BottomSheetToDo : BottomSheetDialogFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        dialog?.window?.attributes?.dimAmount = 0f
         val view = LayoutInflater.from(context).inflate(R.layout.fragment_bottom_sheet_to_do, container, false)
         binding = FragmentBottomSheetToDoBinding.bind(view)
 
@@ -48,6 +53,11 @@ class BottomSheetToDo : BottomSheetDialogFragment() {
                 dismiss()
             }
         }
+        binding.todoBottomSub.requestFocus()
+        Handler(Looper.getMainLooper()).postDelayed({
+            val imm = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            imm.showSoftInput(binding.todoBottomSub, InputMethodManager.SHOW_IMPLICIT)
+        }, 200)
 
         return view
     }

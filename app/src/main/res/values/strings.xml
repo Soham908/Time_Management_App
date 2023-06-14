@@ -54,6 +54,7 @@
     <string name="welcome_back">Welcome Back !!</string>
     <string name="task">Task</string>
     <string name="habit">Habit</string>
+    <string name="add_a_new_task">Add a New Task</string>
 
     <string-array name="settingsMultiListTime">
         <item>1</item>
