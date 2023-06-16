@@ -34,14 +34,17 @@ class StopWatchFragment : Fragment(), OnTimeItemClickListenerCustom {
     private var running = StopWatchService.runningSavedState
     private var isPause = StopWatchService.isPauseSavedState
     lateinit var adapter: StopwatchAdapter
-    var list = mutableListOf<StructureStopWatch>()
+    companion object {
+        var list = mutableListOf<StructureStopWatch>()
+        var lastLapTime = 0L
+    }
     lateinit var firestore: FirebaseFirestore
     var listenerRegistration: ListenerRegistration? = null
     private lateinit var date: String
     var hours = 0L
     var minutes = 0L
     var secs = 0L
-    var lastLapTime = 0L
+
     var elapsedTime2 = 0L
     var username = MainActivity.username
     lateinit var start_stop: Button
@@ -101,10 +104,13 @@ class StopWatchFragment : Fragment(), OnTimeItemClickListenerCustom {
             val hours2 = TimeUnit.MILLISECONDS.toHours(elapsedTime)
             val minutes2 = TimeUnit.MILLISECONDS.toMinutes(elapsedTime) % 60
             val secs2 = TimeUnit.MILLISECONDS.toSeconds(elapsedTime) % 60
-            val time =  String.format("CL: %02d:%02d:%02d           TT: %02d:%02d:%02d", hours2, minutes2, secs2, hours, minutes, secs,)
+            val time =  String.format("CL: %02d:%02d:%02d           TT: %02d:%02d:%02d", hours2, minutes2, secs2, hours, minutes, secs)
             lastLapTime = elapsedTime2
-            list.add(StructureStopWatch(null, time, "personal project", "default"))
+            list.add(StructureStopWatch(null, time, "default", "default"))
             adapter.notifyDataSetChanged()
+            writeDatabaseTest()
+            StopWatchService.lapService = list
+            StopWatchService.lastLapTime = lastLapTime
         }
 
         reset.setOnClickListener {
@@ -129,6 +135,7 @@ class StopWatchFragment : Fragment(), OnTimeItemClickListenerCustom {
 
         DialogFragmentStopWatch.descriptionList.observe(viewLifecycleOwner){
             adapter.notifyDataSetChanged()
+            writeDatabaseTest()
         }
 
     }
@@ -163,7 +170,7 @@ class StopWatchFragment : Fragment(), OnTimeItemClickListenerCustom {
                 val lapList = value.get(date) as List<Map<*, *>>
                 val lapObject = lapList.map { map ->
                     StructureStopWatch(
-                        id = map["id"].toString().toInt(),
+                        id = map["id"]?.toString()?.toInt(),
                         work = map["work"] as String,
                         description = map["description"] as String?,
                         time = map["time"] as String
@@ -180,7 +187,7 @@ class StopWatchFragment : Fragment(), OnTimeItemClickListenerCustom {
         }
     }
 
-    private fun writeDatabaseTest() {
+    fun writeDatabaseTest() {
         date = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(Date())
         val documentRef = firestore.collection("Users_Collection").document(username).collection("More_Details").document("TimeRecord")
         documentRef.update(date, list)
@@ -200,11 +207,12 @@ class StopWatchFragment : Fragment(), OnTimeItemClickListenerCustom {
     override fun onTimeItemDelete(item: StructureStopWatch) {
         val context = context
         list.remove(item)
-        firestore.collection("Users_Collection").document(username).collection("More_Details").document("TimeRecord")
-            .update(date, FieldValue.arrayRemove(item))
-            .addOnSuccessListener {
-                Toast.makeText(context, "Time deleted", Toast.LENGTH_SHORT).show()
-            }
+//        firestore.collection("Users_Collection").document(username).collection("More_Details").document("TimeRecord")
+//            .update(date, FieldValue.arrayRemove(item))
+//            .addOnSuccessListener {
+//                Toast.makeText(context, "Time deleted successfull", Toast.LENGTH_SHORT).show()
+//            }
+        writeDatabaseTest()
         adapter.notifyDataSetChanged()
     }
 
@@ -223,7 +231,8 @@ class StopWatchFragment : Fragment(), OnTimeItemClickListenerCustom {
             StopWatchService.runningSavedState = false
         }
         StopWatchService.lastLapTime = lastLapTime
-        writeDatabaseTest()
+        StopWatchService.lapService = list
+//        writeDatabaseTest()
 
     }
 
@@ -232,12 +241,13 @@ class StopWatchFragment : Fragment(), OnTimeItemClickListenerCustom {
         running = StopWatchService.runningSavedState
         isPause = StopWatchService.isPauseSavedState
         lastLapTime = StopWatchService.lastLapTime
+//        list = StopWatchService.lapService
+//        StopWatchService.lapService
         if (running && !isPause) {
             start_stop.text = getString(R.string.stop)
         }
     }
 
-    @Suppress("SENSELESS_COMPARISON")
     override fun onDestroy() {
         super.onDestroy()
         listenerRegistration?.remove()

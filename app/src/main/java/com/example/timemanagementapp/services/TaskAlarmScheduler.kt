@@ -30,9 +30,7 @@ class TaskAlarmScheduler(val context: Context) {
         val timeDifference = time - System.currentTimeMillis()
         val hours = TimeUnit.MILLISECONDS.toHours(timeDifference)
         val minutes = TimeUnit.MILLISECONDS.toMinutes(timeDifference) % 60
-        val seconds = TimeUnit.MILLISECONDS.toSeconds(timeDifference) % 60
-//        val timeRemaining = String.format("%02d:%02d:%02d", hours, minutes, seconds)
-        Toast.makeText(context, "Alarm set for $hours and $minutes minutes ", Toast.LENGTH_SHORT).show()
+        Toast.makeText(context, "Alarm set for $hours hrs and $minutes mins ", Toast.LENGTH_SHORT).show()
 
     }
 }

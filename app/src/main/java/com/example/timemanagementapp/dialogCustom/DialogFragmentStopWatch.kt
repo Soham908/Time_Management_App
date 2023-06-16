@@ -40,7 +40,9 @@ class DialogFragmentStopWatch(val item: StructureStopWatch) : DialogFragment() {
             val work = arguments?.getString("subject")
 
             userWork = binding.timeDialogWork
-            userWork.setText(work)
+            if (work != "default") {
+                userWork.setText(work)
+            }
             userWork.requestFocus()
             userDescription = binding.timeDialogDescription
 

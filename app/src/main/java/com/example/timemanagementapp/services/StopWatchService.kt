@@ -9,6 +9,8 @@ import androidx.core.app.NotificationCompat
 import androidx.lifecycle.MutableLiveData
 import com.example.timemanagementapp.MainActivity
 import com.example.timemanagementapp.R
+import com.example.timemanagementapp.broadcastReceiver.StopwatchTimeLapReceiver
+import com.example.timemanagementapp.structure_data_class.StructureStopWatch
 import kotlinx.coroutines.*
 import java.util.concurrent.TimeUnit
 
@@ -33,6 +35,7 @@ class StopWatchService : Service() {
         var startTime = SystemClock.elapsedRealtime()
         var elapsedTime = 0L
         var lastLapTime = 0L
+        lateinit var lapService: MutableList<StructureStopWatch>
     }
 
 
@@ -72,12 +75,18 @@ class StopWatchService : Service() {
         }
         val pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_IMMUTABLE)
 
+        val lapIntent = Intent(this, StopwatchTimeLapReceiver::class.java).apply {
+            putExtra("lapTime", "Lap")
+        }
+        val lapPendingIntent = PendingIntent.getBroadcast(this, 0, lapIntent, PendingIntent.FLAG_IMMUTABLE)
+
         return NotificationCompat.Builder(this, NOTIFICATION_CHANNEL_ID)
             .setContentTitle("Timer Running")
             .setContentText("00:00:00")
             .setSmallIcon(R.drawable.bottom_nav_homepage)
             .setContentIntent(pendingIntent)
             .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
+            .addAction(0, "Lap", lapPendingIntent)
     }
 
     private fun updateNotification(elapsedTime: Long) {

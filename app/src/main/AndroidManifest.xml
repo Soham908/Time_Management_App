@@ -48,12 +48,8 @@
             </intent-filter>
         </activity>
 
-        <receiver android:name=".broadcastReceiver.TaskAlarmBroadcastReceiver"
-            android:exported="false"
-            android:enabled="true"
-            >
-
-        </receiver>
+        <receiver android:name=".broadcastReceiver.TaskAlarmBroadcastReceiver" />
+        <receiver android:name=".broadcastReceiver.StopwatchTimeLapReceiver"/>
 
         <service android:name=".services.StopWatchService"/>
     </application>
