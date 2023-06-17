@@ -122,7 +122,7 @@ class TodoListFragment : Fragment(), OnTaskItemClick {
         val hour = calender.get(Calendar.HOUR_OF_DAY)
         val minutes = calender.get(Calendar.MINUTE)
 
-        val timePickerDialog = TimePickerDialog(context, TimePickerDialog.OnTimeSetListener{_, hour2, minute2 ->
+        val timePickerDialog = TimePickerDialog(context, { _, hour2, minute2 ->
             val calendar = Calendar.getInstance()
             calendar.set(Calendar.HOUR_OF_DAY, hour2)
             calendar.set(Calendar.MINUTE, minute2)

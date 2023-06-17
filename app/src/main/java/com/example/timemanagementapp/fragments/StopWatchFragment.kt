@@ -46,6 +46,9 @@ class StopWatchFragment : Fragment(), OnTimeItemClickListenerCustom {
     var secs = 0L
 
     var elapsedTime2 = 0L
+    var currentHour = 0
+    var currentMinute = 0
+    var currentSecond = 0
     var username = MainActivity.username
     lateinit var start_stop: Button
 
@@ -81,6 +84,11 @@ class StopWatchFragment : Fragment(), OnTimeItemClickListenerCustom {
                     requireActivity().startService(Intent(context, StopWatchService::class.java))
                     service.resumeStopWatch()
                     lap.isVisible = true
+
+                    val calendar = Calendar.getInstance()
+                    currentHour = calendar.get(Calendar.HOUR_OF_DAY)
+                    currentMinute = calendar.get(Calendar.MINUTE)
+                    currentSecond = calendar.get(Calendar.SECOND) % 60
                 } else if (!running && isPause) {
                     service.resumeStopWatch()
                     lap.isVisible = true
@@ -104,10 +112,22 @@ class StopWatchFragment : Fragment(), OnTimeItemClickListenerCustom {
             val hours2 = TimeUnit.MILLISECONDS.toHours(elapsedTime)
             val minutes2 = TimeUnit.MILLISECONDS.toMinutes(elapsedTime) % 60
             val secs2 = TimeUnit.MILLISECONDS.toSeconds(elapsedTime) % 60
-            val time =  String.format("CL: %02d:%02d:%02d           TT: %02d:%02d:%02d", hours2, minutes2, secs2, hours, minutes, secs)
+
+            val calendar = Calendar.getInstance()
+            val nextTimeHour = calendar.get(Calendar.HOUR_OF_DAY)
+            val nextTimeMinute = calendar.get(Calendar.MINUTE) % 60
+            val nextTimeSecond = calendar.get(Calendar.SECOND) % 60
+
+//            val time =  String.format("%02d:%02d:%02d  to  %02d:%02d%02d       Lap  %02d:%02d:%02d", currentHour, currentMinute, currentSecond, nextTimeHour, nextTimeMinute,nextTimeSecond, hours2, minutes2, secs2)
+            val time =  String.format("%02d:%02d  to  %02d:%02d       Lap  %02d:%02d:%02d", currentHour, currentMinute, nextTimeHour, nextTimeMinute, hours2, minutes2, secs2)
             lastLapTime = elapsedTime2
             list.add(StructureStopWatch(null, time, "default", "default"))
             adapter.notifyDataSetChanged()
+
+            currentHour = nextTimeHour
+            currentMinute = nextTimeMinute
+            currentSecond = nextTimeSecond
+
             writeDatabaseTest()
             StopWatchService.lapService = list
             StopWatchService.lastLapTime = lastLapTime
@@ -119,6 +139,7 @@ class StopWatchFragment : Fragment(), OnTimeItemClickListenerCustom {
             requireActivity().stopService(Intent(context, StopWatchService::class.java))
             timer.text = getString(R.string.startTime)
             StopWatchService.num.postValue(0L)
+            lastLapTime = 0L
             start_stop.text = startString
             lap.isVisible = false
         }
