@@ -1,10 +1,8 @@
 package com.example.timemanagementapp.broadcastReceiver
 
-import android.annotation.SuppressLint
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
-import android.content.SharedPreferences
 import android.widget.Toast
 import com.example.timemanagementapp.fragments.StopWatchFragment
 import com.example.timemanagementapp.services.StopWatchService
@@ -17,12 +15,11 @@ import java.util.concurrent.TimeUnit
 
 class StopwatchTimeLapReceiver: BroadcastReceiver() {
 
-    lateinit var firestore: FirebaseFirestore
-    lateinit var date: String
-    lateinit var sharedPreferences: SharedPreferences
+    private lateinit var firestore: FirebaseFirestore
+    private lateinit var date: String
 
     override fun onReceive(context: Context?, intent: Intent?) {
-
+        val username = StopWatchService.username
         val elapsedTime2 = StopWatchService.num.value!!
         val hours = TimeUnit.MILLISECONDS.toHours(elapsedTime2)
         val minutes = TimeUnit.MILLISECONDS.toMinutes(elapsedTime2) % 60
@@ -34,11 +31,11 @@ class StopwatchTimeLapReceiver: BroadcastReceiver() {
         val minutes2 = TimeUnit.MILLISECONDS.toMinutes(currentElapsedTime) % 60
         val seconds2 = TimeUnit.MILLISECONDS.toSeconds(currentElapsedTime) % 60
 
-        val time =  String.format("CL: %02d:%02d:%02d           TT: %02d:%02d:%02d", hours2, minutes2, seconds2, hours, minutes, seconds,)
+        val time =  String.format("CL: %02d:%02d:%02d           TT: %02d:%02d:%02d", hours2, minutes2, seconds2, hours, minutes, seconds)
         date = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(Date())
         firestore = FirebaseFirestore.getInstance()
-        val docRef = firestore.collection("Users_Collection").document("test2").collection("More_Details").document("TimeRecord")
-        docRef.update(date, FieldValue.arrayUnion(StructureStopWatch(111, time.toString(), "default", "default")))
+        val docRef = firestore.collection("Users_Collection").document(username).collection("More_Details").document("TimeRecord")
+        docRef.update(date, FieldValue.arrayUnion(StructureStopWatch(111, time, "default", "default")))
             .addOnSuccessListener {
                 Toast.makeText(context, "added lap", Toast.LENGTH_SHORT).show()
             }

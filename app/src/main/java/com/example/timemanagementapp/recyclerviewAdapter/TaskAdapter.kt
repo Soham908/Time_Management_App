@@ -18,10 +18,12 @@ class TaskAdapter(val onTaskItemClick: OnTaskItemClick, val context: Context, pr
     inner class TaskViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
         val taskSubject: TextView = itemView.findViewById(R.id.taskRecyclerItemSub)
         val taskDescription: TextView = itemView.findViewById(R.id.taskRecyclerItemDes)
+        val taskAlarmTime: TextView = itemView.findViewById(R.id.taskRecyclerAlarmTime)
+
 //        val checkedTextView: CheckedTextView = itemView.findViewById(R.id.taskRecyclerItem3)
 
         fun bind(item: StructureTask) {
-            itemView.findViewById<ImageView>(R.id.taskRecyclerEdit).setOnClickListener {
+            itemView.setOnClickListener {
                 onTaskItemClick.onTaskItemClickFunc(item)
             }
             itemView.findViewById<ImageView>(R.id.taskRecyclerDelete).setOnClickListener {
@@ -46,6 +48,7 @@ class TaskAdapter(val onTaskItemClick: OnTaskItemClick, val context: Context, pr
     override fun onBindViewHolder(holder: TaskViewHolder, position: Int) {
         holder.taskSubject.text = list[position].taskSubject
         holder.taskDescription.text = list[position].taskDescription
+        holder.taskAlarmTime.text = list[position].taskTime
         val item = list[position]
 
         holder.bind(item)

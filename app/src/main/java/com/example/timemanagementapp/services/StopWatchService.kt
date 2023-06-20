@@ -36,6 +36,7 @@ class StopWatchService : Service() {
         var elapsedTime = 0L
         var lastLapTime = 0L
         lateinit var lapService: MutableList<StructureStopWatch>
+        val username = MainActivity.username
     }
 
 

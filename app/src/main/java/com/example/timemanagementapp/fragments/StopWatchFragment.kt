@@ -8,19 +8,17 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.timemanagementapp.MainActivity
 import com.example.timemanagementapp.R
 import com.example.timemanagementapp.databinding.FragmentStopWatchBinding
+import com.example.timemanagementapp.dialogCustom.DialogFragmentStopWatch
 import com.example.timemanagementapp.interfaces.OnTimeItemClickListenerCustom
 import com.example.timemanagementapp.recyclerviewAdapter.StopwatchAdapter
-import com.example.timemanagementapp.structure_data_class.StructureStopWatch
-import com.example.timemanagementapp.dialogCustom.DialogFragmentStopWatch
 import com.example.timemanagementapp.services.StopWatchService
-import com.google.firebase.firestore.FieldValue
+import com.example.timemanagementapp.structure_data_class.StructureStopWatch
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ListenerRegistration
 import java.io.*
@@ -81,15 +79,16 @@ class StopWatchFragment : Fragment(), OnTimeItemClickListenerCustom {
         start_stop.setOnClickListener {
             if(start_stop.text == "Start") {
                 if (!running && !isPause) {
-                    requireActivity().startService(Intent(context, StopWatchService::class.java))
+                    context?.startService(Intent(context, StopWatchService::class.java))
                     service.resumeStopWatch()
                     lap.isVisible = true
 
                     val calendar = Calendar.getInstance()
                     currentHour = calendar.get(Calendar.HOUR_OF_DAY)
                     currentMinute = calendar.get(Calendar.MINUTE)
-                    currentSecond = calendar.get(Calendar.SECOND) % 60
-                } else if (!running && isPause) {
+                    currentSecond = calendar.get(Calendar.SECOND)
+                }
+                else if (!running && isPause) {
                     service.resumeStopWatch()
                     lap.isVisible = true
                     isPause = false
@@ -184,7 +183,12 @@ class StopWatchFragment : Fragment(), OnTimeItemClickListenerCustom {
                 Log.e("dataError", "error be :: ${error.message}")
             }
             Log.d("dataFirebase", value?.data.toString() + " " + username)
-            val check = value?.get(date) ?: return@addSnapshotListener
+            val check = value?.get(date)
+            if (check == null){
+                list.clear()
+                adapter.notifyDataSetChanged()
+                return@addSnapshotListener
+            }
             Log.d("dataFirebase", "check var $check")
             if (value.data!!.isNotEmpty()){
                 Log.d("dataFirebase", value.data!!.toString())
@@ -208,7 +212,7 @@ class StopWatchFragment : Fragment(), OnTimeItemClickListenerCustom {
         }
     }
 
-    fun writeDatabaseTest() {
+    private fun writeDatabaseTest() {
         date = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(Date())
         val documentRef = firestore.collection("Users_Collection").document(username).collection("More_Details").document("TimeRecord")
         documentRef.update(date, list)
@@ -226,12 +230,11 @@ class StopWatchFragment : Fragment(), OnTimeItemClickListenerCustom {
 
     @SuppressLint("NotifyDataSetChanged")
     override fun onTimeItemDelete(item: StructureStopWatch) {
-        val context = context
         list.remove(item)
 //        firestore.collection("Users_Collection").document(username).collection("More_Details").document("TimeRecord")
 //            .update(date, FieldValue.arrayRemove(item))
 //            .addOnSuccessListener {
-//                Toast.makeText(context, "Time deleted successfull", Toast.LENGTH_SHORT).show()
+//                Toast.makeText(context, "Time deleted successful", Toast.LENGTH_SHORT).show()
 //            }
         writeDatabaseTest()
         adapter.notifyDataSetChanged()
@@ -262,10 +265,17 @@ class StopWatchFragment : Fragment(), OnTimeItemClickListenerCustom {
         running = StopWatchService.runningSavedState
         isPause = StopWatchService.isPauseSavedState
         lastLapTime = StopWatchService.lastLapTime
-//        list = StopWatchService.lapService
-//        StopWatchService.lapService
         if (running && !isPause) {
             start_stop.text = getString(R.string.stop)
+        }
+        checkDate()
+    }
+
+    private fun checkDate() {
+        val calendar = Calendar.getInstance()
+        val timeCheck = calendar.get(Calendar.HOUR_OF_DAY)
+        if (timeCheck == 0){
+            snapshotListener()
         }
     }
 

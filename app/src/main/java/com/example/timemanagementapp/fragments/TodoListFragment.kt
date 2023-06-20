@@ -29,7 +29,9 @@ class TodoListFragment : Fragment(), OnTaskItemClick {
 
     private lateinit var binding: FragmentTodoListBinding
     private lateinit var adapter: TaskAdapter
-    private var list = mutableListOf<StructureTask>()
+    companion object {
+        var taskMutableList = mutableListOf<StructureTask>()
+    }
     private lateinit var firestore: FirebaseFirestore
     private lateinit var parentFragment: FragmentManager
     private lateinit var username: String
@@ -58,13 +60,14 @@ class TodoListFragment : Fragment(), OnTaskItemClick {
     }
 
     private fun setRecyclerView(){
-        adapter = TaskAdapter(this, requireContext(), list)
+        adapter = TaskAdapter(this, requireContext(), taskMutableList)
         val recyclerview = binding.taskRecyclerView
         recyclerview.adapter = adapter
         recyclerview.layoutManager = LinearLayoutManager(requireContext())
     }
 
 
+    @Suppress("UNCHECKED_CAST")
     @SuppressLint("NotifyDataSetChanged")
     fun selectData(){
     // /Users_Collection/Soham/More Details/Tasks
@@ -90,9 +93,9 @@ class TodoListFragment : Fragment(), OnTaskItemClick {
                     )
                 }
                 Log.d("dataFirebase1", taskObject.toString())
-                list.clear()
+                taskMutableList.clear()
                 for (task in taskObject) {
-                    list.add(task)
+                    taskMutableList.add(task)
                 }
                 adapter.notifyDataSetChanged()
             }
@@ -106,7 +109,7 @@ class TodoListFragment : Fragment(), OnTaskItemClick {
             putString("subject", item.taskSubject)
             putString("description", item.taskDescription)
         }
-        val bottomSheet = BottomSheetToDo()
+        val bottomSheet = BottomSheetToDo(item)
         bottomSheet.arguments = bundle
         bottomSheet.show(parentFragmentManager, "ths be")
     }
@@ -116,6 +119,7 @@ class TodoListFragment : Fragment(), OnTaskItemClick {
         documentRef.update("new_task", FieldValue.arrayRemove(item))
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     override fun onTaskItemClickAlarm(item: StructureTask) {
 
         val calender = Calendar.getInstance()
@@ -133,6 +137,9 @@ class TodoListFragment : Fragment(), OnTaskItemClick {
 
             Log.d("dataTime", "todo  $minute2  $hour2  ${item.taskSubject}  $item")
             TaskAlarmScheduler(requireContext()).scheduleAlarm(alarmTime, item.taskSubject)
+            item.taskTime = "Alarm: $hour2:$minute2"
+            adapter.notifyDataSetChanged()
+
         }, hour, minutes, false)
 
         timePickerDialog.show()

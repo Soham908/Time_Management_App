@@ -48,13 +48,14 @@
     <string name="attachment_summary_off">Only download attachments when manually requested</string>
     <string name="ss">start</string>
     <string name="cancel">Cancel</string>
-    <string name="ok">Ok</string>
+    <string name="ok">OK</string>
     <string name="update">Update</string>
     <string name="lap">Lap</string>
     <string name="welcome_back">Welcome Back !!</string>
     <string name="task">Task</string>
     <string name="habit">Habit</string>
     <string name="add_a_new_task">Add a New Task</string>
+    <string name="set_alarm">Set alarm</string>
 
     <string-array name="settingsMultiListTime">
         <item>1</item>
