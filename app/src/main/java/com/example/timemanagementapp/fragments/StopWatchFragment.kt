@@ -35,6 +35,8 @@ class StopWatchFragment : Fragment(), OnTimeItemClickListenerCustom {
     companion object {
         var list = mutableListOf<StructureStopWatch>()
         var lastLapTime = 0L
+        var lapStartHour = 0
+        var lapStartMinute = 0
     }
     lateinit var firestore: FirebaseFirestore
     var listenerRegistration: ListenerRegistration? = null
@@ -44,11 +46,10 @@ class StopWatchFragment : Fragment(), OnTimeItemClickListenerCustom {
     var secs = 0L
 
     var elapsedTime2 = 0L
-    var currentHour = 0
-    var currentMinute = 0
-    var currentSecond = 0
+    var lapStartSeconds = 0
     var username = MainActivity.username
     lateinit var start_stop: Button
+
 
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -84,9 +85,9 @@ class StopWatchFragment : Fragment(), OnTimeItemClickListenerCustom {
                     lap.isVisible = true
 
                     val calendar = Calendar.getInstance()
-                    currentHour = calendar.get(Calendar.HOUR_OF_DAY)
-                    currentMinute = calendar.get(Calendar.MINUTE)
-                    currentSecond = calendar.get(Calendar.SECOND)
+                    lapStartHour = calendar.get(Calendar.HOUR_OF_DAY)
+                    lapStartMinute = calendar.get(Calendar.MINUTE)
+                    lapStartSeconds = calendar.get(Calendar.SECOND)
                 }
                 else if (!running && isPause) {
                     service.resumeStopWatch()
@@ -113,23 +114,26 @@ class StopWatchFragment : Fragment(), OnTimeItemClickListenerCustom {
             val secs2 = TimeUnit.MILLISECONDS.toSeconds(elapsedTime) % 60
 
             val calendar = Calendar.getInstance()
-            val nextTimeHour = calendar.get(Calendar.HOUR_OF_DAY)
-            val nextTimeMinute = calendar.get(Calendar.MINUTE) % 60
-            val nextTimeSecond = calendar.get(Calendar.SECOND) % 60
+            val lapCurrentHour = calendar.get(Calendar.HOUR_OF_DAY)
+            val lapCurrentMinute = calendar.get(Calendar.MINUTE)
+            val lapCurrentSeconds = calendar.get(Calendar.SECOND)
 
 //            val time =  String.format("%02d:%02d:%02d  to  %02d:%02d%02d       Lap  %02d:%02d:%02d", currentHour, currentMinute, currentSecond, nextTimeHour, nextTimeMinute,nextTimeSecond, hours2, minutes2, secs2)
-            val time =  String.format("%02d:%02d  to  %02d:%02d       Lap  %02d:%02d:%02d", currentHour, currentMinute, nextTimeHour, nextTimeMinute, hours2, minutes2, secs2)
+            val time =  String.format("%02d:%02d  to  %02d:%02d       Lap  %02d:%02d:%02d", lapStartHour, lapStartMinute, lapCurrentHour, lapCurrentMinute, hours2, minutes2, secs2)
             lastLapTime = elapsedTime2
             list.add(StructureStopWatch(null, time, "default", "default"))
             adapter.notifyDataSetChanged()
 
-            currentHour = nextTimeHour
-            currentMinute = nextTimeMinute
-            currentSecond = nextTimeSecond
+            lapStartHour = lapCurrentHour
+            lapStartMinute = lapCurrentMinute
+            lapStartSeconds = lapCurrentSeconds
 
             writeDatabaseTest()
-            StopWatchService.lapService = list
+            StopWatchService.lapListBroadcastReceiver = list
             StopWatchService.lastLapTime = lastLapTime
+
+            StopWatchService.lapStartHourState = lapStartHour
+            StopWatchService.lapStartMinuteState = lapStartMinute
         }
 
         reset.setOnClickListener {
@@ -242,6 +246,12 @@ class StopWatchFragment : Fragment(), OnTimeItemClickListenerCustom {
 
     override fun onPause() {
         super.onPause()
+        passVarToService()
+//        writeDatabaseTest()
+
+    }
+
+    private fun passVarToService() {
         if (running && !isPause){
             StopWatchService.isPauseSavedState = false
             StopWatchService.runningSavedState = true
@@ -254,27 +264,43 @@ class StopWatchFragment : Fragment(), OnTimeItemClickListenerCustom {
             StopWatchService.isPauseSavedState = false
             StopWatchService.runningSavedState = false
         }
+        // pass last lap time
         StopWatchService.lastLapTime = lastLapTime
-        StopWatchService.lapService = list
-//        writeDatabaseTest()
+        // pass list to service for broadcast receiver
+        StopWatchService.lapListBroadcastReceiver = list
+        // pass the start time of lap
+        StopWatchService.lapStartHourState = lapStartHour
+        StopWatchService.lapStartMinuteState = lapStartMinute
 
     }
 
     override fun onResume() {
         super.onResume()
-        running = StopWatchService.runningSavedState
-        isPause = StopWatchService.isPauseSavedState
-        lastLapTime = StopWatchService.lastLapTime
+
         if (running && !isPause) {
             start_stop.text = getString(R.string.stop)
         }
+        fetchVarFromService()
         checkDate()
+    }
+
+    private fun fetchVarFromService() {
+        // state of the stopwatch
+        running = StopWatchService.runningSavedState
+        isPause = StopWatchService.isPauseSavedState
+        // last lap time
+        lastLapTime = StopWatchService.lastLapTime
+        // fetch the lap start time, because when app restarts it will show 0
+        lapStartHour = StopWatchService.lapStartHourState
+        lapStartMinute = StopWatchService.lapStartMinuteState
+
     }
 
     private fun checkDate() {
         val calendar = Calendar.getInstance()
         val timeCheck = calendar.get(Calendar.HOUR_OF_DAY)
-        if (timeCheck == 0){
+        // temp solution
+        if (timeCheck > 10){
             snapshotListener()
         }
     }

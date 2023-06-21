@@ -23,20 +23,31 @@ class StopWatchService : Service() {
     }
     private lateinit var notificationBuilder: NotificationCompat.Builder
 
+    var startTime = SystemClock.elapsedRealtime()
+    var elapsedTime = 0L
+
     companion object {
         private const val NOTIFICATION_CHANNEL_ID = "timer_channel"
         private const val NOTIFICATION_ID = 1
+        // for passing the current time all over the app
         var num = MutableLiveData<Long>()
         // Just be aware that using global variables can lead to potential issues such as data inconsistency and memory leaks
+
+        // saving the state of the stopwatch when app is closed
         var isPause = false
         var runningSavedState = false
         var isPauseSavedState = isPause
 
-        var startTime = SystemClock.elapsedRealtime()
-        var elapsedTime = 0L
+        // for saving the last lap time when the app is closed
         var lastLapTime = 0L
-        lateinit var lapService: MutableList<StructureStopWatch>
-        val username = MainActivity.username
+
+        // to pass the list of lap and the username to the broadcast receiver
+        lateinit var lapListBroadcastReceiver: MutableList<StructureStopWatch>
+        val usernameBroadcastReceiver = MainActivity.username
+
+        // lap start time save
+        var lapStartHourState = 0
+        var lapStartMinuteState = 0
     }
 
 
