@@ -8,8 +8,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.timemanagementapp.MainActivity
 import com.example.timemanagementapp.R
@@ -21,8 +23,13 @@ import com.example.timemanagementapp.services.StopWatchService
 import com.example.timemanagementapp.structure_data_class.StructureStopWatch
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ListenerRegistration
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import java.io.*
 import java.text.SimpleDateFormat
+import java.time.LocalDate
+import java.time.temporal.WeekFields
 import java.util.*
 import java.util.concurrent.TimeUnit
 
@@ -178,23 +185,24 @@ class StopWatchFragment : Fragment(), OnTimeItemClickListenerCustom {
     @SuppressLint("NotifyDataSetChanged")
     private fun snapshotListener(){
         date = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(Date())
-        if (username.isEmpty()){
-            username = "tester"
-        }
-        val documentRef = firestore.collection("Users_Collection").document(username).collection("More_Details").document("TimeRecord")
+        if (username.isEmpty()) return
+        val currentDate = LocalDate.now()
+        val currentWeekOfMonth = currentDate.get(WeekFields.of(Locale.getDefault()).weekOfMonth())
+
+        val documentRef = firestore.document("/Users_Collection/$username/More_Details/TimeRecord/2023/June/weeks/week$currentWeekOfMonth")
+//        val documentRef = firestore.document("/Users_Collection/test2/More_Details/TimeRecord")
         listenerRegistration = documentRef.addSnapshotListener { value, error ->
             if(error != null){
-                Log.e("dataError", "error be :: ${error.message}")
+                Toast.makeText(context, "error $error ", Toast.LENGTH_SHORT).show()
+                return@addSnapshotListener
             }
-            Log.d("dataFirebase", value?.data.toString() + " " + username)
             val check = value?.get(date)
             if (check == null){
                 list.clear()
                 adapter.notifyDataSetChanged()
-                return@addSnapshotListener
+                documentRef.update(date, emptyList<Any>())
             }
-            Log.d("dataFirebase", "check var $check")
-            if (value.data!!.isNotEmpty()){
+            if (value?.data!!.isNotEmpty()){
                 Log.d("dataFirebase", value.data!!.toString())
                 val lapList = value.get(date) as List<Map<*, *>>
                 val lapObject = lapList.map { map ->
@@ -216,9 +224,12 @@ class StopWatchFragment : Fragment(), OnTimeItemClickListenerCustom {
         }
     }
 
+
     private fun writeDatabaseTest() {
         date = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(Date())
-        val documentRef = firestore.collection("Users_Collection").document(username).collection("More_Details").document("TimeRecord")
+        val currentDate = LocalDate.now()
+        val currentWeekOfMonth = currentDate.get(WeekFields.of(Locale.getDefault()).weekOfMonth())
+        val documentRef = firestore.document("/Users_Collection/$username/More_Details/TimeRecord/2023/June/weeks/week$currentWeekOfMonth")
         documentRef.update(date, list)
     }
 
@@ -282,6 +293,7 @@ class StopWatchFragment : Fragment(), OnTimeItemClickListenerCustom {
         }
         fetchVarFromService()
         checkDate()
+        mainThis()
     }
 
     private fun fetchVarFromService() {
@@ -301,8 +313,17 @@ class StopWatchFragment : Fragment(), OnTimeItemClickListenerCustom {
         val timeCheck = calendar.get(Calendar.HOUR_OF_DAY)
         // temp solution
         if (timeCheck > 10){
-            snapshotListener()
+            viewLifecycleOwner.lifecycleScope.launch {
+                snapshotListener()
+            }
         }
+    }
+
+    fun mainThis() {
+        val currentDate = LocalDate.now()
+        val currentWeekOfMonth = currentDate.get(WeekFields.of(Locale.getDefault()).weekOfMonth())
+
+        Log.d("dataFirebase1", currentWeekOfMonth.toString())
     }
 
     override fun onDestroy() {
