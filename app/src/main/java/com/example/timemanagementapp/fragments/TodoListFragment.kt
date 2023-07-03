@@ -53,7 +53,7 @@ class TodoListFragment : Fragment(), OnTaskItemClick {
         }
 
         val firebaseAuth = FirebaseAuth.getInstance().currentUser?.uid
-        Log.d("dataFirebase1", firebaseAuth.toString() + " todo on create")
+//        Log.d("dataFirebase1", firebaseAuth.toString() + " to do on create")
 
         selectData()
         return view
@@ -78,7 +78,7 @@ class TodoListFragment : Fragment(), OnTaskItemClick {
                 Toast.makeText(requireContext(), "$error", Toast.LENGTH_SHORT).show()
             }
             val data = value?.data?.values ?: return@addSnapshotListener
-            Log.d("dataFirebase", data.toString())
+//            Log.d("dataFirebase", data.toString())
             val thisbe = value.get("new_task")
 
             if(thisbe != null) {
@@ -92,7 +92,7 @@ class TodoListFragment : Fragment(), OnTaskItemClick {
                         taskPriority = map["taskPriority"].toString()
                     )
                 }
-                Log.d("dataFirebase1", taskObject.toString())
+//                Log.d("dataFirebase1", taskObject.toString())
                 taskMutableList.clear()
                 for (task in taskObject) {
                     taskMutableList.add(task)
@@ -135,7 +135,7 @@ class TodoListFragment : Fragment(), OnTaskItemClick {
 
             val alarmTime = calendar.timeInMillis
 
-            Log.d("dataTime", "todo  $minute2  $hour2  ${item.taskSubject}  $item")
+//            Log.d("dataTime", "to do  $minute2  $hour2  ${item.taskSubject}  $item")
             TaskAlarmScheduler(requireContext()).scheduleAlarm(alarmTime, item.taskSubject)
             item.taskTime = "Alarm: $hour2:$minute2"
             adapter.notifyDataSetChanged()

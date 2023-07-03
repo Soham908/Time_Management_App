@@ -23,8 +23,7 @@ class StopWatchService : Service() {
     }
     private lateinit var notificationBuilder: NotificationCompat.Builder
 
-    var startTime = SystemClock.elapsedRealtime()
-    var elapsedTime = 0L
+
 
     companion object {
         private const val NOTIFICATION_CHANNEL_ID = "timer_channel"
@@ -48,6 +47,9 @@ class StopWatchService : Service() {
         // lap start time save
         var lapStartHourState = 0
         var lapStartMinuteState = 0
+
+        var startTime = SystemClock.elapsedRealtime()
+        var elapsedTime = 0L
     }
 
 
@@ -116,11 +118,15 @@ class StopWatchService : Service() {
     fun pauseStopWatch(){
         isPause = true
         elapsedTime = SystemClock.elapsedRealtime() - startTime
+        val thatbe = 10
     }
+    // 10  25  elt 15,,  40
     fun resumeStopWatch(){
         isPause = false
         startTime = SystemClock.elapsedRealtime() - elapsedTime
+        val thisbe = 10
     }
+
 
     override fun onDestroy() {
         super.onDestroy()

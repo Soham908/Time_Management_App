@@ -29,7 +29,7 @@ class TaskAlarmBroadcastReceiver: BroadcastReceiver() {
     @SuppressLint("MissingPermission")
     override fun onReceive(context: Context, intent: Intent?) {
         taskSubject = intent?.getStringExtra("extra_message") ?: return
-        Log.d("dataTime", "broadcast received  $taskSubject")
+//        Log.d("dataTime", "broadcast received  $taskSubject")
         notificationManagerCompat = NotificationManagerCompat.from(context)
         notification = buildNotification(context)
 

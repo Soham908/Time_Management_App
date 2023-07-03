@@ -29,11 +29,13 @@ import kotlinx.coroutines.launch
 import java.io.*
 import java.text.SimpleDateFormat
 import java.time.LocalDate
+import java.time.Month
 import java.time.temporal.WeekFields
 import java.util.*
 import java.util.concurrent.TimeUnit
 
 class StopWatchFragment : Fragment(), OnTimeItemClickListenerCustom {
+
     private lateinit var binding: FragmentStopWatchBinding
     private lateinit var service: StopWatchService
     private var running = StopWatchService.runningSavedState
@@ -47,7 +49,6 @@ class StopWatchFragment : Fragment(), OnTimeItemClickListenerCustom {
     }
     lateinit var firestore: FirebaseFirestore
     var listenerRegistration: ListenerRegistration? = null
-    private lateinit var date: String
     var hours = 0L
     var minutes = 0L
     var secs = 0L
@@ -57,6 +58,11 @@ class StopWatchFragment : Fragment(), OnTimeItemClickListenerCustom {
     var username = MainActivity.username
     lateinit var start_stop: Button
 
+    private var date: String = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(Date())
+    private val currentDate: LocalDate = LocalDate.now()
+    private val month = currentDate.month.toString()
+    private val currentWeekOfMonth = currentDate.get(WeekFields.of(Locale.getDefault()).weekOfMonth())
+    private val year: Int = currentDate.year
 
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -111,6 +117,7 @@ class StopWatchFragment : Fragment(), OnTimeItemClickListenerCustom {
                 lap.isVisible = false
                 isPause = true
                 running = false
+
             }
         }
         lap.setOnClickListener {
@@ -125,7 +132,6 @@ class StopWatchFragment : Fragment(), OnTimeItemClickListenerCustom {
             val lapCurrentMinute = calendar.get(Calendar.MINUTE)
             val lapCurrentSeconds = calendar.get(Calendar.SECOND)
 
-//            val time =  String.format("%02d:%02d:%02d  to  %02d:%02d%02d       Lap  %02d:%02d:%02d", currentHour, currentMinute, currentSecond, nextTimeHour, nextTimeMinute,nextTimeSecond, hours2, minutes2, secs2)
             val time =  String.format("%02d:%02d  to  %02d:%02d       Lap  %02d:%02d:%02d", lapStartHour, lapStartMinute, lapCurrentHour, lapCurrentMinute, hours2, minutes2, secs2)
             lastLapTime = elapsedTime2
             list.add(StructureStopWatch(null, time, "default", "default"))
@@ -146,17 +152,16 @@ class StopWatchFragment : Fragment(), OnTimeItemClickListenerCustom {
         reset.setOnClickListener {
             running = false
             isPause = false
-            requireActivity().stopService(Intent(context, StopWatchService::class.java))
-            timer.text = getString(R.string.startTime)
             StopWatchService.num.postValue(0L)
             lastLapTime = 0L
             start_stop.text = startString
             lap.isVisible = false
+            requireActivity().stopService(Intent(context, StopWatchService::class.java))
+            timer.text = getString(R.string.startTime)
         }
 
         StopWatchService.num.observe(viewLifecycleOwner) { elapsedTime ->
             elapsedTime2 = elapsedTime
-            Log.d("dataFirebase", elapsedTime.toString())
             hours = TimeUnit.MILLISECONDS.toHours(elapsedTime)
             minutes = TimeUnit.MILLISECONDS.toMinutes(elapsedTime) % 60
             secs = TimeUnit.MILLISECONDS.toSeconds(elapsedTime) % 60
@@ -184,12 +189,12 @@ class StopWatchFragment : Fragment(), OnTimeItemClickListenerCustom {
     @Suppress("UNCHECKED_CAST")
     @SuppressLint("NotifyDataSetChanged")
     private fun snapshotListener(){
-        date = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(Date())
+//        date = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(Date())
         if (username.isEmpty()) return
         val currentDate = LocalDate.now()
         val currentWeekOfMonth = currentDate.get(WeekFields.of(Locale.getDefault()).weekOfMonth())
 
-        val documentRef = firestore.document("/Users_Collection/$username/More_Details/TimeRecord/2023/June/weeks/week$currentWeekOfMonth")
+        val documentRef = firestore.document("/Users_Collection/$username/More_Details/TimeRecord/$year/$month/weeks/week$currentWeekOfMonth")
 //        val documentRef = firestore.document("/Users_Collection/test2/More_Details/TimeRecord")
         listenerRegistration = documentRef.addSnapshotListener { value, error ->
             if(error != null){
@@ -200,9 +205,10 @@ class StopWatchFragment : Fragment(), OnTimeItemClickListenerCustom {
             if (check == null){
                 list.clear()
                 adapter.notifyDataSetChanged()
-                documentRef.update(date, emptyList<Any>())
+                documentRef.update(date, listOf<Any>())
+                return@addSnapshotListener
             }
-            if (value?.data!!.isNotEmpty()){
+            if ( !value.data.isNullOrEmpty() ){
                 Log.d("dataFirebase", value.data!!.toString())
                 val lapList = value.get(date) as List<Map<*, *>>
                 val lapObject = lapList.map { map ->
@@ -226,10 +232,8 @@ class StopWatchFragment : Fragment(), OnTimeItemClickListenerCustom {
 
 
     private fun writeDatabaseTest() {
-        date = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(Date())
-        val currentDate = LocalDate.now()
-        val currentWeekOfMonth = currentDate.get(WeekFields.of(Locale.getDefault()).weekOfMonth())
-        val documentRef = firestore.document("/Users_Collection/$username/More_Details/TimeRecord/2023/June/weeks/week$currentWeekOfMonth")
+        val documentRef = firestore.document("/Users_Collection/$username/More_Details/TimeRecord/$year/$month/weeks/week$currentWeekOfMonth")
+        Log.d("dataFirebase1", "this is address  week$currentWeekOfMonth  $month  $year")
         documentRef.update(date, list)
     }
 
@@ -293,7 +297,6 @@ class StopWatchFragment : Fragment(), OnTimeItemClickListenerCustom {
         }
         fetchVarFromService()
         checkDate()
-        mainThis()
     }
 
     private fun fetchVarFromService() {
@@ -314,17 +317,12 @@ class StopWatchFragment : Fragment(), OnTimeItemClickListenerCustom {
         // temp solution
         if (timeCheck > 10){
             viewLifecycleOwner.lifecycleScope.launch {
+                date = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(Date())
                 snapshotListener()
             }
         }
     }
 
-    fun mainThis() {
-        val currentDate = LocalDate.now()
-        val currentWeekOfMonth = currentDate.get(WeekFields.of(Locale.getDefault()).weekOfMonth())
-
-        Log.d("dataFirebase1", currentWeekOfMonth.toString())
-    }
 
     override fun onDestroy() {
         super.onDestroy()
