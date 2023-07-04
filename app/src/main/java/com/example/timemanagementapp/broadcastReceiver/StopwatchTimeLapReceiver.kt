@@ -10,13 +10,19 @@ import com.example.timemanagementapp.structure_data_class.StructureStopWatch
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import java.text.SimpleDateFormat
+import java.time.LocalDate
+import java.time.temporal.WeekFields
 import java.util.*
 import java.util.concurrent.TimeUnit
 
 class StopwatchTimeLapReceiver: BroadcastReceiver() {
 
     private lateinit var firestore: FirebaseFirestore
-    private lateinit var date: String
+    private var date: String = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(Date())
+    private val currentDate: LocalDate = LocalDate.now()
+    private val month = currentDate.month.toString()
+    private val currentWeekOfMonth = currentDate.get(WeekFields.of(Locale.getDefault()).weekOfMonth())
+    private val year: Int = currentDate.year
 
     override fun onReceive(context: Context?, intent: Intent?) {
         val username = StopWatchService.usernameBroadcastReceiver
@@ -40,24 +46,24 @@ class StopwatchTimeLapReceiver: BroadcastReceiver() {
         val minutes2 = TimeUnit.MILLISECONDS.toMinutes(currentElapsedTime) % 60
         val seconds2 = TimeUnit.MILLISECONDS.toSeconds(currentElapsedTime) % 60
 
-//        val time =  String.format("CL: %02d:%02d:%02d           TT: %02d:%02d:%02d", hours2, minutes2, seconds2, hoursCurrent, minutesCurrent, secondsCurrent)
         val time =  String.format("%02d:%02d  to  %02d:%02d       Lap  %02d:%02d:%02d", lapStartHour, lapStartMinute, hoursCurrent, minutesCurrent, hours2, minutes2, seconds2)
 
-        date = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(Date())
         firestore = FirebaseFirestore.getInstance()
-        val docRef = firestore.collection("Users_Collection").document(username).collection("More_Details").document("TimeRecord")
-        docRef.update(date, FieldValue.arrayUnion(StructureStopWatch(111, time, "default", "default")))
+        val documentRef = firestore.document("/Users_Collection/$username/More_Details/TimeRecord/$year/$month/weeks/week$currentWeekOfMonth")
+        documentRef.update(date, FieldValue.arrayUnion(StructureStopWatch(111, time, "default", "default")))
             .addOnSuccessListener {
                 Toast.makeText(context, "added lap", Toast.LENGTH_SHORT).show()
             }
         
         // after lap is pressed update the values to service
         StopWatchService.lastLapTime = elapsedTime2
+        StopWatchService.lapStartHourState = hoursCurrent
+        StopWatchService.lapStartMinuteState = minutesCurrent
+        // update the stopwatch fragment values
         StopWatchFragment.lastLapTime = elapsedTime2
         StopWatchFragment.lapStartHour = hoursCurrent
         StopWatchFragment.lapStartMinute = minutesCurrent
-        StopWatchService.lapStartHourState = hoursCurrent
-        StopWatchService.lapStartMinuteState = minutesCurrent
+
     }
 
 }
