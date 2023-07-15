@@ -1,6 +1,7 @@
 package com.example.timemanagementapp.fragments
 
 import android.annotation.SuppressLint
+import android.app.DatePickerDialog
 import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
@@ -38,6 +39,7 @@ class ReportFragment : Fragment() {
 
 //    lateinit var barChart: BarChart
     lateinit var pieChart: PieChart
+    private val calendar: Calendar = Calendar.getInstance()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -47,10 +49,15 @@ class ReportFragment : Fragment() {
         val view: View = inflater.inflate(R.layout.fragment_report, container, false)
         binding = FragmentReportBinding.bind(view)
 
-        val click = binding.button
+//        val click = binding.button
 //        barChart = binding.barChart
         pieChart = binding.pieChart
-        click.setOnClickListener{ getTimeList() }
+        getTimeList()
+//        click.setOnClickListener{ getTimeList() }
+
+        binding.selectDateButton.setOnClickListener{
+            showDatePicker()
+        }
 
 
         return view
@@ -68,7 +75,7 @@ class ReportFragment : Fragment() {
     @SuppressLint("NotifyDataSetChanged")
     private fun getTimeList(){
         firestore = FirebaseFirestore.getInstance()
-        val documentRef = firestore.document("/Users_Collection/$username/More_Details/TimeRecord/$year/$month/weeks/week${currentWeekOfMonth}")
+        val documentRef = firestore.document("/Users_Collection/$username/More_Details/TimeRecord/$year/$month/weeks/week${currentWeekOfMonth-1}")
         documentRef.addSnapshotListener{ value, error ->
             if (error != null){
                 return@addSnapshotListener
@@ -116,6 +123,7 @@ class ReportFragment : Fragment() {
 //        barChart.animateY(2000)
 
         val list:ArrayList<PieEntry> = ArrayList()
+        BarEntry(100f, 100f, "work done")
 //        list.add(PieEntry(100f,"100"))
 //        list.add(PieEntry(101f,"101"))
 //        list.add(PieEntry(102f,"102"))
@@ -164,5 +172,39 @@ class ReportFragment : Fragment() {
 
         return (hours * 3600 + minutes * 60 + seconds).toFloat()
     }
+
+    private fun showDatePicker() {
+        val dateListener = DatePickerDialog.OnDateSetListener { _, year, monthOfYear, dayOfMonth ->
+            // Update the calendar with the selected date
+            calendar.set(Calendar.YEAR, year)
+            calendar.set(Calendar.MONTH, monthOfYear)
+            calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth)
+
+            // Update the TextView with the selected date
+            val selectedDate = formatDate(calendar.time)
+            binding.selectDateTextView.text = selectedDate
+            date = selectedDate
+            getTimeList()
+        }
+
+        // Show the DatePickerDialog
+        val datePickerDialog = DatePickerDialog(
+            requireContext(), dateListener,
+            calendar.get(Calendar.YEAR),
+            calendar.get(Calendar.MONTH),
+            calendar.get(Calendar.DAY_OF_MONTH)
+        )
+
+        datePickerDialog.show()
+    }
+
+    @SuppressLint("SimpleDateFormat")
+    private fun formatDate(date: Date): String {
+        // Format the date using SimpleDateFormat
+        val format = SimpleDateFormat("dd-MM-yyyy")
+
+        return format.format(date)
+    }
+
 
 }

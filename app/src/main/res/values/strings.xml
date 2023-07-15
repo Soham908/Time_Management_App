@@ -56,6 +56,7 @@
     <string name="habit">Habit</string>
     <string name="add_a_new_task">Add a New Task</string>
     <string name="set_alarm">Set alarm</string>
+    <string name="your_time">Your Time Report</string>
 
     <string-array name="settingsMultiListTime">
         <item>1</item>
