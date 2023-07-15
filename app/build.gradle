@@ -4,8 +4,6 @@ plugins {
     id 'kotlin-kapt'
     id 'com.google.gms.google-services'
     id 'com.google.firebase.firebase-perf'
-//    id 'org.jetbrains.kotlin.jvm' version '1.5.21'
-//    id 'org.jetbrains.kotlin.plugin.serialization' version '1.5.21'
 }
 
 android {
@@ -80,7 +78,7 @@ dependencies {
     // removed for now
 
     // optional - Kotlin Extensions and Coroutines support for Room
-    implementation "androidx.room:room-ktx:2.5.1"
+    implementation "androidx.room:room-ktx:2.5.2"
 
     implementation platform('com.google.firebase:firebase-bom:31.4.0')
 
@@ -103,5 +101,6 @@ dependencies {
 
     implementation 'com.google.firebase:firebase-perf-ktx:20.3.3'
 
+    implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
 }
 

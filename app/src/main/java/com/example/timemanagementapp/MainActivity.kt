@@ -93,7 +93,7 @@ class MainActivity : AppCompatActivity() {
             when (item.itemId) {
                 R.id.bottomNavBarMenuStopwatch  ->      {   fragment = StopWatchFragment()    }
                 R.id.bottomNavBarMenuTask       ->      {   fragment = TodoListFragment()     }
-                R.id.bottomNavBarMenuHabit      ->      {   fragment = HabitFragment()        }
+                R.id.bottomNavBarMenuHabit      ->      {   fragment = ReportFragment()        }
                 R.id.bottomNavBarMenuHome       ->      {   fragment = HomePageFragment()     }
                 R.id.bottomNavBarMenuReport     ->      {   fragment = ReportFragment()       }
             }
