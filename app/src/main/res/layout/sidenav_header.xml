@@ -12,7 +12,11 @@
         android:layout_height="wrap_content"
         android:text="@string/welcome_back"
         android:gravity="center"
-        android:textSize="18sp"
+        android:textSize="20sp"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginTop="10dp"
+        android:padding="10dp"
         />
 
     <TextView
@@ -22,6 +26,9 @@
         android:text="@string/username"
         android:gravity="center"
         android:textSize="18sp"
+        android:padding="10dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
         />
 
 </LinearLayout>

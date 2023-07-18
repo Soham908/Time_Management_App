@@ -57,6 +57,9 @@
     <string name="add_a_new_task">Add a New Task</string>
     <string name="set_alarm">Set alarm</string>
     <string name="your_time">Your Time Report</string>
+    <string name="settings">Settings</string>
+    <string name="profile">Profile</string>
+    <string name="tasks">Tasks</string>
 
     <string-array name="settingsMultiListTime">
         <item>1</item>

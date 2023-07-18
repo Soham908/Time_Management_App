@@ -2,18 +2,37 @@
 <menu xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <item
-        android:title="@string/to_do"
-        android:id="@+id/todoTab"
+    <item android:title="Pages">
+        <menu>
+            <item
+                android:title="@string/tasks"
+                android:id="@+id/todoTab"
+                android:icon="@drawable/file"
+                />
+            <item
+                android:title="@string/habit_tracker"
+                android:id="@+id/habitTrackerTab"
+                android:icon="@drawable/history__1_"
+                />
+            <item
+                android:title="@string/exercise"
+                android:id="@+id/exerciseTab"
+                android:icon="@drawable/gym"
+                />
+        </menu>
+    </item>
+    <item android:title="@string/profile"
 
-        />
-    <item
-        android:title="@string/habit_tracker"
-        android:id="@+id/habitTrackerTab"
-        />
-    <item
-        android:title="@string/exercise"
-        android:id="@+id/exerciseTab"
-
-        />
+        >
+        <menu>
+            <item android:title="@string/settings"
+                android:id="@+id/settingsNavBar"
+                android:icon="@drawable/settings_icon"
+                />
+            <item android:title="@string/logout"
+                android:id="@+id/logoutNavBar"
+                android:icon="@drawable/logout_icon"
+                />
+        </menu>
+    </item>
 </menu>
