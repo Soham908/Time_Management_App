@@ -3,8 +3,6 @@ package com.example.timemanagementapp
 import android.content.Intent
 import android.content.res.Configuration
 import android.os.Bundle
-import android.view.Menu
-import android.view.MenuItem
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
@@ -81,7 +79,7 @@ class MainActivity : AppCompatActivity() {
             when (item.itemId) {
                 R.id.bottomNavBarMenuStopwatch  ->      {   fragment = StopWatchFragment()    }
                 R.id.bottomNavBarMenuTask       ->      {   fragment = TodoListFragment()     }
-                R.id.bottomNavBarMenuHabit      ->      {   fragment = ReportFragment()        }
+                R.id.bottomNavBarMenuHabit      ->      {   fragment = HabitFragment()        }
                 R.id.bottomNavBarMenuHome       ->      {   fragment = HomePageFragment()     }
                 R.id.bottomNavBarMenuReport     ->      {   fragment = ReportFragment()       }
             }
@@ -102,15 +100,20 @@ class MainActivity : AppCompatActivity() {
             // setting this as a default fragment, the value will change inside of the when statement
             when(item.itemId)
             {
-                R.id.todoTab ->             { fragment = TodoListFragment() }
-                R.id.habitTrackerTab ->     { fragment = HabitFragment() }
-                R.id.exerciseTab ->         {
-//                    fragment = ExerciseFragment()
-                startActivity(Intent(applicationContext, LoginPage::class.java))
+                R.id.sideNavBarMenuTasks        ->      { fragment = TodoListFragment() }
+                R.id.sideNavBarMenuHabitTracker ->      { fragment = HabitFragment() }
+                R.id.sideNavBarMenuExercise     ->      { fragment = ExerciseFragment() }
+                R.id.sideNavBarMenuSettings     ->      { fragment = SettingsFragment() }
+                R.id.sideNavBarMenuLogout       ->      { startActivity(Intent(applicationContext, LoginPage::class.java))
+                    getSharedPreferences("UserNameLogin", MODE_PRIVATE)
+                        .edit()
+                        .clear()
+                        .apply()
+                    finish()
+                    return@setNavigationItemSelectedListener true
                 }
             }
-
-//            fragmentTransaction(fragment)
+            fragmentTransaction(fragment)
 
             binding.drawerLayout.closeDrawer(GravityCompat.START)
             false

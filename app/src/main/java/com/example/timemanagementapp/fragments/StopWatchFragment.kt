@@ -189,13 +189,11 @@ class StopWatchFragment : Fragment(), OnTimeItemClickListenerCustom {
     @Suppress("UNCHECKED_CAST")
     @SuppressLint("NotifyDataSetChanged")
     private fun snapshotListener(){
-//        date = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(Date())
         if (username.isEmpty()) return
         val currentDate = LocalDate.now()
         val currentWeekOfMonth = currentDate.get(WeekFields.of(Locale.getDefault()).weekOfMonth())
 
         val documentRef = firestore.document("/Users_Collection/$username/More_Details/TimeRecord/$year/$month/weeks/week${currentWeekOfMonth-1}")
-//        val documentRef = firestore.document("/Users_Collection/test2/More_Details/TimeRecord")
         listenerRegistration = documentRef.addSnapshotListener { value, error ->
             if(error != null){
                 Toast.makeText(context, "error $error ", Toast.LENGTH_SHORT).show()

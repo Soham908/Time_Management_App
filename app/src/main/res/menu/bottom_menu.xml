@@ -18,7 +18,7 @@
         android:id="@+id/bottomNavBarMenuHabit"
         android:title="@string/habit"
         android:icon="@drawable/habitcurrent"
-
+        android:visible="false"
         />
     <item
         android:id="@+id/bottomNavBarMenuHome"
@@ -30,7 +30,7 @@
         android:id="@+id/bottomNavBarMenuReport"
         android:title="@string/report"
         android:icon="@drawable/bottom_nav_report"
-        android:visible="false"
+        android:visible="true"
         />
 
 </menu>

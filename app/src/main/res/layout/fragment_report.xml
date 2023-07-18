@@ -90,7 +90,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="112dp"
         android:minHeight="48dp"
-        android:text="Switch"
+        android:text="BarChart"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.795"
         app:layout_constraintStart_toStartOf="parent"

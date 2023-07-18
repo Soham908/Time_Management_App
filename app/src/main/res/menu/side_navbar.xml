@@ -6,17 +6,17 @@
         <menu>
             <item
                 android:title="@string/tasks"
-                android:id="@+id/todoTab"
+                android:id="@+id/sideNavBarMenuTasks"
                 android:icon="@drawable/file"
                 />
             <item
                 android:title="@string/habit_tracker"
-                android:id="@+id/habitTrackerTab"
+                android:id="@+id/sideNavBarMenuHabitTracker"
                 android:icon="@drawable/history__1_"
                 />
             <item
                 android:title="@string/exercise"
-                android:id="@+id/exerciseTab"
+                android:id="@+id/sideNavBarMenuExercise"
                 android:icon="@drawable/gym"
                 />
         </menu>
@@ -26,11 +26,11 @@
         >
         <menu>
             <item android:title="@string/settings"
-                android:id="@+id/settingsNavBar"
+                android:id="@+id/sideNavBarMenuSettings"
                 android:icon="@drawable/settings_icon"
                 />
             <item android:title="@string/logout"
-                android:id="@+id/logoutNavBar"
+                android:id="@+id/sideNavBarMenuLogout"
                 android:icon="@drawable/logout_icon"
                 />
         </menu>
