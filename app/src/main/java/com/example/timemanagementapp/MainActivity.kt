@@ -60,18 +60,6 @@ class MainActivity : AppCompatActivity() {
             startActivity(intent)
             finish()
         }
-        // for now i have removed the firebase auth because if the user logs in the app then it must be that the username and pass is correct
-        // will add option if user wants to check everytime if the id and pass is correct
-        // removed because then everytime when the app opens, internet needs to be conn to check validity
-//        firebaseAuth = FirebaseAuth.getInstance()
-//        firebaseAuth.signInWithEmailAndPassword("$username@myapp.com", "$password")
-//            .addOnSuccessListener {
-//                Toast.makeText(this, "Login Remember $username $password", Toast.LENGTH_SHORT).show()
-//            }
-//            .addOnFailureListener{
-//                val intent = Intent(this, LoginPage::class.java)
-//                startActivity(intent)
-//            }
     }
 
 //    private fun materialToolBarFunctions(){

@@ -233,7 +233,7 @@ class StopWatchFragment : Fragment(), OnTimeItemClickListenerCustom {
 
     private fun writeDatabaseTest() {
         val documentRef = firestore.document("/Users_Collection/$username/More_Details/TimeRecord/$year/$month/weeks/week$currentWeekOfMonth")
-        Log.d("dataFirebase1", "this is address  week$currentWeekOfMonth  $month  $year")
+//        Log.d("dataFirebase1", "this is address  week$currentWeekOfMonth  $month  $year")
         documentRef.update(date, list)
     }
 
