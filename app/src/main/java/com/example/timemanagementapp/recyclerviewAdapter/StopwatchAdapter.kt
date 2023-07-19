@@ -29,7 +29,7 @@ class StopwatchAdapter(val onTimeItemClickListenerCustom: OnTimeItemClickListene
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): StopWatchViewHolder {
-        val view = LayoutInflater.from(context).inflate(R.layout.time_recycler_item, parent, false)
+        val view = LayoutInflater.from(context).inflate(R.layout.recycler_item_time, parent, false)
         return StopWatchViewHolder(view)
     }
 

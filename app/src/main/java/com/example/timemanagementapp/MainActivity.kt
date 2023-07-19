@@ -18,7 +18,6 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
     private lateinit var firestore: FirebaseFirestore
-    lateinit var firebaseAuth: FirebaseAuth
     companion object {
         var username: String = ""
     }

@@ -165,9 +165,8 @@ class ReportFragment : Fragment() {
             }
             val dateList = valueStore.data?.keys
             val dates = mutableListOf<String>()
-            for (thiss in dateList!!){
-                val date = thiss.substring(0, 2)
-
+            for (datePick in dateList!!){
+                val date = datePick.substring(0, 2)
                 dates.add(date)
             }
 
