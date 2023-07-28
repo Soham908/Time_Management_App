@@ -40,11 +40,11 @@ class StopwatchTimeLapReceiver: BroadcastReceiver() {
             lapStartMinute = StopWatchFragment.lapStartMinute
         }
 
-        val lastLapTime = StopWatchService.lastLapTime
-        val currentElapsedTime = elapsedTime2 - lastLapTime
-        val hours2 = TimeUnit.MILLISECONDS.toHours(currentElapsedTime)
-        val minutes2 = TimeUnit.MILLISECONDS.toMinutes(currentElapsedTime) % 60
-        val seconds2 = TimeUnit.MILLISECONDS.toSeconds(currentElapsedTime) % 60
+//        val lastLapTime = StopWatchService.lastLapTime
+//        val currentElapsedTime = elapsedTime2 - lastLapTime
+        val hours2 = TimeUnit.MILLISECONDS.toHours(elapsedTime2)
+        val minutes2 = TimeUnit.MILLISECONDS.toMinutes(elapsedTime2) % 60
+        val seconds2 = TimeUnit.MILLISECONDS.toSeconds(elapsedTime2) % 60
 
         val time =  String.format("%02d:%02d  to  %02d:%02d       Lap  %02d:%02d:%02d", lapStartHour, lapStartMinute, hoursCurrent, minutesCurrent, hours2, minutes2, seconds2)
 
@@ -56,11 +56,11 @@ class StopwatchTimeLapReceiver: BroadcastReceiver() {
             }
         
         // after lap is pressed update the values to service
-        StopWatchService.lastLapTime = elapsedTime2
+//        StopWatchService.lastLapTime = elapsedTime2
         StopWatchService.lapStartHourState = hoursCurrent
         StopWatchService.lapStartMinuteState = minutesCurrent
         // update the stopwatch fragment values
-        StopWatchFragment.lastLapTime = elapsedTime2
+//        StopWatchFragment.lastLapTime = elapsedTime2
         StopWatchFragment.lapStartHour = hoursCurrent
         StopWatchFragment.lapStartMinute = minutesCurrent
 

@@ -3,6 +3,7 @@ package com.example.timemanagementapp.fragments
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
+import android.os.SystemClock
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -133,7 +134,7 @@ class StopWatchFragment : Fragment(), OnTimeItemClickListenerCustom {
             val lapCurrentSeconds = calendar.get(Calendar.SECOND)
 
             val time =  String.format("%02d:%02d  to  %02d:%02d       Lap  %02d:%02d:%02d", lapStartHour, lapStartMinute, lapCurrentHour, lapCurrentMinute, hours2, minutes2, secs2)
-            lastLapTime = elapsedTime2
+            lastLapTime = 0L
             list.add(StructureStopWatch(null, time, "default", "default"))
             adapter.notifyDataSetChanged()
 
@@ -143,10 +144,11 @@ class StopWatchFragment : Fragment(), OnTimeItemClickListenerCustom {
 
             writeDatabaseTest()
             StopWatchService.lapListBroadcastReceiver = list
-            StopWatchService.lastLapTime = lastLapTime
+            StopWatchService.lastLapTime = 0L
 
             StopWatchService.lapStartHourState = lapStartHour
             StopWatchService.lapStartMinuteState = lapStartMinute
+            StopWatchService.startTime = SystemClock.elapsedRealtime()
         }
 
         reset.setOnClickListener {

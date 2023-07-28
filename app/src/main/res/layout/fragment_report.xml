@@ -18,7 +18,9 @@
         app:layout_constraintHorizontal_bias="0.996"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.069" />
+        app:layout_constraintVertical_bias="0.069"
+        android:visibility="gone"
+        />
 
 
     <View
@@ -43,7 +45,8 @@
         app:layout_constraintHorizontal_bias="0.132"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.485" />
+        app:layout_constraintVertical_bias="0.485"
+        tools:ignore="SpeakableTextPresentCheck" />
 
     <TextView
         android:id="@+id/selectDateTextView"
@@ -94,7 +97,9 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.795"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:visibility="gone"
+        />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

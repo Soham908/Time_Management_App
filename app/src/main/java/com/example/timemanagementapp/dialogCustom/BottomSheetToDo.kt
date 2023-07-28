@@ -71,8 +71,6 @@ class BottomSheetToDo(val item: StructureTask) : BottomSheetDialogFragment() {
         val oldTask = StructureTask(oldSubject, oldDescription, "", "")
         val task = StructureTask(taskSubject, taskDescription, "", "")
         val documentRef = firestore.collection("Users_Collection").document(username).collection("More_Details").document("Tasks")
-//        documentRef.update("new_task", FieldValue.arrayRemove(oldTask), "new_task", FieldValue.arrayUnion(task))
-//        documentRef.update("new task", FieldValue.arrayUnion(task))
 
         item.taskSubject = taskSubject
         item.taskDescription = taskDescription
@@ -87,7 +85,6 @@ class BottomSheetToDo(val item: StructureTask) : BottomSheetDialogFragment() {
         val context = context
 
         val task = StructureTask(taskSubject, taskDescription, "", "")
-//        val documentRef = firestore.collection("User Details").document("Tasks")
         val documentRef = firestore.collection("Users_Collection").document(username).collection("More_Details").document("Tasks")
         documentRef.update("new_task", FieldValue.arrayUnion(task))
             .addOnSuccessListener {

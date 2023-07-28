@@ -1,16 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="AppTheme.Dark" parent="Theme.AppCompat.DayNight.NoActionBar">
-        <item name="colorPrimary">@color/colorPrimaryDark</item>
-        <item name="colorPrimaryDark">@color/colorPrimary</item>
-        <item name="colorAccent">@color/colorAccent</item>
-    </style>
-
-    <color name="colorPrimaryDark">#292525</color>
-    <color name="colorPrimary">#201F1F</color>
-    <color name="colorAccent">#3A3131</color>
-
     <!--  button color needed to be changed so this is used  -->
     <style name="buttonCurved" parent="Theme.MaterialComponents.DayNight">
         <item name="colorPrimary">@color/buttonColorCustom</item>

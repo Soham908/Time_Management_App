@@ -19,6 +19,7 @@ import com.example.timemanagementapp.databinding.FragmentTodoListBinding
 import com.example.timemanagementapp.recyclerviewAdapter.TaskAdapter
 import com.example.timemanagementapp.dialogCustom.BottomSheetToDo
 import com.example.timemanagementapp.services.TaskAlarmScheduler
+import com.google.android.material.timepicker.MaterialTimePicker
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
@@ -122,27 +123,30 @@ class TodoListFragment : Fragment(), OnTaskItemClick {
     @SuppressLint("NotifyDataSetChanged")
     override fun onTaskItemClickAlarm(item: StructureTask) {
 
-        val calender = Calendar.getInstance()
-        val hour = calender.get(Calendar.HOUR_OF_DAY)
-        val minutes = calender.get(Calendar.MINUTE)
+        MaterialTimePicker
+            .Builder()
+            .setTitleText("Select a time")
+            .setTheme(R.style.CustomTimePicker)
+            .build()
+            .show(childFragmentManager, "Time Pick")
 
-        val timePickerDialog = TimePickerDialog(context, { _, hour2, minute2 ->
-            val calendar = Calendar.getInstance()
-            calendar.set(Calendar.HOUR_OF_DAY, hour2)
-            calendar.set(Calendar.MINUTE, minute2)
-            calendar.set(Calendar.SECOND, 0)
-            calendar.set(Calendar.MILLISECOND, 0)
-
-            val alarmTime = calendar.timeInMillis
-
-//            Log.d("dataTime", "to do  $minute2  $hour2  ${item.taskSubject}  $item")
-            TaskAlarmScheduler(requireContext()).scheduleAlarm(alarmTime, item.taskSubject)
-            item.taskTime = "Alarm: $hour2:$minute2"
-            adapter.notifyDataSetChanged()
-
-        }, hour, minutes, false)
-
-        timePickerDialog.show()
+//        val timePickerDialog = TimePickerDialog(context, R.style.CustomDatePickerDialog, { _, hour2, minute2 ->
+//            val calendar = Calendar.getInstance()
+//            calendar.set(Calendar.HOUR_OF_DAY, hour2)
+//            calendar.set(Calendar.MINUTE, minute2)
+//            calendar.set(Calendar.SECOND, 0)
+//            calendar.set(Calendar.MILLISECOND, 0)
+//
+//            val alarmTime = calendar.timeInMillis
+//
+////            Log.d("dataTime", "to do  $minute2  $hour2  ${item.taskSubject}  $item")
+//            TaskAlarmScheduler(requireContext()).scheduleAlarm(alarmTime, item.taskSubject)
+//            item.taskTime = "Alarm: $hour2:$minute2"
+//            adapter.notifyDataSetChanged()
+//
+//        }, hour, minutes, false)
+//
+//        timePickerDialog.show()
     }
 
 
