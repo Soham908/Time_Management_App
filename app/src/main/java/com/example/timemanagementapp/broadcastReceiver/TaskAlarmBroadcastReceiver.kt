@@ -16,7 +16,10 @@ import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import com.example.timemanagementapp.MainActivity
 import com.example.timemanagementapp.R
+import com.example.timemanagementapp.fragments.TaskFragment
 import com.example.timemanagementapp.services.TaskAlarmScheduler
+import com.example.timemanagementapp.structure_data_class.StructureTask
+import com.google.firebase.firestore.FirebaseFirestore
 
 class TaskAlarmBroadcastReceiver: BroadcastReceiver() {
 
@@ -24,16 +27,49 @@ class TaskAlarmBroadcastReceiver: BroadcastReceiver() {
     private lateinit var notificationManagerCompat: NotificationManagerCompat
     private val CHANNEL_ID = "TaskAlarm"
     private lateinit var taskSubject: String
-
+    private lateinit var firestore: FirebaseFirestore
+    private lateinit var username: String
+    private var taskList = mutableListOf<StructureTask>()
 
     @SuppressLint("MissingPermission")
     override fun onReceive(context: Context, intent: Intent?) {
         taskSubject = intent?.getStringExtra("extra_message") ?: return
+        username = intent.getStringExtra("username")!!
 //        Log.d("dataTime", "broadcast received  $taskSubject")
         notificationManagerCompat = NotificationManagerCompat.from(context)
         notification = buildNotification(context)
 
         notificationManagerCompat.notify(taskSubject.hashCode(), notification.build())
+        firestore = FirebaseFirestore.getInstance()
+        deleteAlarmTime()
+    }
+
+    @Suppress("UNCHECKED_CAST")
+    private fun deleteAlarmTime() {
+        val documentRef = firestore.collection("Users_Collection").document(username).collection("More_Details").document("Tasks")
+        // not good programming practice, will need to change the approach towards this, for now this will work
+        documentRef.get()
+            .addOnSuccessListener { value ->
+                val data = value.get("new_task") as MutableList<Map<*, *>>
+                for (task in data){
+                    if (task["taskSubject"] == taskSubject){
+                        val taskObject = data.map { map ->
+                            StructureTask(
+                                taskSubject = map["taskSubject"].toString(),
+                                taskDescription = map["taskDescription"].toString(),
+                                taskTime = map["taskTime"].toString(),
+                                taskPriority = map["taskPriority"].toString()
+                            )
+                        }
+                        taskList.clear()
+                        for (task2 in taskObject) {
+                            taskList.add(task2)
+                        }
+                    }
+                }
+                Log.d("dataFirebase", " from broadcastTask  $taskList")
+                documentRef.update("new_task", taskList)
+            }
     }
 
     private fun buildNotification(context: Context): NotificationCompat.Builder {

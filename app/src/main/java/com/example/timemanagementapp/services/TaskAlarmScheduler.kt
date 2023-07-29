@@ -7,6 +7,7 @@ import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.widget.Toast
+import com.example.timemanagementapp.MainActivity.Companion.username
 import com.example.timemanagementapp.broadcastReceiver.TaskAlarmBroadcastReceiver
 import java.util.concurrent.TimeUnit
 
@@ -18,6 +19,7 @@ class TaskAlarmScheduler(val context: Context) {
     fun scheduleAlarm(time: Long, taskSubject: String){
         val intent = Intent(context, TaskAlarmBroadcastReceiver::class.java).apply {
             putExtra("extra_message", taskSubject)
+            putExtra("username", username)
         }
         val pendingIntent = PendingIntent.getBroadcast(context, taskSubject.hashCode(), intent, PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT)
 

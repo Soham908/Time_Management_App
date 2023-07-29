@@ -195,7 +195,7 @@ class StopWatchFragment : Fragment(), OnTimeItemClickListenerCustom {
         val currentDate = LocalDate.now()
         val currentWeekOfMonth = currentDate.get(WeekFields.of(Locale.getDefault()).weekOfMonth())
 
-        val documentRef = firestore.document("/Users_Collection/$username/More_Details/TimeRecord/$year/$month/weeks/week${currentWeekOfMonth-1}")
+        val documentRef = firestore.document("/Users_Collection/$username/More_Details/TimeRecord/$year/$month/weeks/week${currentWeekOfMonth}")
         listenerRegistration = documentRef.addSnapshotListener { value, error ->
             if(error != null){
                 Toast.makeText(context, "error $error ", Toast.LENGTH_SHORT).show()

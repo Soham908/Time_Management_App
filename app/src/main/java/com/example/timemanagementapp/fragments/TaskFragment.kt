@@ -20,6 +20,8 @@ import com.example.timemanagementapp.services.TaskAlarmScheduler
 import com.google.android.material.timepicker.MaterialTimePicker
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
+import java.time.LocalTime
+import java.time.format.DateTimeFormatter
 import java.util.Calendar
 
 
@@ -139,14 +141,27 @@ class TaskFragment : Fragment(), OnTaskItemClick {
                 calendar.set(Calendar.MILLISECOND, 0)
 
                 val alarmTime = calendar.timeInMillis
+                val selectedTime = LocalTime.of(selectedHour, selectedMinute)
+                val formattedTime = formatTime(selectedTime)
 
                 TaskAlarmScheduler(requireContext()).scheduleAlarm(alarmTime, item.taskSubject)
-                item.taskTime = "Alarm: $selectedHour:$selectedMinute"
+                item.taskTime = "Alarm: $formattedTime"
                 adapter.notifyDataSetChanged()
+                updateTask()
             }
         }
 
         materialTimePicker.show(childFragmentManager, "alarm")
+    }
+
+    private fun updateTask() {
+        val documentRef = firestore.collection("Users_Collection").document(username).collection("More_Details").document("Tasks")
+        documentRef.update("new_task", taskMutableList)
+    }
+
+    private fun formatTime(time: LocalTime): String {
+        val formatter = DateTimeFormatter.ofPattern("h:mm a")
+        return time.format(formatter)
     }
 
 }

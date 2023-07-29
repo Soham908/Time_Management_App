@@ -80,7 +80,7 @@ class ReportFragment : Fragment() {
     @SuppressLint("NotifyDataSetChanged")
     private fun getTimeList(){
         firestore = FirebaseFirestore.getInstance()
-        val documentRef = firestore.document("/Users_Collection/$username/More_Details/TimeRecord/$year/$month/weeks/week${currentWeekOfMonth-1}")
+        val documentRef = firestore.document("/Users_Collection/$username/More_Details/TimeRecord/$year/$month/weeks/week${currentWeekOfMonth}")
         documentRef.addSnapshotListener{ value, error ->
             if (error != null){
                 return@addSnapshotListener
