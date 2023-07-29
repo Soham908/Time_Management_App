@@ -14,6 +14,7 @@
         <!-- Customize your theme here. -->
         <item name="android:background">#201F1F</item>
         <item name="android:textColor">@color/white</item>
+        <item name="colorPrimaryDark">@color/white</item>
     </style>
 
     <color name="buttonColorCustom">#0099ff</color>

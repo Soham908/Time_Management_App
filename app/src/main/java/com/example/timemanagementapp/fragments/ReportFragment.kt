@@ -1,10 +1,8 @@
 package com.example.timemanagementapp.fragments
 
 import android.annotation.SuppressLint
-import android.app.DatePickerDialog
 import android.graphics.Color
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -24,6 +22,7 @@ import java.util.*
 import com.github.mikephil.charting.charts.PieChart
 import com.github.mikephil.charting.data.*
 import com.github.mikephil.charting.utils.ColorTemplate
+import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.firebase.firestore.DocumentSnapshot
 import java.time.Month
 import kotlin.collections.ArrayList
@@ -31,8 +30,8 @@ import kotlin.collections.ArrayList
 class ReportFragment : Fragment() {
 
     private lateinit var binding: FragmentReportBinding
-    lateinit var firestore: FirebaseFirestore
-    var listReport = mutableListOf<StructureStopWatch>()
+    private lateinit var firestore: FirebaseFirestore
+    private var listReport = mutableListOf<StructureStopWatch>()
     private lateinit var valueStore: DocumentSnapshot
 
     private var date: String = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(Date())
@@ -44,7 +43,7 @@ class ReportFragment : Fragment() {
     private lateinit var pieChart: PieChart
     private lateinit var barChart: BarChart
     private val calendar: Calendar = Calendar.getInstance()
-    var isPieChart = true
+    private var isPieChart = true
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -212,28 +211,46 @@ class ReportFragment : Fragment() {
     }
 
     private fun showDatePicker() {
-        val dateListener = DatePickerDialog.OnDateSetListener { _, year, monthOfYear, dayOfMonth ->
-            calendar.set(Calendar.YEAR, year)
-            calendar.set(Calendar.MONTH, monthOfYear)
-            calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth)
+        val materialDatePickerBuilder = MaterialDatePicker.Builder.datePicker()
+        materialDatePickerBuilder.setSelection(calendar.timeInMillis)
+        // it is important to take the date from the previously set calender details to properly display last date selected as current one
+
+        val materialDatePicker = materialDatePickerBuilder.build()
+        materialDatePicker.addOnPositiveButtonClickListener {
+
+            calendar.timeInMillis = it
 
             val selectedDate = formatDate(calendar.time)
             binding.selectDateTextView.text = selectedDate
             date = selectedDate
             currentWeekOfMonth = calendar.get(Calendar.WEEK_OF_MONTH)
-            month = Month.of(monthOfYear + 1 ).name
-            Log.d("dataFirebase1", "from datepicker $month $currentWeekOfMonth")
+            month = Month.of(calendar.get(Calendar.MONTH) + 1 ).name
             getTimeList()
         }
+        materialDatePicker.show(childFragmentManager, "date select")
 
-        val datePickerDialog = DatePickerDialog(
-            requireContext(), dateListener,
-            calendar.get(Calendar.YEAR),
-            calendar.get(Calendar.MONTH),
-            calendar.get(Calendar.DAY_OF_MONTH)
-        )
-
-        datePickerDialog.show()
+//        val dateListener = DatePickerDialog.OnDateSetListener { _, year, monthOfYear, dayOfMonth ->
+//            calendar.set(Calendar.YEAR, year)
+//            calendar.set(Calendar.MONTH, monthOfYear)
+//            calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth)
+//
+//            val selectedDate = formatDate(calendar.time)
+//            binding.selectDateTextView.text = selectedDate
+//            date = selectedDate
+//            currentWeekOfMonth = calendar.get(Calendar.WEEK_OF_MONTH)
+//            month = Month.of(monthOfYear + 1 ).name
+//            Log.d("dataFirebase1", "from date picker $month $currentWeekOfMonth")
+//            getTimeList()
+//        }
+//
+//        val datePickerDialog = DatePickerDialog(
+//            requireContext(), dateListener,
+//            calendar.get(Calendar.YEAR),
+//            calendar.get(Calendar.MONTH),
+//            calendar.get(Calendar.DAY_OF_MONTH)
+//        )
+//
+//        datePickerDialog.show()
     }
 
     @SuppressLint("SimpleDateFormat")

@@ -60,6 +60,7 @@
     <string name="settings">Settings</string>
     <string name="profile">Profile</string>
     <string name="tasks">Tasks</string>
+    <string name="pages">Pages</string>
 
     <string-array name="settingsMultiListTime">
         <item>1</item>

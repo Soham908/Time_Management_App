@@ -2,7 +2,7 @@
 <menu xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <item android:title="Pages">
+    <item android:title="@string/pages">
         <menu>
             <item
                 android:title="@string/tasks"
@@ -17,7 +17,7 @@
             <item
                 android:title="@string/exercise"
                 android:id="@+id/sideNavBarMenuExercise"
-                android:icon="@drawable/gym"
+                android:icon="@drawable/exercise_48px"
                 />
         </menu>
     </item>

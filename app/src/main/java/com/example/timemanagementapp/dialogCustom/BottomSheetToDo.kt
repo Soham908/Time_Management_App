@@ -4,7 +4,6 @@ import android.content.Context
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,7 +13,7 @@ import com.example.timemanagementapp.MainActivity
 import com.example.timemanagementapp.R
 import com.example.timemanagementapp.structure_data_class.StructureTask
 import com.example.timemanagementapp.databinding.FragmentBottomSheetToDoBinding
-import com.example.timemanagementapp.fragments.TodoListFragment
+import com.example.timemanagementapp.fragments.TaskFragment
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
@@ -25,7 +24,7 @@ class BottomSheetToDo(val item: StructureTask) : BottomSheetDialogFragment() {
 
     lateinit var binding: FragmentBottomSheetToDoBinding
     lateinit var firestore: FirebaseFirestore
-    private val taskList = TodoListFragment.taskMutableList
+    private val taskList = TaskFragment.taskMutableList
     private lateinit var username: String
 
     override fun onCreateView(
@@ -68,8 +67,6 @@ class BottomSheetToDo(val item: StructureTask) : BottomSheetDialogFragment() {
     private fun updateTasks(oldSubject: String, oldDescription: String) {
         val taskSubject = binding.todoBottomSub.text.toString()
         val taskDescription = binding.todoBottomDesc.text.toString()
-        val oldTask = StructureTask(oldSubject, oldDescription, "", "")
-        val task = StructureTask(taskSubject, taskDescription, "", "")
         val documentRef = firestore.collection("Users_Collection").document(username).collection("More_Details").document("Tasks")
 
         item.taskSubject = taskSubject

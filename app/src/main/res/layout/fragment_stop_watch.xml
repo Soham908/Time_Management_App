@@ -9,37 +9,32 @@
     >
 
 
-    <Button
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/startButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/start"
-        android:theme="@style/buttonCurved"
-        android:background="@drawable/btn_primary"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.108"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.19" />
+        app:layout_constraintVertical_bias="0.146" />
 
-    <Button
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/lapButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/lap"
-        android:theme="@style/buttonCurved"
-        android:background="@drawable/btn_primary"
+        android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.458"
+        app:layout_constraintHorizontal_bias="0.464"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.19"
-        android:visibility="invisible"
-        />
+        app:layout_constraintVertical_bias="0.145" />
 
-    <TextView
+    <com.google.android.material.textview.MaterialTextView
         android:id="@+id/timerTextView"
         android:layout_width="126dp"
         android:layout_height="61dp"
@@ -50,21 +45,20 @@
         app:layout_constraintHorizontal_bias="0.431"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.038" />
+        app:layout_constraintVertical_bias="0.0"
+        />
 
-    <Button
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/resetButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/reset"
-        android:theme="@style/buttonCurved"
-        android:background="@drawable/btn_primary"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.826"
+        app:layout_constraintHorizontal_bias="0.835"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.19" />
+        app:layout_constraintVertical_bias="0.145" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/stopwatchRecyclerContainer"

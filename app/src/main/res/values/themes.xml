@@ -12,7 +12,12 @@
         <!-- Status bar color. -->
         <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
+        <item name="colorPrimaryDark">@color/black</item>
     </style>
 
     <color name="buttonColorCustom">@color/purple_500</color>
+<!--    for nav button in app bar-->
+    <style name="AppBarHomeNav" parent="Widget.Material3.AppBarLayout">
+        <item name="android:tint">@color/black</item>
+    </style>
 </resources>

@@ -1,9 +1,7 @@
 package com.example.timemanagementapp.fragments
 
 import android.annotation.SuppressLint
-import android.app.TimePickerDialog
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -13,22 +11,21 @@ import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.timemanagementapp.MainActivity
 import com.example.timemanagementapp.R
+import com.example.timemanagementapp.databinding.FragmentTaskListBinding
 import com.example.timemanagementapp.interfaces.OnTaskItemClick
 import com.example.timemanagementapp.structure_data_class.StructureTask
-import com.example.timemanagementapp.databinding.FragmentTodoListBinding
 import com.example.timemanagementapp.recyclerviewAdapter.TaskAdapter
 import com.example.timemanagementapp.dialogCustom.BottomSheetToDo
 import com.example.timemanagementapp.services.TaskAlarmScheduler
 import com.google.android.material.timepicker.MaterialTimePicker
-import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import java.util.Calendar
 
 
-class TodoListFragment : Fragment(), OnTaskItemClick {
+class TaskFragment : Fragment(), OnTaskItemClick {
 
-    private lateinit var binding: FragmentTodoListBinding
+    private lateinit var binding: FragmentTaskListBinding
     private lateinit var adapter: TaskAdapter
     companion object {
         var taskMutableList = mutableListOf<StructureTask>()
@@ -42,8 +39,8 @@ class TodoListFragment : Fragment(), OnTaskItemClick {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val view: View = layoutInflater.inflate(R.layout.fragment_todo_list, container, false)
-        binding = FragmentTodoListBinding.bind(view)
+        val view: View = layoutInflater.inflate(R.layout.fragment_task_list, container, false)
+        binding = FragmentTaskListBinding.bind(view)
         parentFragment = parentFragmentManager
         firestore = FirebaseFirestore.getInstance()
         setRecyclerView()
@@ -52,9 +49,6 @@ class TodoListFragment : Fragment(), OnTaskItemClick {
 
             BottomSheetToDo().show(childFragmentManager, "this is bottom sheet frag")
         }
-
-        val firebaseAuth = FirebaseAuth.getInstance().currentUser?.uid
-//        Log.d("dataFirebase1", firebaseAuth.toString() + " to do on create")
 
         selectData()
         return view
@@ -71,19 +65,18 @@ class TodoListFragment : Fragment(), OnTaskItemClick {
     @Suppress("UNCHECKED_CAST")
     @SuppressLint("NotifyDataSetChanged")
     fun selectData(){
-    // /Users_Collection/Soham/More Details/Tasks
         val documentRef = firestore.collection("Users_Collection").document(username).collection("More_Details").document("Tasks")
 
         documentRef.addSnapshotListener{ value, error ->
             if(error != null){
                 Toast.makeText(requireContext(), "$error", Toast.LENGTH_SHORT).show()
             }
-            val data = value?.data?.values ?: return@addSnapshotListener
+            value?.data?.values ?: return@addSnapshotListener
 //            Log.d("dataFirebase", data.toString())
-            val thisbe = value.get("new_task")
+            val data = value.get("new_task")
 
-            if(thisbe != null) {
-                val taskList = thisbe as List<Map<*, *>>
+            if(data != null) {
+                val taskList = data as List<Map<*, *>>
 
                 val taskObject = taskList.map { map ->
                     StructureTask(
@@ -93,7 +86,6 @@ class TodoListFragment : Fragment(), OnTaskItemClick {
                         taskPriority = map["taskPriority"].toString()
                     )
                 }
-//                Log.d("dataFirebase1", taskObject.toString())
                 taskMutableList.clear()
                 for (task in taskObject) {
                     taskMutableList.add(task)
@@ -123,31 +115,38 @@ class TodoListFragment : Fragment(), OnTaskItemClick {
     @SuppressLint("NotifyDataSetChanged")
     override fun onTaskItemClickAlarm(item: StructureTask) {
 
-        MaterialTimePicker
+        val calender = Calendar.getInstance()
+        val hours = calender.get(Calendar.HOUR_OF_DAY)
+        val minutes = calender.get(Calendar.MINUTE)
+
+        val materialTimePicker = MaterialTimePicker
             .Builder()
             .setTitleText("Select a time")
+            .setHour(hours)
+            .setMinute(minutes)
             .setTheme(R.style.CustomTimePicker)
             .build()
-            .show(childFragmentManager, "Time Pick")
 
-//        val timePickerDialog = TimePickerDialog(context, R.style.CustomDatePickerDialog, { _, hour2, minute2 ->
-//            val calendar = Calendar.getInstance()
-//            calendar.set(Calendar.HOUR_OF_DAY, hour2)
-//            calendar.set(Calendar.MINUTE, minute2)
-//            calendar.set(Calendar.SECOND, 0)
-//            calendar.set(Calendar.MILLISECOND, 0)
-//
-//            val alarmTime = calendar.timeInMillis
-//
-////            Log.d("dataTime", "to do  $minute2  $hour2  ${item.taskSubject}  $item")
-//            TaskAlarmScheduler(requireContext()).scheduleAlarm(alarmTime, item.taskSubject)
-//            item.taskTime = "Alarm: $hour2:$minute2"
-//            adapter.notifyDataSetChanged()
-//
-//        }, hour, minutes, false)
-//
-//        timePickerDialog.show()
+        materialTimePicker.apply {
+            addOnPositiveButtonClickListener {
+                val selectedHour = materialTimePicker.hour
+                val selectedMinute = materialTimePicker.minute
+
+                val calendar = Calendar.getInstance()
+                calendar.set(Calendar.HOUR_OF_DAY, selectedHour)
+                calendar.set(Calendar.MINUTE, selectedMinute)
+                calendar.set(Calendar.SECOND, 0)
+                calendar.set(Calendar.MILLISECOND, 0)
+
+                val alarmTime = calendar.timeInMillis
+
+                TaskAlarmScheduler(requireContext()).scheduleAlarm(alarmTime, item.taskSubject)
+                item.taskTime = "Alarm: $selectedHour:$selectedMinute"
+                adapter.notifyDataSetChanged()
+            }
+        }
+
+        materialTimePicker.show(childFragmentManager, "alarm")
     }
-
 
 }
