@@ -14,7 +14,17 @@ This app will help you in:
     9] Visualize accomplishments
     10] Trying new time management methods
     11] Record sleep, meditation, learning time
-    
+
+
+## ScreenShots
+
+![Time Tracker](https://github.com/Soham908/Time_Management_App/blob/master/screenshots/Screenshot%20Time%20Tracking.png)
+![Tasks](https://github.com/Soham908/Time_Management_App/blob/master/screenshots/Screenshot%20Task%20Fragment.png)
+![Reports](https://github.com/Soham908/Time_Management_App/blob/master/screenshots/Screenshot%20Report.png)
+![Side Nav Bar](https://github.com/Soham908/Time_Management_App/blob/master/screenshots/Screenshot%20Side%20Nav%20Bar.png)
+![Login Page](https://github.com/Soham908/Time_Management_App/blob/master/screenshots/Screenshot%20Login%20Page.png)
+![Signup Page](https://github.com/Soham908/Time_Management_App/blob/master/screenshots/Screenshot%20Signup.png)
+
 
 
 
