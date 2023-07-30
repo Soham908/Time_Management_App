@@ -4,7 +4,7 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.widget.Toast
-import com.example.timemanagementapp.fragments.StopWatchFragment
+import com.example.timemanagementapp.fragments.TimeTrackerFragment
 import com.example.timemanagementapp.services.StopWatchService
 import com.example.timemanagementapp.structure_data_class.StructureStopWatch
 import com.google.firebase.firestore.FieldValue
@@ -36,8 +36,8 @@ class StopwatchTimeLapReceiver: BroadcastReceiver() {
         var lapStartHour = StopWatchService.lapStartHourState
         var lapStartMinute = StopWatchService.lapStartMinuteState
         if (lapStartHour == 0 && lapStartMinute == 0){
-            lapStartHour = StopWatchFragment.lapStartHour
-            lapStartMinute = StopWatchFragment.lapStartMinute
+            lapStartHour = TimeTrackerFragment.lapStartHour
+            lapStartMinute = TimeTrackerFragment.lapStartMinute
         }
 
 //        val lastLapTime = StopWatchService.lastLapTime
@@ -61,8 +61,8 @@ class StopwatchTimeLapReceiver: BroadcastReceiver() {
         StopWatchService.lapStartMinuteState = minutesCurrent
         // update the stopwatch fragment values
 //        StopWatchFragment.lastLapTime = elapsedTime2
-        StopWatchFragment.lapStartHour = hoursCurrent
-        StopWatchFragment.lapStartMinute = minutesCurrent
+        TimeTrackerFragment.lapStartHour = hoursCurrent
+        TimeTrackerFragment.lapStartMinute = minutesCurrent
 
     }
 

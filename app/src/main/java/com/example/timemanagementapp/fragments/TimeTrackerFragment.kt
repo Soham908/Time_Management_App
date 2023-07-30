@@ -32,7 +32,7 @@ import java.time.temporal.WeekFields
 import java.util.*
 import java.util.concurrent.TimeUnit
 
-class StopWatchFragment : Fragment(), OnTimeItemClickListenerCustom {
+class TimeTrackerFragment : Fragment(), OnTimeItemClickListenerCustom {
 
     private lateinit var binding: FragmentStopWatchBinding
     private lateinit var service: StopWatchService

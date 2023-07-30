@@ -77,7 +77,7 @@ class MainActivity : AppCompatActivity() {
         bottomNavigationView.setOnItemSelectedListener { item ->
             item.isChecked = true
             when (item.itemId) {
-                R.id.bottomNavBarMenuStopwatch  ->      {   fragment = StopWatchFragment()    }
+                R.id.bottomNavBarMenuStopwatch  ->      {   fragment = TimeTrackerFragment()    }
                 R.id.bottomNavBarMenuTask       ->      {   fragment = TaskFragment()     }
                 R.id.bottomNavBarMenuHabit      ->      {   fragment = HabitFragment()        }
 //                R.id.bottomNavBarMenuHome       ->      {   fragment = HomePageFragment()     }
@@ -156,7 +156,7 @@ class MainActivity : AppCompatActivity() {
         lateinit var fragment: Fragment
         when(fragmentName){
             "taskFragmentIntent"      ->      { fragment = TaskFragment()     }
-            "stopwatchFragmentIntent" ->      { fragment = StopWatchFragment()    }
+            "stopwatchFragmentIntent" ->      { fragment = TimeTrackerFragment()    }
 
         }
         fragmentTransaction(fragment)
