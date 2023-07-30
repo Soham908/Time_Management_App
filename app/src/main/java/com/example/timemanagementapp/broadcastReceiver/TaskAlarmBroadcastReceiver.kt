@@ -11,13 +11,10 @@ import android.media.AudioAttributes
 import android.os.Handler
 import android.os.Looper
 import android.provider.Settings
-import android.util.Log
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import com.example.timemanagementapp.MainActivity
 import com.example.timemanagementapp.R
-import com.example.timemanagementapp.fragments.TaskFragment
-import com.example.timemanagementapp.services.TaskAlarmScheduler
 import com.example.timemanagementapp.structure_data_class.StructureTask
 import com.google.firebase.firestore.FirebaseFirestore
 
@@ -30,9 +27,11 @@ class TaskAlarmBroadcastReceiver: BroadcastReceiver() {
     private lateinit var firestore: FirebaseFirestore
     private lateinit var username: String
     private var taskList = mutableListOf<StructureTask>()
+    private lateinit var contextShare: Context
 
     @SuppressLint("MissingPermission")
     override fun onReceive(context: Context, intent: Intent?) {
+        contextShare = context
         taskSubject = intent?.getStringExtra("extra_message") ?: return
         username = intent.getStringExtra("username")!!
 //        Log.d("dataTime", "broadcast received  $taskSubject")
@@ -51,25 +50,27 @@ class TaskAlarmBroadcastReceiver: BroadcastReceiver() {
         documentRef.get()
             .addOnSuccessListener { value ->
                 val data = value.get("new_task") as MutableList<Map<*, *>>
-                for (task in data){
-                    if (task["taskSubject"] == taskSubject){
-                        val taskObject = data.map { map ->
-                            StructureTask(
-                                taskSubject = map["taskSubject"].toString(),
-                                taskDescription = map["taskDescription"].toString(),
-                                taskTime = map["taskTime"].toString(),
-                                taskPriority = map["taskPriority"].toString()
-                            )
-                        }
-                        taskList.clear()
-                        for (task2 in taskObject) {
-                            taskList.add(task2)
-                        }
-                    }
+                val taskObject = data.map { map ->
+                    StructureTask(
+                        taskSubject = map["taskSubject"].toString(),
+                        taskDescription = map["taskDescription"].toString(),
+                        taskTime = map["taskTime"].toString(),
+                        taskPriority = map["taskPriority"].toString()
+                    )
                 }
-                Log.d("dataFirebase", " from broadcastTask  $taskList")
-                documentRef.update("new_task", taskList)
+                taskList.clear()
+                for (task in taskObject) {
+                    if (task.taskSubject == taskSubject)  task.taskTime = ""
+                    taskList.add(task)
+                }
+                updateAlarmChange()
             }
+
+    }
+
+    private fun updateAlarmChange() {
+        val documentRef = firestore.collection("Users_Collection").document(username).collection("More_Details").document("Tasks")
+        documentRef.update("new_task", taskList)
     }
 
     private fun buildNotification(context: Context): NotificationCompat.Builder {

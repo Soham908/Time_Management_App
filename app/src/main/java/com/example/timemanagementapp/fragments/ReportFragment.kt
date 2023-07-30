@@ -228,29 +228,6 @@ class ReportFragment : Fragment() {
             getTimeList()
         }
         materialDatePicker.show(childFragmentManager, "date select")
-
-//        val dateListener = DatePickerDialog.OnDateSetListener { _, year, monthOfYear, dayOfMonth ->
-//            calendar.set(Calendar.YEAR, year)
-//            calendar.set(Calendar.MONTH, monthOfYear)
-//            calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth)
-//
-//            val selectedDate = formatDate(calendar.time)
-//            binding.selectDateTextView.text = selectedDate
-//            date = selectedDate
-//            currentWeekOfMonth = calendar.get(Calendar.WEEK_OF_MONTH)
-//            month = Month.of(monthOfYear + 1 ).name
-//            Log.d("dataFirebase1", "from date picker $month $currentWeekOfMonth")
-//            getTimeList()
-//        }
-//
-//        val datePickerDialog = DatePickerDialog(
-//            requireContext(), dateListener,
-//            calendar.get(Calendar.YEAR),
-//            calendar.get(Calendar.MONTH),
-//            calendar.get(Calendar.DAY_OF_MONTH)
-//        )
-//
-//        datePickerDialog.show()
     }
 
     @SuppressLint("SimpleDateFormat")

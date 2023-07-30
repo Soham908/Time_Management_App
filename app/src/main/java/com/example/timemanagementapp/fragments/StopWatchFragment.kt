@@ -24,13 +24,10 @@ import com.example.timemanagementapp.services.StopWatchService
 import com.example.timemanagementapp.structure_data_class.StructureStopWatch
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ListenerRegistration
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.io.*
 import java.text.SimpleDateFormat
 import java.time.LocalDate
-import java.time.Month
 import java.time.temporal.WeekFields
 import java.util.*
 import java.util.concurrent.TimeUnit
@@ -192,8 +189,6 @@ class StopWatchFragment : Fragment(), OnTimeItemClickListenerCustom {
     @SuppressLint("NotifyDataSetChanged")
     private fun snapshotListener(){
         if (username.isEmpty()) return
-        val currentDate = LocalDate.now()
-        val currentWeekOfMonth = currentDate.get(WeekFields.of(Locale.getDefault()).weekOfMonth())
 
         val documentRef = firestore.document("/Users_Collection/$username/More_Details/TimeRecord/$year/$month/weeks/week${currentWeekOfMonth}")
         listenerRegistration = documentRef.addSnapshotListener { value, error ->
