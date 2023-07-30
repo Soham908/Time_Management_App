@@ -31,8 +31,8 @@ class LoginPage : AppCompatActivity() {
     }
 
     private fun verifyUser() {
-        val username = binding.loginUserName.text.toString()
-        val password = binding.loginPassword.text.toString()
+        val username = binding.loginUserName.editText?.text.toString()
+        val password = binding.loginPassword.editText?.text.toString()
         if (username.isNotEmpty() && password.isNotEmpty()) {
 
             firebaseAuth.signInWithEmailAndPassword("$username@myapp.com", password)

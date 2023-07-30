@@ -33,8 +33,8 @@ class SignUpPage : AppCompatActivity() {
     }
 
     private fun signUpUser(){
-        username = binding.signupUserName.text.toString()
-        val password = binding.signupPassword.text.toString()
+        username = binding.signupUserName.editText?.text.toString()
+        val password = binding.signupPassword.editText?.text.toString()
 
         firebaseAuth.createUserWithEmailAndPassword("$username@myapp.com", password).
         addOnCompleteListener(this) {
