@@ -3,6 +3,7 @@ package com.example.timemanagementapp
 import android.content.Intent
 import android.content.res.Configuration
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.TextView
@@ -126,26 +127,34 @@ class MainActivity : AppCompatActivity() {
     }
 
     // handling tool bar options menu
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.actionbar_options, menu)
-        return super.onCreateOptionsMenu(menu)
-    }
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when(item.itemId){
-            R.id.logout -> {
-                val intent = Intent(this, LoginPage::class.java)
-                startActivity(intent)
-                val sharedPreferences = getSharedPreferences("UserNameLogin", MODE_PRIVATE)
-                sharedPreferences.edit().clear().apply()
-                finish()
-            }
-            R.id.search -> {
-                val fragment = SettingsFragment()
-                fragmentTransaction(fragment)
-            }
-        }
-        return super.onOptionsItemSelected(item)
-    }
+//    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+//        menuInflater.inflate(R.menu.actionbar_options, menu)
+//        return super.onCreateOptionsMenu(menu)
+//    }
+//    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+//        Log.d("checkData", "atleast made it till here")
+//        when(item.itemId){
+//            R.id.logout -> {
+//                // Start the login activity
+//                startActivity(Intent(applicationContext, LoginPage::class.java))
+//
+//                // Clear user credentials from SharedPreferences
+//                getSharedPreferences("UserNameLogin", MODE_PRIVATE)
+//                    .edit()
+//                    .clear()
+//                    .apply()
+//
+//                // Finish current activity (main activity)
+//                finish()
+//                return true
+//            }
+//            R.id.search -> {
+//                val fragment = SettingsFragment()
+//                fragmentTransaction(fragment)
+//            }
+//        }
+//        return super.onOptionsItemSelected(item)
+//    }
 
     override fun onConfigurationChanged(newConfig: Configuration) {
         super.onConfigurationChanged(newConfig)

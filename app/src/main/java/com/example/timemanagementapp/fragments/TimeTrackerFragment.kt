@@ -24,7 +24,10 @@ import com.example.timemanagementapp.services.StopWatchService
 import com.example.timemanagementapp.structure_data_class.StructureStopWatch
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ListenerRegistration
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.tasks.await
 import java.io.*
 import java.text.SimpleDateFormat
 import java.time.LocalDate
@@ -87,6 +90,8 @@ class TimeTrackerFragment : Fragment(), OnTimeItemClickListenerCustom {
         snapshotListener()
 
         if(running && !isPause){ start_stop.text = stopString; lap.isVisible = true }
+
+        checkDocExists()
 
         start_stop.setOnClickListener {
             if(start_stop.text == "Start") {
@@ -190,7 +195,7 @@ class TimeTrackerFragment : Fragment(), OnTimeItemClickListenerCustom {
     private fun snapshotListener(){
         if (username.isEmpty()) return
 
-        val documentRef = firestore.document("/Users_Collection/$username/More_Details/TimeRecord/$year/$month/weeks/week${currentWeekOfMonth}")
+        val documentRef = firestore.document("Users_Collection/$username/TimeRecord/${month+year}")
         listenerRegistration = documentRef.addSnapshotListener { value, error ->
             if(error != null){
                 Toast.makeText(context, "error $error ", Toast.LENGTH_SHORT).show()
@@ -227,9 +232,18 @@ class TimeTrackerFragment : Fragment(), OnTimeItemClickListenerCustom {
 
 
     private fun writeDatabaseTest() {
-        val documentRef = firestore.document("/Users_Collection/$username/More_Details/TimeRecord/$year/$month/weeks/week$currentWeekOfMonth")
-//        Log.d("dataFirebase1", "this is address  week$currentWeekOfMonth  $month  $year")
-        documentRef.update(date, list)
+        val documentRef = firestore.document("/Users_Collection/$username/TimeRecord/${month+year}")
+        documentRef.get().addOnSuccessListener { docSuccess ->
+            if (docSuccess.exists()){
+                documentRef.update(date, list)
+            }
+            else{
+                val monthData = HashMap<String, Any>()
+                documentRef.set(monthData).addOnSuccessListener {
+                    documentRef.update(date, list)
+                }
+            }
+        }
     }
 
     override fun onItemClickFunc(item: StructureStopWatch) {
@@ -245,11 +259,6 @@ class TimeTrackerFragment : Fragment(), OnTimeItemClickListenerCustom {
     @SuppressLint("NotifyDataSetChanged")
     override fun onTimeItemDelete(item: StructureStopWatch) {
         list.remove(item)
-//        firestore.collection("Users_Collection").document(username).collection("More_Details").document("TimeRecord")
-//            .update(date, FieldValue.arrayRemove(item))
-//            .addOnSuccessListener {
-//                Toast.makeText(context, "Time deleted successful", Toast.LENGTH_SHORT).show()
-//            }
         writeDatabaseTest()
         adapter.notifyDataSetChanged()
     }
@@ -312,8 +321,22 @@ class TimeTrackerFragment : Fragment(), OnTimeItemClickListenerCustom {
         // temp solution
         if (timeCheck > 10){
             viewLifecycleOwner.lifecycleScope.launch {
-                date = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(Date())
+                date = SimpleDateFormat("dd-MM-yyyy", Locale.ENGLISH).format(Date())
                 snapshotListener()
+            }
+        }
+    }
+
+    private fun checkDocExists() {
+        CoroutineScope(Dispatchers.IO).launch {
+            val documentRef = firestore.document("/Users_Collection/$username/TimeRecord/${month+year}")
+            val docSnapshot = documentRef.get().await() // Use await() to suspend and wait for the result
+
+            // Check if the document exists
+            if (!docSnapshot.exists()) {
+                // If the document doesn't exist, create it
+                val monthData = HashMap<String, Any>()
+                documentRef.set(monthData).await() // Use await() to suspend and wait for the result
             }
         }
     }

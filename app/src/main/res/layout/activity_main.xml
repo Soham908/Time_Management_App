@@ -27,7 +27,6 @@
                 android:id="@+id/materialToolbar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:menu="@menu/actionbar_options"
                 app:navigationIcon="@drawable/bottom_nav_homepage" />
 
         </com.google.android.material.appbar.AppBarLayout>

@@ -3,6 +3,7 @@ package com.example.timemanagementapp.fragments
 import android.annotation.SuppressLint
 import android.graphics.Color
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -80,7 +81,8 @@ class ReportFragment : Fragment() {
     @SuppressLint("NotifyDataSetChanged")
     private fun getTimeList(){
         firestore = FirebaseFirestore.getInstance()
-        val documentRef = firestore.document("/Users_Collection/$username/More_Details/TimeRecord/$year/$month/weeks/week${currentWeekOfMonth}")
+//        val documentRef = firestore.document("/Users_Collection/$username/More_Details/TimeRecord/$year/$month/weeks/week${currentWeekOfMonth}")
+        val documentRef = firestore.document("Users_Collection/$username/TimeRecord/${month+year}")
         documentRef.addSnapshotListener{ value, error ->
             if (error != null){
                 return@addSnapshotListener
@@ -126,10 +128,10 @@ class ReportFragment : Fragment() {
             list.add(PieEntry(timeInSeconds, task.work))
             totalTime += timeInSeconds
         }
-        val timeDiff = 86400 - totalTime
-        if (timeDiff > 0){
-            list.add(PieEntry(timeDiff, "not record"))
-        }
+//        val timeDiff = 86400 - totalTime
+//        if (timeDiff > 0){
+//            list.add(PieEntry(timeDiff, "not record"))
+//        }
 
         val pieDataSet= PieDataSet(list,"List")
 
@@ -139,6 +141,7 @@ class ReportFragment : Fragment() {
         pieDataSet.valueTextSize = 15f
 
         val pieData= PieData(pieDataSet)
+        Log.d("checkData", "report  $list")
 
         pieChart.data= pieData
         pieChart.description.isEnabled = false
