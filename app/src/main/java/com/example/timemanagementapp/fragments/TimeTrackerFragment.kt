@@ -223,7 +223,7 @@ class TimeTrackerFragment : Fragment(), OnTimeItemClickListenerCustom {
 
                 for (lap in lapObject) {
                     list.add(lap)
-                    Log.d("dataFirebase", "lap example $lap")
+//                    Log.d("dataFirebase", "lap example $lap")
                 }
                 adapter.notifyDataSetChanged()
             }
