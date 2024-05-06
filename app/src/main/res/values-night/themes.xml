@@ -10,9 +10,12 @@
         <item name="colorSecondaryVariant">@color/teal_200</item>
         <item name="colorOnSecondary">#201F1F</item>
         <!-- Status bar color. -->
-        <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
+        <item name="android:statusBarColor">#201F1F</item>
+        <item name="android:navigationBarColor">@color/black</item>
+
         <!-- Customize your theme here. -->
         <item name="android:background">#201F1F</item>
+        <item name="cardBackgroundColor">#201F1F</item>
         <item name="android:textColor">@color/white</item>
         <item name="colorPrimaryDark">@color/white</item>
     </style>
@@ -22,5 +25,10 @@
     <style name="CustomTimePicker" parent="ThemeOverlay.MaterialComponents.TimePicker">
         <item name="android:background">@android:color/transparent</item>
     </style>
+
+    <style name="CardCustom" parent="Widget.MaterialComponents.CardView">
+        <item name="cardBackgroundColor">#201F1F</item>
+    </style>
+
 
 </resources>

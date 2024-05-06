@@ -1,6 +1,8 @@
 package com.example.timemanagementapp.recyclerviewAdapter
 
+import android.annotation.SuppressLint
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -18,13 +20,14 @@ class StopwatchAdapter(val onTimeItemClickListenerCustom: OnTimeItemClickListene
 
     inner class StopWatchViewHolder(itemView: View): RecyclerView.ViewHolder(itemView){
         val setTime: TextView = itemView.findViewById(R.id.timeRecyclerTime)
+        val setTimeElapsed: TextView = itemView.findViewById(R.id.timeRecyclerTimeElapsed)
         val setWork: TextView = itemView.findViewById(R.id.timeRecyclerLabel)
 
         fun bind(item: StructureStopWatch) {
             itemView.setOnClickListener{ onTimeItemClickListenerCustom.onItemClickFunc(item) }
-            itemView.findViewById<ImageView>(R.id.timeRecyclerDelete).setOnClickListener {
-                onTimeItemClickListenerCustom.onTimeItemDelete(item)
-            }
+//            itemView.findViewById<ImageView>(R.id.timeRecyclerDelete).setOnClickListener {
+//                onTimeItemClickListenerCustom.onTimeItemDelete(item)
+//            }
         }
     }
 
@@ -37,13 +40,17 @@ class StopwatchAdapter(val onTimeItemClickListenerCustom: OnTimeItemClickListene
         return list.size
     }
 
+    @SuppressLint("SetTextI18n")
     override fun onBindViewHolder(holder: StopWatchViewHolder, position: Int) {
         val item = list[list.size - position - 1]
         item.id = position
         // to set the position
-        holder.setTime.text = item.time
+        val startTime = item.time.substring(0, 5)
+        val endTime = item.time.substring(11, 16)
+        val totalTime = item.time.substring(28, 36)
+        holder.setTime.text = "$startTime - $endTime"
+        holder.setTimeElapsed.text = totalTime
         holder.setWork.text = item.work
-
         holder.bind(item)
     }
 }
