@@ -30,12 +30,13 @@ This app will help you in:
 
 ## ScreenShots
 
-![Time Tracker](https://github.com/Soham908/Time_Management_App/blob/master/screenshots/Screenshot%20Time%20Tracking.png)
+![Time Tracker](https://github.com/Soham908/Time_Management_App/assets/111056496/b2ffb8ba-4a76-4b07-ae3b-b1ab80b70560)
 ![Tasks](https://github.com/Soham908/Time_Management_App/blob/master/screenshots/Screenshot%20Task%20Fragment.png)
 ![Reports](https://github.com/Soham908/Time_Management_App/blob/master/screenshots/Screenshot%20Report.png)
 ![Side Nav Bar](https://github.com/Soham908/Time_Management_App/blob/master/screenshots/Screenshot%20Side%20Nav%20Bar.png)
 ![Login Page](https://github.com/Soham908/Time_Management_App/blob/master/screenshots/Screenshot%20Login%20Page.png)
 ![Signup Page](https://github.com/Soham908/Time_Management_App/blob/master/screenshots/Screenshot%20Signup.png)
+
 
 
 
