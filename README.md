@@ -5,16 +5,13 @@ The main goal of this project is to make an all in one app which will help peopl
     
 ## Index
 - [Features](#features)
+- [Technologies](#tech)
 - [Screenshots](#screenshots)
-- [Usage](#usage)
-- [Future Plans](#future-plans)
-- [References](#references)
-- [Contribution](#contribution)
-- [Credits](#credits)
+- [Improvements](#improvements)
 - [License](#license)
 
-
-## Features
+<a name="features"></a>
+## 🚀Features
 Time management app that lets you get a look of how you actually spend your time.  
 This app will help you in:
 
@@ -28,11 +25,22 @@ This app will help you in:
 
 
 
-## ScreenShots
 
-![Time Tracker](https://github.com/Soham908/Time_Management_App/assets/111056496/b2ffb8ba-4a76-4b07-ae3b-b1ab80b70560)
-![Tasks](https://github.com/Soham908/Time_Management_App/blob/master/screenshots/Screenshot%20Task%20Fragment.png)
-![Reports](https://github.com/Soham908/Time_Management_App/blob/master/screenshots/Screenshot%20Report.png)
+<a name="tech"></a>
+## 🛠️ Technologies
+- `Kotlin`
+- `XML`
+- `Firebase`
+- `Android Studio`
+
+
+
+<a name="screenshots"></a>
+## 📷 ScreenShots
+
+![Time Tracker](https://github.com/Soham908/Time_Management_App/assets/111056496/53e7293e-41ca-41fc-9d77-375ac02037ec)
+![Tasks](https://github.com/Soham908/Time_Management_App/assets/111056496/f2fca559-d191-4b33-b6e6-67c38994a4cb)
+![Reports](https://github.com/Soham908/Time_Management_App/assets/111056496/f510c307-5c67-49e2-bc70-81fd05134fc4)
 ![Side Nav Bar](https://github.com/Soham908/Time_Management_App/blob/master/screenshots/Screenshot%20Side%20Nav%20Bar.png)
 ![Login Page](https://github.com/Soham908/Time_Management_App/blob/master/screenshots/Screenshot%20Login%20Page.png)
 ![Signup Page](https://github.com/Soham908/Time_Management_App/blob/master/screenshots/Screenshot%20Signup.png)
@@ -40,19 +48,13 @@ This app will help you in:
 
 
 
-## Usage
-Currently this app is not available on Google Play Store or F Droid. But it will soon be available on F Droid.
+<a name="improvements"></a>
+## 💡 Improvements
 
-## Contribution
+- **Weekly Reports**: Add a weekly report section where the users weekly activities will be displayed
+- **Habit Tracking**: Need to implement a habit tracker
+- **Improve UI**: Use Jetpack Compose and switch to a more cleaner UI
 
-## References
-
-## Future-Plans
-
-## Contribution
-If you want to contribute to the project and help me develop the app, feel free to open an issue.
-
-## Credits
 
 ## License
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
